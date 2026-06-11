@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negosistema - Directorio Hiperlocal</title>
+    <!-- Ruta exacta al archivo CSS centralizado -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+    <!-- Menú de Navegación Superior -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">📍 NEGOSISTEMA</a>
+        <div class="nav-links">
+            <a href="anunciate.html" class="nav-item">Anúnciate</a>
+            <a href="creditos.html" class="nav-item">Créditos</a>
+            <a href="terminos.html" class="nav-item">Términos y Condiciones</a>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal Ajustado al Centro -->
+    <main class="contenedor">
+        
+        <!-- Encabezado de Bienvenida -->
+        <header class="encabezado">
+            <h1>Centro de Soluciones Hiperlocales</h1>
+            <p>Encuentra exactamente lo que necesitas en tu colonia sin saturarte de información.</p>
+        </header>
+
+        <!-- SECCIÓN NUEVA: Acceso Rápido Automático (Historial LocalStorage) -->
+        <section id="bloque-historial" style="display: none; background: #e6f4ea; border: 1px solid #34a853; padding: 20px; border-radius: 8px; margin-bottom: 30px; text-align: center;">
+            <h3 style="margin-top: 0; color: #137333;">📍 Continuar donde te quedaste:</h3>
+            <p style="margin-bottom: 15px;">Detectamos que estabas explorando una zona recientemente:</p>
+            <a id="enlace-historial" href="#" style="display: inline-block; background: #34a853; color: white; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">
+                Entrar directo a mi última colonia
+            </a>
+        </section>
+
+        <!-- SECCIÓN MODIFICADA: Selección Directa de Colonias (Estilo ElDeFe.com) -->
+        <section class="seccion-colonias">
+            <h2 style="text-align: center; margin-bottom: 10px;">Explora tu Comunidad en Iztapalapa</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">Selecciona tu colonia para abrir el mapa interactivo de comercios y servicios locales.</p>
+            
+            <!-- Reutilizamos tu clase grid para mantener la consistencia de tus estilos CSS -->
+            <div class="grid-eleccion-principal">
+                
+                <!-- Colonia 1 -->
+                <a href="./Iztapalapa/mapas_Prod/2ampli1_productos.html" class="tarjeta-eleccion tarjeta-productos">
+                    <div class="icono-tarjeta">🏘️</div>
+                    <h2>2ampli_santiago_1</h2>
+                    <p>Accede al directorio comercial, tiendas, talleres y servicios de esta zona.</p>
+                    <span class="btn-accion-tarjeta">Abrir Mapa →</span>
+                </a>
+
+                <!-- Colonia 2 -->
+                <a href="./Iztapalapa/mapas_Prod/2ampli2_Productos.html" class="tarjeta-eleccion tarjeta-servicios">
+                    <div class="icono-tarjeta">🏘️</div>
+                    <h2>2ampli_santiago_2</h2>
+                    <p>Accede al directorio comercial, tiendas, talleres y servicios de esta zona.</p>
+                    <span class="btn-accion-tarjeta">Abrir Mapa →</span>
+                </a>
+
+                <!-- Colonia 3 -->
+                <a href="./Iztapalapa/mapas_Prod/xalpa2_Productos.html" class="tarjeta-eleccion tarjeta-productos" style="border-left: 5px solid #ff9800;">
+                    <div class="icono-tarjeta">🏘️</div>
+                    <h2>Xalpa2</h2>
+                    <p>Accede al directorio comercial, tiendas, talleres y servicios de esta zona.</p>
+                    <span class="btn-accion-tarjeta">Abrir Mapa →</span>
+                </a>
+
+            </div>
+        </section>
+
+         <!-- Contenedor del Mapa Responsivo (Usa las clases de tu styles.css) -->
+                <div class="map-wrapper-xalpa">
+                    <iframe src="https://www.google.com/maps/d/embed?mid=1fAZ-ddpJUsw7oW9z8g3C4j_ooBSfSqw&ehbc=2E312F&noprof=1" loading="lazy"></iframe>
+                </div>
+
+        <!-- SECCIÓN: Escalera de Valor del Proyecto -->
+        <section class="seccion-escalera" style="margin-top: 50px;">
+            <h2>Los puntos de Valor</h2>
+            <p class="subtitulo-escalera">¿Cómo impulsamos y organizamos el comercio en tu comunidad?</p>
+            
+            <div class="bloques-escalera">
+                <div class="escalon">
+                    <span class="numero-escalon">1</span>
+                    <h3>Visibilidad Base</h3>
+                    <p>Ubicación exacta del negocio y datos de contacto directo (WhatsApp) al alcance de todos.</p>
+                </div>
+                <div class="escalon">
+                    <span class="numero-escalon">2</span>
+                    <h3>Conectividad Activa</h3>
+                    <p>Pines especializados con menús, catálogos digitales y horarios comerciales actualizados.</p>
+                </div>
+                <div class="escalon">
+                    <span class="numero-escalon">3</span>
+                    <h3>Destacados y Promos</h3>
+                    <p>Acceso directo a las ofertas exclusivas y cupones de la zona dentro del mismo mapa final.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de Página Técnico -->
+    <footer class="pie-pagina">
+        <p>&copy; 2026 Negosistema. Todos los derechos reservados.</p>
+        <a href="terminos.html">Políticas de Uso y Deslinde Legal</a>
+    </footer>
+
+    <!-- SCRIPT DE JAVASCRIPT: Controla el historial automático del usuario -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Buscamos si existe la variable del historial en el navegador del usuario
+            const ultimaColonia = JSON.parse(localStorage.getItem('negosistema_ultima_visita'));
+            
+            if (ultimaColonia && ultimaColonia.nombre && ultimaColonia.url) {
+                // Si existe, mostramos el bloque verde de acceso rápido
+                const bloque = document.getElementById('bloque-historial');
+                const enlace = document.getElementById('enlace-historial');
+                
+                bloque.style.display = 'block';
+                enlace.href = ultimaColonia.url;
+                enlace.textContent = `Entrar directo a: ${ultimaColonia.nombre}`;
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dental Muelitas - Negosistema Xalpa</title>
+    
+    <!-- Enlace relativo corregido para subir a GitHub Pages sin romperse -->
+    <link rel="stylesheet" href="/css/styles.css">
+    
+    <!-- Tipografía para la Landing Page del cliente -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Estilos específicos de la Landing Page sin chocar con los globales */
+        .muelitas-lp { 
+            font-family: 'Montserrat', sans-serif; 
+            color: #2c3e50; 
+            max-width: 1100px; 
+            margin: auto; 
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        .sec { 
+            display: flex; 
+            align-items: center; 
+            padding: 60px 20px; 
+            flex-wrap: wrap; 
+            border-bottom: 1px solid #eee; 
+        }
+        .sec:nth-child(even) { 
+            flex-direction: row-reverse; 
+            background-color: #f0faff; 
+        }
+        .info, .foto { 
+            flex: 1; 
+            min-width: 320px; 
+            padding: 30px; 
+        }
+        
+        .muelitas-lp h2 { 
+            color: #00a8e8; 
+            font-size: 32px; 
+            margin-top: 0;
+            margin-bottom: 15px; 
+            text-transform: uppercase; 
+            font-weight: 700;
+        }
+        .muelitas-lp p { 
+            font-size: 18px; 
+            color: #555; 
+            line-height: 1.6;
+        }
+        
+        .foto img { 
+            width: 100%; 
+            height: auto;
+            border-radius: 20px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+            border: 5px solid white; 
+        }
+
+        /* Recuadro de Contacto Adaptado a Conversión del Nivel 5 */
+        .cta-muelitas { 
+            background: linear-gradient(135deg, #00a8e8 0%, #007bff 100%); 
+            color: white; 
+            padding: 50px; 
+            border-radius: 0 0 16px 16px; 
+            text-align: center; 
+            box-shadow: 0 15px 30px rgba(0, 168, 232, 0.15);
+        }
+        .cta-muelitas h3 {
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        .cta-muelitas p {
+            color: #e0f2fe;
+            font-size: 1.1rem;
+        }
+        .btn-wa-landing { 
+            display: inline-block;
+            background: #25d366; 
+            color: white !important; 
+            padding: 18px 35px; 
+            text-decoration: none !important; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            margin-top: 25px; 
+            transition: transform 0.3s, background 0.3s;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-wa-landing:hover { 
+            transform: scale(1.05); 
+            background: #128c7e; 
+        }
+
+        @media (max-width: 768px) { 
+            .sec { flex-direction: column !important; text-align: center; padding: 30px 10px; } 
+            .muelitas-lp h2 { font-size: 24px; }
+            .muelitas-lp p { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menú de Navegación Superior Unificado (Rutas Relativas Corregidas) -->
+    <nav class="navbar">
+        <a href="/index.html" class="logo"> NEGOSISTEMA</a> 📍
+        <div class="nav-links">
+            <a href="../../anunciate.html" class="nav-item">Anúnciate</a>
+            <a href="../../creditos.html" class="nav-item">Créditos</a>
+            <a href="../../terminos.html" class="nav-item">Términos y Condiciones</a>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal Adaptado al Estilo de Negosistema -->
+    <div class="contenedor-servicios">
+        <main>
+            
+            <div class="muelitas-lp">
+                <!-- SECCIÓN 1 -->
+                <div class="sec">
+                    <div class="info">
+                        <h2>Muelitas: Sonrisas que Brillan</h2>
+                        <p>Hacemos que la visita al dentista sea la parte favorita del día de tus hijos. Expertos en odontología pediátrica con un toque de magia.</p>
+                    </div>
+                    <div class="foto">
+                        <img alt="Clinica Muelitas" src="/Imagenes/dentista.jpeg" />
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 2 -->
+                <div class="sec">
+                    <div class="info">
+                        <h2>Tecnología de Vanguardia</h2>
+                        <p>Cuidamos tu salud dental con equipos de última generación. Diagnósticos precisos y tratamientos mínimamente invasivos para toda la familia.</p>
+                    </div>
+                    <div class="foto">
+                        <img alt="Tecnología Dental" src="/Imagenes/estudio.jpeg" />
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 3 -->
+                <div class="sec">
+                    <div class="info">
+                        <h2>Estética Dental Avanzada</h2>
+                        <p>Diseñamos la sonrisa de tus sueños. Blanqueamientos, carillas y ortodoncia invisible con resultados garantizados por nuestros especialistas.</p>
+                    </div>
+                    <div class="foto">
+                        <img alt="Estética Dental" src="/Imagenes/estetica.jpeg" />
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 4 -->
+                <div class="sec">
+                    <div class="info">
+                        <h2>Atención de Urgencia 24/7</h2>
+                        <p>Porque el dolor no espera, en Muelitas estamos listos para atenderte en cualquier momento con la calidez que nos distingue.</p>
+                    </div>
+                    <div class="foto">
+                        <img alt="Urgencias Dentales" src="/Imagenes/24.jpeg" />
+                    </div>
+                </div>
+
+                <!-- CONTACTO Y CONVERSIÓN DE LA LANDING (NIVEL 5) -->
+                <div class="cta-muelitas">
+                    <h3>¿Necesitas agendar una cita dental de urgencia o valoración?</h3>
+                    <p>Contacta directamente a los especialistas de <strong>Dental Muelitas</strong> en Xalpa. Trato inmediato sin intermediarios.</p>
+                    <!-- Enlace directo real configurado para el negocio -->
+                    <a class="btn-wa-float-landing btn-wa-landing" href="https://wa.me" target="_blank">
+                        📲 AGENDAR CITA POR WHATSAPP
+                    </a>
+                </div>
+            </div>
+
+            <!-- Botón de retorno al mapa de origen -->
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="../Xalpa2_Servicios.html" class="btn-gps-xalpa" style="background-color: #0a2540; box-shadow: 0 4px 12px rgba(10,37,64,0.2);">
+                    Volver al Mapa de Servicios 🛠
+                </a>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Pie de Página Técnico Unificado -->
+    <footer class="pie-pagina">
+        <p>&copy; 2026 Negosistema. Todos los derechos reservados.</p>
+        <a href="../../terminos.html">Políticas de Uso y Deslinde Legal</a>
+    </footer>
+
+</body>
+</html>
