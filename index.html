@@ -6,9 +6,9 @@
     <title>Negosistema - Directorio Hiperlocal</title>
     <!-- Ruta exacta al archivo CSS centralizado -->
     <link rel="stylesheet" href="./css/styles.css">
-    
+ 
     <!-- LIBRERÍA DE LEAFLET (ESTILOS COMPATIBLES CON MÓVIL) -->
-    <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 <body>
     <!-- Menú de Navegación Superior -->
@@ -23,7 +23,6 @@
 
     <!-- Contenedor Principal Ajustado al Centro -->
     <main class="contenedor">
- 
         <!-- Encabezado de Bienvenida -->
         <header class="encabezado">
             <h1>Centro de Soluciones Hiperlocales</h1>
@@ -43,7 +42,7 @@
         <section class="seccion-colonias">
             <h2 style="text-align: center; margin-bottom: 10px;">Explora tu Comunidad en Iztapalapa</h2>
             <p style="text-align: center; color: #666; margin-bottom: 30px;">Selecciona tu colonia para abrir el mapa interactivo de comercios y servicios locales.</p>
- 
+            
             <div class="grid-eleccion-principal">
                 <!-- Colonia 1 -->
                 <a href="./Iztapalapa/mapas_Prod/2ampli1_productos.html" class="tarjeta-eleccion tarjeta-productos" onclick="guardarProgreso('2ampli_santiago_1', './Iztapalapa/mapas_Prod/2ampli1_productos.html')">
@@ -87,6 +86,10 @@
                 height: 500px;
                 background: #f4f3f0;
             }
+            .marcador-colonia-color {
+                border-radius: 50%;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            }
             .leaflet-popup-content-wrapper {
                 font-family: Arial, sans-serif;
                 border-radius: 6px;
@@ -97,12 +100,10 @@
                 font-size: 16px;
             }
         </style>
- 
         <!-- SECCIÓN: Escalera de Valor -->
         <section class="seccion-escalera" style="margin-top: 50px;">
             <h2>Los puntos de Valor</h2>
             <p class="subtitulo-escalera">¿Cómo impulsamos y organizamos el comercio en tu comunidad?</p>
- 
             <div class="bloques-escalera">
                 <div class="escalon">
                     <span class="numero-escalon">1</span>
@@ -128,7 +129,7 @@
         <a href="terminos.html">Políticas de Uso y Deslinde Legal</a>
     </footer>
 
-    <!-- LIBRERÍA JAVASCRIPT DE LEAFLET -->
+    <!-- LIBRERÍA JAVASCRIPT DE LEAFLET CORREGIDA -->
     <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
@@ -157,7 +158,7 @@
                 scrollWheelZoom: false
             });
 
-            // MAPA BASE GRIS CLARO MINIMALISTA
+            // MAPA BASE GRIS CLARO CORREGIDO (Estilo CartoDB Positron)
             L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
                 subdomains: 'abcd',
@@ -172,14 +173,32 @@
                 })
                 .then(data => {
                     const capaMarcadores = L.geoJSON(data, {
+                        // RECOVERY DE COLORES: Cambiamos los puntos azules por el color de Google My Maps
+                        pointToLayer: function (feature, latlng) {
+                            let colorOriginal = '#1a73e8'; // Azul por defecto si no encuentra estilo
+                            
+                            if (feature.properties && feature.properties['marker-color']) {
+                                colorOriginal = feature.properties['marker-color'];
+                            }
+
+                            let iconoColor = L.divIcon({
+                                className: 'marcador-colonia-color',
+                                html: `<div style="background-color: ${colorOriginal}; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #ffffff;"></div>`,
+                                iconSize:,
+                                iconAnchor: [8, 8]
+                            });
+
+                            return L.marker(latlng, { icon: iconoColor });
+                        },
                         onEachFeature: function (feature, layer) {
                             if (feature.properties && feature.properties.name) {
                                 let info = `<strong>${feature.properties.name}</strong>`;
-                                info += feature.properties.description ? feature.properties.description : 'Establecimiento verificado.';
+                                info += feature.properties.description ? `<br>${feature.properties.description}` : '<br>Establecimiento verificado.';
                                 layer.bindPopup(info);
                             }
                         }
                     }).addTo(mapa);
+                    
                     mapa.fitBounds(capaMarcadores.getBounds());
                 })
                 .catch(error => {
