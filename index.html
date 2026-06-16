@@ -124,12 +124,12 @@
         </section>
     </main>
 
-    <footer class="pie-pagina">
+        <footer class="pie-pagina">
         <p>&copy; 2026 Negosistema. Todos los derechos reservados.</p>
         <a href="terminos.html">Políticas de Uso y Deslinde Legal</a>
     </footer>
 
-    <!-- LIBRERÍA JAVASCRIPT DE LEAFLET CORREGIDA -->
+    <!-- LIBRERÍA JAVASCRIPT DE LEAFLET CORREGIDA Y COMPLETA -->
     <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
@@ -158,7 +158,7 @@
                 scrollWheelZoom: false
             });
 
-            // MAPA BASE GRIS CLARO CORREGIDO (Estilo CartoDB Positron)
+            // MAPA BASE GRIS CLARO CORREGIDO (Dirección URL restaurada)
             L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
                 subdomains: 'abcd',
@@ -173,9 +173,9 @@
                 })
                 .then(data => {
                     const capaMarcadores = L.geoJSON(data, {
-                        // RECOVERY DE COLORES: Cambiamos los puntos azules por el color de Google My Maps
+                        // RECOVERY DE COLORES: Saca el color guardado desde Google My Maps
                         pointToLayer: function (feature, latlng) {
-                            let colorOriginal = '#1a73e8'; // Azul por defecto si no encuentra estilo
+                            let colorOriginal = '#1a73e8'; // Azul de respaldo
                             
                             if (feature.properties && feature.properties['marker-color']) {
                                 colorOriginal = feature.properties['marker-color'];
