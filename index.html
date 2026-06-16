@@ -72,11 +72,17 @@
             </div>
         </section>
 
-         <!-- Contenedor del Mapa Responsivo (Usa las clases de tu styles.css) -->
-              <div class="map-wrapper-xalpa">
-    <!-- URL optimizada sin parámetros de perfil conflictivos -->
-    <iframe src="https://www.google.com/maps/d/viewer?mid=1fAZ-ddpJUsw7oW9z8g3C4j_ooBSfSqw&ll=19.345529192764907%2C-99.013056&z=15" loading="lazy" allowfullscreen></iframe>
+
+        <div class="map-wrapper-xalpa">
+    <!-- Usamos EMBED combinado con sandbox para bloquear la redirección a la app -->
+    <iframe 
+        src="https://www.google.com/maps/d/embed?mid=1fAZ-ddpJUsw7oW9z8g3C4j_ooBSfSqw&ehbc=2E312F&noprof=1" 
+        sandbox="allow-scripts allow-same-origin allow-forms"
+        loading="lazy">
+    </iframe>
 </div>
+   
+
 
 
         <!-- SECCIÓN: Escalera de Valor del Proyecto -->
