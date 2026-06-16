@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Negosistema - Xalpa 2 (Productos)</title>
+    <title>Negosistema - Santiago 1 (Servicios)</title>
     <!-- Ruta absoluta para evitar que el diseño se rompa en subcarpetas -->
     <link rel="stylesheet" href="../../css/styles.css">
-    <!-- Iconos para el botón de WhatsApp -->
+    <!-- Iconos para las tarjetas y botones -->
     <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- ESTILOS CENTRALES DE LEAFLET -->
+    <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 </head>
 <body>
-
- <!-- Menú de Navegación Superior Unificado -->
+    <!-- Menú de Navegación Superior Unificado -->
     <nav class="navbar">
-        <a href="../../index.html" class="logo">📍 NEGOSISTEMA</a>
+        <a href="../../index.html" class="logo"> NEGOSISTEMA</a> 📍
         <div class="nav-links">
             <a href="../../anunciate.html" class="nav-item">Anúnciate</a>
             <a href="../../creditos.html" class="nav-item">Créditos</a>
@@ -25,15 +26,13 @@
     <div class="contenedor-productos">
         <main>
             <header style="margin-bottom: 20px;">
-                <h1 class="section-title">2 Ampliación Santiago 1: Directorio de Servicios 🛠️</h1>
+                <h1 class="section-title">2 Ampliación Santiago 1: Directorio de Servicios </h1> 🛠
                 <p class="intro-text">Localice los puntos de venta, comida y comercios en la zona.</p> 
             </header>
 
-            <!-- ==========================================================================
-               SECCIÓN: SLIDER DE OFERTAS ANIMADO (ENFOQUE SERVICIOS)
-               ========================================================================== -->
+            <!-- SECCIÓN: SLIDER DE OFERTAS ANIMADO -->
             <div class="info-container">
-                <h2 class="info-title">Promociones de Servicios en 2 Ampliación Santiago 1 🔥</h2>
+                <h2 class="info-title">Promociones de Servicios en 2 Ampliación Santiago 1 </h2> 🔥
                 <p class="info-text"> 
                     Aproveche los descuentos y promociones en mantenimiento, salud y cuidado personal de la colonia. 
                     <br><b>Haga clic en la tarjeta para ver detalles o en el botón para agendar cita directamente.</b>
@@ -42,7 +41,6 @@
 
             <div class="slider-viewport">
                 <div class="slider-track">
-                
                     <!-- GRUPO 1 -->
                     <div class="slide-group">
                         <div class="feature-card-link">
@@ -59,7 +57,6 @@
                                 <i class="fab fa-whatsapp"></i> ¡PEDIR!
                             </a>
                         </div>
-
                         <div class="feature-card-link">
                             <a href="#" class="feature-card">
                                 <div class="card-image">
@@ -75,7 +72,6 @@
                             </a>
                         </div>
                     </div>
-
                     <!-- GRUPO 2 -->
                     <div class="slide-group">
                         <div class="feature-card-link">
@@ -92,7 +88,6 @@
                                 <i class="fab fa-whatsapp"></i> ¡PEDIR!
                             </a>
                         </div>
-
                         <div class="feature-card-link">
                             <a href="#" class="feature-card">
                                 <div class="card-image">
@@ -108,7 +103,6 @@
                             </a>
                         </div>
                     </div>
-
                     <!-- GRUPO 3 -->
                     <div class="slide-group">
                         <div class="feature-card-link">
@@ -125,7 +119,6 @@
                                 <i class="fab fa-whatsapp"></i> ¡PEDIR!
                             </a>
                         </div>
-
                         <div class="feature-card-link">
                             <a href="#" class="feature-card">
                                 <div class="card-image">
@@ -141,10 +134,8 @@
                             </a>
                         </div>
                     </div>
-
-                </div> <!-- Fin Slider Track -->
-            </div> <!-- Fin Slider Viewport -->
-
+                </div>
+            </div>
             <!-- Puntos de Navegación del Slider -->
             <div class="nav-dots">
                 <span class="dot active"></span>
@@ -152,65 +143,57 @@
                 <span class="dot"></span>
             </div>
 
-            <!-- BOTÓN SWITCH INTERACTIVO: Conecta directo con servicios -->
-            <div style="margin: 25px 0 15px 0;">
+            <!-- BOTÓN SWITCH INTERACTIVO -->
+            <div style="margin: 25px 0 15px 0; text-align: center;">
                 <a href="../mapas_Prod/2ampli1_productos.html" class="btn-gps-xalpa">Ver Productos</a>
-                    🍎 Cambiar a Mapa de Productos (Tiendas y Comida)
-                </a>
+                <span style="display: block; margin-top: 8px; color: #666; font-size: 0.9rem;">Cambiar a Mapa de Productos (Tiendas y Comida) 🍎</span>
             </div>
 
-            <!-- CONTENEDOR OPTIMIZADO DEL MAPA MY MAPS -->
+            <!-- CONTENEDOR INTERACTIVO DEL MAPA LOCAL -->
             <div class="map-wrapper-xalpa">
-                <iframe src="https://www.google.com/maps/d/embed?mid=1Nd0yB6MOCtZLbMtfR7qaqWi61OwHAK8&ehbc=2E312F&noprof=1" loading="lazy"></iframe>
+                <div id="mapa-local"></div>
             </div>
-            
-                          <!-- GUÍA DE COLORES POR CAPAS (MAPA SERVICIOS) -->
+ 
+            <!-- GUÍA DE COLORES POR CAPAS (MAPA SERVICIOS) -->
             <div class="guia-colores-contenedor">
-                <h3 class="guia-titulo">Guía de Colores: Mapa de Servicios 🛠️</h3>
-                
+                <h3 class="guia-titulo">Guía de Colores: Mapa de Servicios </h3> 🛠
+ 
                 <div class="guia-grid">
                     <!-- Capa 1: Salud y Consultas -->
                     <div class="guia-item">
                         <span class="punto-color" style="background: #1565c0;"></span>
                         <div><strong>Azul:</strong> Salud y Consultas (Médicos Generales/Especialistas, Dentistas, Psicólogos, Laboratorios, Veterinarias, Terapia Física, Nutriólogos, Enfermería a Domicilio.)</div>
                     </div>
-                    
                     <!-- Capa 2: Talleres y Oficios -->
                     <div class="guia-item">
                         <span class="punto-color" style="background: #1565c0;"></span>
                         <div><strong>Azul M.:</strong> Talleres y Oficios (Mecánicos, Llanteras, Plomeros, Electricistas, Herreros, Carpinteros, Pintores de Casas, Impermeabilizantes, Tapiceros, Reparación de Electrodomésticos, Albañilería.)</div>
                     </div>
-
                     <!-- Capa 3: Bienestar y Estilo -->
                     <div class="guia-item">
                         <span class="punto-color" style="background: #7b1fa2;"></span>
                         <div><strong>Morado:</strong> Bienestar y Estilo (Barberías, Estéticas, Salones de Uñas, Gimnasios, Studios de Yoga/Dance, Spas, Tatuajes, Depilación, Microblading, Podología.)</div>
                     </div>
-
                     <!-- Capa 4: Asesoría y Oficina -->
                     <div class="guia-item">
                         <span class="punto-color" style="background: #9e9e9e;"></span>
                         <div><strong>Gris:</strong> Asesoría y Oficina (Seguros/PPR, Asesores Financieros, Contadores, Abogados, Cibercafés para Trámites, Mensajería Estafeta/DHL, Inmobiliarias, Arquitectos / Peritos.)</div>
                     </div>
-
                     <!-- Capa 5: Hogar y Eventos -->
                     <div class="guia-item">
                         <span class="punto-color" style="background: #5d001e;"></span>
                         <div><strong>Vino:</strong> Hogar y Eventos (Salones de Fiesta, Lavanderías/Tintorerías, Cerrajerías, Sastrerías, Fletes, Limpieza de Cisternas, Banquetes, Alquiler de Sillas, Fumigaciones / Control de Plagas.)</div>
                     </div>
-
                     <!-- Capa 6: Educación y Apoyo -->
                     <div class="guia-item">
                         <span class="punto-color" style="background: #ffffff; border: 1px solid #ccc;"></span>
                         <div><strong>Blanco:</strong> Educación y Apoyo (Tareas Dirigidas, Clases Particulares, Escuelas/Colegios, Guarderías, Idiomas, Escuelas de Manejo, Cursos de Verano, Cuidado de Adultos Mayores.)</div>
                     </div>
-
                     <!-- Capa 7: Urgencias 24/7 -->
                     <div class="guia-item">
                         <span class="punto-color" style="background: #000000;"></span>
                         <div><strong>Negro:</strong> Urgencias 24/7 (Cerrajerías Nocturnas, Grúas, Reparación de Fugas Urgente, Ambulancias Privadas, Seguridad Privada, Veterinario Nocturno, Electricista de Emergencia.)</div>
                     </div>
-
                     <!-- Capa 8: Directorio Base -->
                     <div class="guia-item" style="opacity: 0.7;">
                         <span class="punto-color" style="background: #9e9e9e;"></span>
@@ -220,24 +203,163 @@
             </div>
         </main>
     </div>
+            <!-- Puntos de Navegación del Slider -->
+            <div class="nav-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
 
+            <!-- BOTÓN SWITCH INTERACTIVO -->
+            <div style="margin: 25px 0 15px 0; text-align: center;">
+                <a href="../mapas_Prod/2ampli1_productos.html" class="btn-gps-xalpa">Ver Productos</a>
+                <span style="display: block; margin-top: 8px; color: #666; font-size: 0.9rem;">Cambiar a Mapa de Productos (Tiendas y Comida) 🍎</span>
+            </div>
 
+            <!-- CONTENEDOR INTERACTIVO DEL MAPA LOCAL -->
+            <div class="map-wrapper-xalpa">
+                <div id="mapa-local"></div>
+            </div>
+ 
+            <!-- GUÍA DE COLORES POR CAPAS (MAPA SERVICIOS) -->
+            <div class="guia-colores-contenedor">
+                <h3 class="guia-titulo">Guía de Colores: Mapa de Servicios </h3> 🛠
+ 
+                <div class="guia-grid">
+                    <!-- Capa 1: Salud y Consultas -->
+                    <div class="guia-item">
+                        <span class="punto-color" style="background: #1565c0;"></span>
+                        <div><strong>Azul:</strong> Salud y Consultas (Médicos Generales/Especialistas, Dentistas, Psicólogos, Laboratorios, Veterinarias, Terapia Física, Nutriólogos, Enfermería a Domicilio.)</div>
+                    </div>
+                    <!-- Capa 2: Talleres y Oficios -->
+                    <div class="guia-item">
+                        <span class="punto-color" style="background: #1565c0;"></span>
+                        <div><strong>Azul M.:</strong> Talleres y Oficios (Mecánicos, Llanteras, Plomeros, Electricistas, Herreros, Carpinteros, Pintores de Casas, Impermeabilizantes, Tapiceros, Reparación de Electrodomésticos, Albañilería.)</div>
+                    </div>
+                    <!-- Capa 3: Bienestar y Estilo -->
+                    <div class="guia-item">
+                        <span class="punto-color" style="background: #7b1fa2;"></span>
+                        <div><strong>Morado:</strong> Bienestar y Estilo (Barberías, Estéticas, Salones de Uñas, Gimnasios, Studios de Yoga/Dance, Spas, Tatuajes, Depilación, Microblading, Podología.)</div>
+                    </div>
+                    <!-- Capa 4: Asesoría y Oficina -->
+                    <div class="guia-item">
+                        <span class="punto-color" style="background: #9e9e9e;"></span>
+                        <div><strong>Gris:</strong> Asesoría y Oficina (Seguros/PPR, Asesores Financieros, Contadores, Abogados, Cibercafés para Trámites, Mensajería Estafeta/DHL, Inmobiliarias, Arquitectos / Peritos.)</div>
+                    </div>
+                    <!-- Capa 5: Hogar y Eventos -->
+                    <div class="guia-item">
+                        <span class="punto-color" style="background: #5d001e;"></span>
+                        <div><strong>Vino:</strong> Hogar y Eventos (Salones de Fiesta, Lavanderías/Tintorerías, Cerrajerías, Sastrerías, Fletes, Limpieza de Cisternas, Banquetes, Alquiler de Sillas, Fumigaciones / Control de Plagas.)</div>
+                    </div>
+                    <!-- Capa 6: Educación y Apoyo -->
+                    <div class="guia-item">
+                        <span class="punto-color" style="background: #ffffff; border: 1px solid #ccc;"></span>
+                        <div><strong>Blanco:</strong> Educación y Apoyo (Tareas Dirigidas, Clases Particulares, Escuelas/Colegios, Guarderías, Idiomas, Escuelas de Manejo, Cursos de Verano, Cuidado de Adultos Mayores.)</div>
+                    </div>
+                    <!-- Capa 7: Urgencias 24/7 -->
+                    <div class="guia-item">
+                        <span class="punto-color" style="background: #000000;"></span>
+                        <div><strong>Negro:</strong> Urgencias 24/7 (Cerrajerías Nocturnas, Grúas, Reparación de Fugas Urgente, Ambulancias Privadas, Seguridad Privada, Veterinario Nocturno, Electricista de Emergencia.)</div>
+                    </div>
+                    <!-- Capa 8: Directorio Base -->
+                    <div class="guia-item" style="opacity: 0.7;">
+                        <span class="punto-color" style="background: #9e9e9e;"></span>
+                        <div><strong>Gris:</strong> Directorio Base (El Limbo: negocios en proceso de verificación.)</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
     <!-- Pie de Página Técnico Unificado -->
     <footer class="pie-pagina">
         <p>&copy; 2026 Negosistema. Todos los derechos reservados.</p>
         <a href="../../terminos.html">Políticas de Uso y Deslinde Legal</a>
     </footer>
 
-    <!-- SCRIPT: Guarda automáticamente esta calle en el historial del celular del usuario -->
+    <!-- INYECCIÓN DE LIBRERÍAS JAVASCRIPT -->
+    <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <style>
+        /* ESTILO INTERNO PARA PINES CIRCULARES DE COLORES */
+        .marcador-comunidad-color {
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            box-sizing: border-box;
+        }
+    </style>
+
     <script>
+        // Historial automático LocalStorage
         document.addEventListener("DOMContentLoaded", function() {
             const infoColonia = {
-                nombre: "Xalpa (Productos)",
-                url: "./Iztapalapa/mapas_Prod/Xalpa2_Productos.html"
+                nombre: "2ampli1 serv (Servicios)",
+                url: "./Iztapalapa/mapas_Serv/2ampli1_servicios.html"
             };
             localStorage.setItem('negosistema_ultima_visita', JSON.stringify(infoColonia));
+            
+            // Renderizador automático del mapa de servicios
+            construirMapaServicios();
         });
-    </script>
 
+        function construirMapaServicios() {
+            const coordenadasSantiago1 = [19.3450, -99.0615];
+            
+            const mapa = L.map('mapa-local', {
+                center: coordenadasSantiago1,
+                zoom: 16,
+                scrollWheelZoom: false
+            });
+
+            // MAPA BASE GRIS CLARO MINIMALISTA
+            L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap &copy; CARTO',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(mapa);
+
+            // Lector del archivo GeoJSON específico de servicios de esta colonia
+            fetch('./2ampli1_servicios.geojson')
+                .then(response => {
+                    if (!response.ok) throw new Error('Archivo 2ampli1_servicios.geojson no cargado');
+                    return response.json();
+                })
+                .then(data => {
+                    const capaServicios = L.geoJSON(data, {
+                        pointToLayer: function (feature, latlng) {
+                            let colorPin = '#9e9e9e'; 
+                            if (feature.properties && feature.properties['marker-color']) {
+                                colorPin = feature.properties['marker-color'];
+                            }
+
+                            // TRUCO DE VISIBILIDAD: Si el pin es blanco (#ffffff), le inyectamos un borde gris oscuro
+                            // para que no desaparezca en el mapa base claro.
+                            let estiloBorde = (colorPin.toLowerCase() === '#ffffff') ? '2px solid #8c8c8c' : '2px solid #ffffff';
+
+                            let iconoColor = L.divIcon({
+                                className: 'marcador-comunidad-color',
+                                html: `<div style="background-color: ${colorPin}; width: 100%; height: 100%; border-radius: 50%; border: ${estiloBorde}; box-sizing: border-box;"></div>`,
+                                iconSize:,
+                                iconAnchor: [9, 9]
+                            });
+
+                            return L.marker(latlng, { icon: iconoColor });
+                        },
+                        onEachFeature: function (feature, layer) {
+                            if (feature.properties && feature.properties.name) {
+                                let popupHtml = `<strong>${feature.properties.name}</strong>`;
+                                popupHtml += feature.properties.description ? feature.properties.description : '<br>Servicio profesional local verificado.';
+                                layer.bindPopup(popupHtml);
+                            }
+                        }
+                    }).addTo(mapa);
+
+                    // Auto-enfoque sobre los prestadores de servicios de Santiago 1
+                    mapa.fitBounds(capaServicios.getBounds());
+                })
+                .catch(error => {
+                    console.error('Estatus: Esperando el mapa local convertido en la carpeta de servicios.', error);
+                });
+        }
+    </script>
 </body>
 </html>
