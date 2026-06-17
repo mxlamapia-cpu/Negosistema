@@ -1,0 +1,2540 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.011789,
+                    19.343235,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Muelitas",
+                "description": {
+                    "@type": "html",
+                    "value": "<img src=\"https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gzh3CuY2BhJXh9x_wiQA0rDZTkkGe7GMAAalmqywxU_WfNa6S3Io4qtnqrs796gOB7SDI9f37-Fs31iCHV6E06fg1MotJx2RevfufhpVLgNwzdRJ11On2dU_5f2Xzz53B3iA4r-WK1s3-N15GhBF8MrXmKLEN9dablE3gO_b2mhE2zQk8MSLwOpJ2lHe5hoO27bU8T6OX53f_6RjZjwJBHwldwgdRwHoE5MK4eNtzIIT89mWMobPgW9Zl8?authuser=0&fife=s16383\" height=\"200\" width=\"auto\" /><br><br>ID / Folio: XAL-005<br>Marca temporal: 1/04/2026 3:08:01<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 1. Salud y Consultas<br>Nivel de servicio: 5 Confianza<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Ayudando a las buenas sonrisas<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Limpiezas, extracciones, frenos, implantes dentales, tratamientos con ultrasonido, ortodoncias<br>Horarios Ej: Lun - Sab 10am - 5pm: LUn - Dom 10am - 5pm<br>Enlace a redes propias: https://negosistema.blogspot.com/p/muelitas.html<br>Contacto de Servicio (WhatsApp): 5583233840<br>Latitud-Longitud: 19.3432345, -99.011789<br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525583233840?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Limpiezas%2C%20extracciones%2C%20frenos%2C%20implantes%20dentales%2C%20tratamientos%20con%20ultrasonido%2C%20ortodoncias%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Muelitas.<br>Personalizado: Quiero agendar una cita<br>👉 CONTACTAR CLICK AQUÍ: https://bit.ly/4cIPitt<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3432345,-99.0117890&navigate=yes<br>📍 Google:Google:https://www.google.com/maps/search/?api=1&query=19.3432345,-99.0117890<br><br><img src=\"https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GyY4cWVPysOupaBfqQuPCQRawtRoE2IwaaTfyBVGiRj-_VHoGl-U5p6Hwsv8rzeKDZ3vJqgr9Dn97s47tGgxuCduSd-YcYYAjI8TLSQVJ7JmV4kAT4TNy5IvA6V-Z3hKxrKF8oktVJyI87NJHzWqEcj0I2HzjBiSoxIu5HEw7HCPAz8Tt49YU8tAuOeqQScoucssT5dLFq_3WoBMlT1v91_j_atZk8xsWelAEIIeMT-bFaSAYfz2Bz9MFs?authuser=0&fife=s16383\" height=\"200\" width=\"auto\" /><br><br><img src=\"https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GxJJ3zOLJ49yjgo3SlAtxTz_5T_rMziB8wPa_JpbrLa78CPnv6TkgZTXxkhaJRFlQAM_k6YatE1Yk1XtCR9dfkgR5d1aaRoPn6kv06BFL-fNzTQLuBTNhqZ2OtAahrKOT9pEkrZ_zcd1RnG4dGsRAiRyZp8AOlXjeSiQkGRWvg3Cxo9B-n3JQoQB18s63F94xmrqh48iQuNjcZCPeuPcREPi0hkZdD2NbWoBbNGAdxC0KFELIOoyyFnXrI?authuser=0&fife=s16383\" height=\"200\" width=\"auto\" /><br><br><a href=\"https://www.youtube.com/watch?v=bNpeHcqGF18\"><img src=\"https://img.youtube.com/vi/bNpeHcqGF18/hqdefault.jpg\" height=\"200\" width=\"auto\" /></a><br><br><a href=\"https://www.youtube.com/embed/bNpeHcqGF18\">https://www.youtube.com/embed/bNpeHcqGF18</a>"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-005",
+                "Marca temporal": "1/04/2026 3:08:01",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "1. Salud y Consultas",
+                "Nivel de servicio": "5 Confianza",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Ayudando a las buenas sonrisas",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Limpiezas, extracciones, frenos, implantes dentales, tratamientos con ultrasonido, ortodoncias",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "LUn - Dom 10am - 5pm",
+                "Enlace a redes propias": "https://negosistema.blogspot.com/p/muelitas.html",
+                "Contacto de Servicio (WhatsApp)": "5.58323384E9",
+                "Latitud-Longitud": "19.3432345, -99.011789",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525583233840?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Limpiezas%2C%20extracciones%2C%20frenos%2C%20implantes%20dentales%2C%20tratamientos%20con%20ultrasonido%2C%20ortodoncias%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Muelitas.",
+                "Personalizado": "Quiero agendar una cita",
+                "👉 CONTACTAR CLICK AQUÍ": "https://bit.ly/4cIPitt",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3432345,-99.0117890&navigate=yes\n📍 Google:Google:https://www.google.com/maps/search/?api=1&query=19.3432345,-99.0117890",
+                "gx_media_links": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gzh3CuY2BhJXh9x_wiQA0rDZTkkGe7GMAAalmqywxU_WfNa6S3Io4qtnqrs796gOB7SDI9f37-Fs31iCHV6E06fg1MotJx2RevfufhpVLgNwzdRJ11On2dU_5f2Xzz53B3iA4r-WK1s3-N15GhBF8MrXmKLEN9dablE3gO_b2mhE2zQk8MSLwOpJ2lHe5hoO27bU8T6OX53f_6RjZjwJBHwldwgdRwHoE5MK4eNtzIIT89mWMobPgW9Zl8?authuser=0&fife=s16383 https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GyY4cWVPysOupaBfqQuPCQRawtRoE2IwaaTfyBVGiRj-_VHoGl-U5p6Hwsv8rzeKDZ3vJqgr9Dn97s47tGgxuCduSd-YcYYAjI8TLSQVJ7JmV4kAT4TNy5IvA6V-Z3hKxrKF8oktVJyI87NJHzWqEcj0I2HzjBiSoxIu5HEw7HCPAz8Tt49YU8tAuOeqQScoucssT5dLFq_3WoBMlT1v91_j_atZk8xsWelAEIIeMT-bFaSAYfz2Bz9MFs?authuser=0&fife=s16383 https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GxJJ3zOLJ49yjgo3SlAtxTz_5T_rMziB8wPa_JpbrLa78CPnv6TkgZTXxkhaJRFlQAM_k6YatE1Yk1XtCR9dfkgR5d1aaRoPn6kv06BFL-fNzTQLuBTNhqZ2OtAahrKOT9pEkrZ_zcd1RnG4dGsRAiRyZp8AOlXjeSiQkGRWvg3Cxo9B-n3JQoQB18s63F94xmrqh48iQuNjcZCPeuPcREPi0hkZdD2NbWoBbNGAdxC0KFELIOoyyFnXrI?authuser=0&fife=s16383 https://www.youtube.com/embed/bNpeHcqGF18"
+            },
+            "bbox": [
+                -99.011789,
+                19.343235,
+                -99.011789,
+                19.343235
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.012163,
+                    19.343455,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Farmacia \"Sana sana\"",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-022<br>Marca temporal: 1/04/2026 5:39:07<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 1. Salud y Consultas<br>Nivel de servicio: 4 Venta<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): ayudando a la salud familiar<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Desodorantes, medicamentos genericos/patentes,suministros medicos<br>Horarios Ej: Lun - Sab 10am - 5pm: 24 Hrs<br>Enlace a redes propias: Blogger.com<br>Contacto de Servicio (WhatsApp): 5644317001<br>Latitud-Longitud: 19.343455, -99.0121626<br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Desodorantes%2C%20medicamentos%20genericos%2Fpatentes%2Csuministros%20medicos%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Farmacia%20%22Sana%20sana%22.<br>Personalizado: Quiero surtir una receta<br>👉 CONTACTAR CLICK AQUÍ: https://wa.me/525644317001?text=Quiero%20surtir%20una%20receta<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.343455,-99.0121626&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.343455,-99.0121626"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-022",
+                "Marca temporal": "1/04/2026 5:39:07",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "1. Salud y Consultas",
+                "Nivel de servicio": "4 Venta",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "ayudando a la salud familiar",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Desodorantes, medicamentos genericos/patentes,suministros medicos",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "24 Hrs",
+                "Enlace a redes propias": "Blogger.com",
+                "Contacto de Servicio (WhatsApp)": "5.644317001E9",
+                "Latitud-Longitud": "19.343455, -99.0121626",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Desodorantes%2C%20medicamentos%20genericos%2Fpatentes%2Csuministros%20medicos%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Farmacia%20%22Sana%20sana%22.",
+                "Personalizado": "Quiero surtir una receta",
+                "👉 CONTACTAR CLICK AQUÍ": "https://wa.me/525644317001?text=Quiero%20surtir%20una%20receta",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.343455,-99.0121626&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.343455,-99.0121626"
+            },
+            "bbox": [
+                -99.012163,
+                19.343455,
+                -99.012163,
+                19.343455
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.01089,
+                    19.343512,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Electicista \"juan\"",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-006<br>Marca temporal: 1/04/2026 3:32:04<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 2. Talleres y Oficios<br>Nivel de servicio: 3 Información<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Instalaciones rapidas y confiables<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Intalaciones electricas, alumbrado, seguridad, paneles solares<br>Horarios Ej: Lun - Sab 10am - 5pm: Sab - vie  11am - 12pm<br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): <br>Latitud-Longitud: 19.3435123, -99.0108901<br>👉 CLICK AQUÍ PARA CONTACTO: <br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: <br>Links: 🚗 Waze: https://waze.com19.3435123,-99.0108901&navigate=yes<br>📍 Google: https://google.com19.3435123,-99.0108901"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-006",
+                "Marca temporal": "1/04/2026 3:32:04",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "2. Talleres y Oficios",
+                "Nivel de servicio": "3 Información",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Instalaciones rapidas y confiables",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Intalaciones electricas, alumbrado, seguridad, paneles solares",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Sab - vie  11am - 12pm",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "",
+                "Latitud-Longitud": "19.3435123, -99.0108901",
+                "👉 CLICK AQUÍ PARA CONTACTO": "",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "",
+                "Links": "🚗 Waze: https://waze.com19.3435123,-99.0108901&navigate=yes\n📍 Google: https://google.com19.3435123,-99.0108901"
+            },
+            "bbox": [
+                -99.01089,
+                19.343512,
+                -99.01089,
+                19.343512
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -99.020989,
+                            19.345209,
+                            0
+                        ],
+                        [
+                            -99.020672,
+                            19.34529,
+                            0
+                        ],
+                        [
+                            -99.020033,
+                            19.345433,
+                            0
+                        ],
+                        [
+                            -99.018379,
+                            19.345818,
+                            0
+                        ],
+                        [
+                            -99.018241,
+                            19.34585,
+                            0
+                        ],
+                        [
+                            -99.017765,
+                            19.345824,
+                            0
+                        ],
+                        [
+                            -99.017661,
+                            19.345764,
+                            0
+                        ],
+                        [
+                            -99.017644,
+                            19.345708,
+                            0
+                        ],
+                        [
+                            -99.017611,
+                            19.345602,
+                            0
+                        ],
+                        [
+                            -99.017578,
+                            19.345497,
+                            0
+                        ],
+                        [
+                            -99.017585,
+                            19.345452,
+                            0
+                        ],
+                        [
+                            -99.017616,
+                            19.345254,
+                            0
+                        ],
+                        [
+                            -99.017652,
+                            19.345026,
+                            0
+                        ],
+                        [
+                            -99.017708,
+                            19.344674,
+                            0
+                        ],
+                        [
+                            -99.017383,
+                            19.344595,
+                            0
+                        ],
+                        [
+                            -99.017394,
+                            19.344262,
+                            0
+                        ],
+                        [
+                            -99.017018,
+                            19.343983,
+                            0
+                        ],
+                        [
+                            -99.016841,
+                            19.34388,
+                            0
+                        ],
+                        [
+                            -99.016519,
+                            19.343996,
+                            0
+                        ],
+                        [
+                            -99.016494,
+                            19.344019,
+                            0
+                        ],
+                        [
+                            -99.016309,
+                            19.344188,
+                            0
+                        ],
+                        [
+                            -99.016224,
+                            19.344183,
+                            0
+                        ],
+                        [
+                            -99.016096,
+                            19.344176,
+                            0
+                        ],
+                        [
+                            -99.01614,
+                            19.343671,
+                            0
+                        ],
+                        [
+                            -99.016171,
+                            19.343319,
+                            0
+                        ],
+                        [
+                            -99.016201,
+                            19.342967,
+                            0
+                        ],
+                        [
+                            -99.015597,
+                            19.342896,
+                            0
+                        ],
+                        [
+                            -99.015454,
+                            19.342841,
+                            0
+                        ],
+                        [
+                            -99.015201,
+                            19.342852,
+                            0
+                        ],
+                        [
+                            -99.014708,
+                            19.342846,
+                            0
+                        ],
+                        [
+                            -99.015021,
+                            19.342441,
+                            0
+                        ],
+                        [
+                            -99.015466,
+                            19.341922,
+                            0
+                        ],
+                        [
+                            -99.015557,
+                            19.341714,
+                            0
+                        ],
+                        [
+                            -99.015412,
+                            19.341292,
+                            0
+                        ],
+                        [
+                            -99.015778,
+                            19.341174,
+                            0
+                        ],
+                        [
+                            -99.015655,
+                            19.340954,
+                            0
+                        ],
+                        [
+                            -99.015666,
+                            19.340826,
+                            0
+                        ],
+                        [
+                            -99.015837,
+                            19.340842,
+                            0
+                        ],
+                        [
+                            -99.016007,
+                            19.340857,
+                            0
+                        ],
+                        [
+                            -99.016043,
+                            19.340861,
+                            0
+                        ],
+                        [
+                            -99.01622,
+                            19.340884,
+                            0
+                        ],
+                        [
+                            -99.016436,
+                            19.340913,
+                            0
+                        ],
+                        [
+                            -99.016466,
+                            19.340917,
+                            0
+                        ],
+                        [
+                            -99.01659,
+                            19.340932,
+                            0
+                        ],
+                        [
+                            -99.016653,
+                            19.340552,
+                            0
+                        ],
+                        [
+                            -99.016719,
+                            19.340162,
+                            0
+                        ],
+                        [
+                            -99.016784,
+                            19.339772,
+                            0
+                        ],
+                        [
+                            -99.016867,
+                            19.339281,
+                            0
+                        ],
+                        [
+                            -99.016531,
+                            19.339106,
+                            0
+                        ],
+                        [
+                            -99.016392,
+                            19.339033,
+                            0
+                        ],
+                        [
+                            -99.016945,
+                            19.337865,
+                            0
+                        ],
+                        [
+                            -99.01693,
+                            19.337852,
+                            0
+                        ],
+                        [
+                            -99.016676,
+                            19.337648,
+                            0
+                        ],
+                        [
+                            -99.016521,
+                            19.337597,
+                            0
+                        ],
+                        [
+                            -99.01622,
+                            19.338353,
+                            0
+                        ],
+                        [
+                            -99.016022,
+                            19.338853,
+                            0
+                        ],
+                        [
+                            -99.015779,
+                            19.338809,
+                            0
+                        ],
+                        [
+                            -99.015634,
+                            19.338783,
+                            0
+                        ],
+                        [
+                            -99.015611,
+                            19.338871,
+                            0
+                        ],
+                        [
+                            -99.015533,
+                            19.33917,
+                            0
+                        ],
+                        [
+                            -99.015447,
+                            19.339499,
+                            0
+                        ],
+                        [
+                            -99.015399,
+                            19.339518,
+                            0
+                        ],
+                        [
+                            -99.015352,
+                            19.339537,
+                            0
+                        ],
+                        [
+                            -99.015059,
+                            19.339482,
+                            0
+                        ],
+                        [
+                            -99.01481,
+                            19.339795,
+                            0
+                        ],
+                        [
+                            -99.014731,
+                            19.339976,
+                            0
+                        ],
+                        [
+                            -99.014652,
+                            19.340156,
+                            0
+                        ],
+                        [
+                            -99.014653,
+                            19.340183,
+                            0
+                        ],
+                        [
+                            -99.014663,
+                            19.340925,
+                            0
+                        ],
+                        [
+                            -99.014762,
+                            19.341046,
+                            0
+                        ],
+                        [
+                            -99.014565,
+                            19.34114,
+                            0
+                        ],
+                        [
+                            -99.014327,
+                            19.340855,
+                            0
+                        ],
+                        [
+                            -99.014175,
+                            19.340801,
+                            0
+                        ],
+                        [
+                            -99.014126,
+                            19.340768,
+                            0
+                        ],
+                        [
+                            -99.013872,
+                            19.340603,
+                            0
+                        ],
+                        [
+                            -99.013569,
+                            19.340405,
+                            0
+                        ],
+                        [
+                            -99.013384,
+                            19.340552,
+                            0
+                        ],
+                        [
+                            -99.013453,
+                            19.340361,
+                            0
+                        ],
+                        [
+                            -99.013145,
+                            19.340058,
+                            0
+                        ],
+                        [
+                            -99.012855,
+                            19.340155,
+                            0
+                        ],
+                        [
+                            -99.012064,
+                            19.340145,
+                            0
+                        ],
+                        [
+                            -99.011862,
+                            19.340106,
+                            0
+                        ],
+                        [
+                            -99.011703,
+                            19.340084,
+                            0
+                        ],
+                        [
+                            -99.011559,
+                            19.34005,
+                            0
+                        ],
+                        [
+                            -99.011164,
+                            19.339959,
+                            0
+                        ],
+                        [
+                            -99.011119,
+                            19.339949,
+                            0
+                        ],
+                        [
+                            -99.010004,
+                            19.339646,
+                            0
+                        ],
+                        [
+                            -99.009835,
+                            19.339587,
+                            0
+                        ],
+                        [
+                            -99.00974,
+                            19.339953,
+                            0
+                        ],
+                        [
+                            -99.009657,
+                            19.340263,
+                            0
+                        ],
+                        [
+                            -99.009595,
+                            19.340281,
+                            0
+                        ],
+                        [
+                            -99.009541,
+                            19.340376,
+                            0
+                        ],
+                        [
+                            -99.009499,
+                            19.340504,
+                            0
+                        ],
+                        [
+                            -99.009401,
+                            19.340803,
+                            0
+                        ],
+                        [
+                            -99.00928,
+                            19.341135,
+                            0
+                        ],
+                        [
+                            -99.009194,
+                            19.341369,
+                            0
+                        ],
+                        [
+                            -99.009093,
+                            19.341795,
+                            0
+                        ],
+                        [
+                            -99.009069,
+                            19.341927,
+                            0
+                        ],
+                        [
+                            -99.009069,
+                            19.342237,
+                            0
+                        ],
+                        [
+                            -99.009212,
+                            19.342307,
+                            0
+                        ],
+                        [
+                            -99.00943,
+                            19.342415,
+                            0
+                        ],
+                        [
+                            -99.009659,
+                            19.342703,
+                            0
+                        ],
+                        [
+                            -99.009725,
+                            19.342785,
+                            0
+                        ],
+                        [
+                            -99.009973,
+                            19.343129,
+                            0
+                        ],
+                        [
+                            -99.010094,
+                            19.343297,
+                            0
+                        ],
+                        [
+                            -99.010224,
+                            19.343621,
+                            0
+                        ],
+                        [
+                            -99.010533,
+                            19.343932,
+                            0
+                        ],
+                        [
+                            -99.010856,
+                            19.344158,
+                            0
+                        ],
+                        [
+                            -99.01128,
+                            19.344251,
+                            0
+                        ],
+                        [
+                            -99.013235,
+                            19.34468,
+                            0
+                        ],
+                        [
+                            -99.013437,
+                            19.344761,
+                            0
+                        ],
+                        [
+                            -99.013609,
+                            19.34483,
+                            0
+                        ],
+                        [
+                            -99.013669,
+                            19.344854,
+                            0
+                        ],
+                        [
+                            -99.013781,
+                            19.344899,
+                            0
+                        ],
+                        [
+                            -99.013945,
+                            19.344965,
+                            0
+                        ],
+                        [
+                            -99.013966,
+                            19.344973,
+                            0
+                        ],
+                        [
+                            -99.014139,
+                            19.345041,
+                            0
+                        ],
+                        [
+                            -99.01443,
+                            19.345154,
+                            0
+                        ],
+                        [
+                            -99.014456,
+                            19.345164,
+                            0
+                        ],
+                        [
+                            -99.014764,
+                            19.345245,
+                            0
+                        ],
+                        [
+                            -99.014895,
+                            19.345519,
+                            0
+                        ],
+                        [
+                            -99.014937,
+                            19.345574,
+                            0
+                        ],
+                        [
+                            -99.014993,
+                            19.345821,
+                            0
+                        ],
+                        [
+                            -99.01502,
+                            19.345976,
+                            0
+                        ],
+                        [
+                            -99.015181,
+                            19.34611,
+                            0
+                        ],
+                        [
+                            -99.015314,
+                            19.34623,
+                            0
+                        ],
+                        [
+                            -99.015489,
+                            19.346389,
+                            0
+                        ],
+                        [
+                            -99.01569,
+                            19.34644,
+                            0
+                        ],
+                        [
+                            -99.015713,
+                            19.346457,
+                            0
+                        ],
+                        [
+                            -99.015864,
+                            19.346574,
+                            0
+                        ],
+                        [
+                            -99.01617,
+                            19.346811,
+                            0
+                        ],
+                        [
+                            -99.016262,
+                            19.347037,
+                            0
+                        ],
+                        [
+                            -99.016253,
+                            19.34724,
+                            0
+                        ],
+                        [
+                            -99.016055,
+                            19.347784,
+                            0
+                        ],
+                        [
+                            -99.015984,
+                            19.347957,
+                            0
+                        ],
+                        [
+                            -99.015876,
+                            19.348101,
+                            0
+                        ],
+                        [
+                            -99.015832,
+                            19.34823,
+                            0
+                        ],
+                        [
+                            -99.01584,
+                            19.348353,
+                            0
+                        ],
+                        [
+                            -99.01585,
+                            19.348519,
+                            0
+                        ],
+                        [
+                            -99.015876,
+                            19.348926,
+                            0
+                        ],
+                        [
+                            -99.01618,
+                            19.349072,
+                            0
+                        ],
+                        [
+                            -99.016584,
+                            19.34927,
+                            0
+                        ],
+                        [
+                            -99.016918,
+                            19.349495,
+                            0
+                        ],
+                        [
+                            -99.017588,
+                            19.349944,
+                            0
+                        ],
+                        [
+                            -99.017811,
+                            19.350061,
+                            0
+                        ],
+                        [
+                            -99.018147,
+                            19.349369,
+                            0
+                        ],
+                        [
+                            -99.018286,
+                            19.349077,
+                            0
+                        ],
+                        [
+                            -99.018665,
+                            19.348282,
+                            0
+                        ],
+                        [
+                            -99.019204,
+                            19.347143,
+                            0
+                        ],
+                        [
+                            -99.019494,
+                            19.346629,
+                            0
+                        ],
+                        [
+                            -99.019777,
+                            19.346273,
+                            0
+                        ],
+                        [
+                            -99.019976,
+                            19.346059,
+                            0
+                        ],
+                        [
+                            -99.020223,
+                            19.345848,
+                            0
+                        ],
+                        [
+                            -99.020576,
+                            19.3456,
+                            0
+                        ],
+                        [
+                            -99.020878,
+                            19.34544,
+                            0
+                        ],
+                        [
+                            -99.021051,
+                            19.345348,
+                            0
+                        ],
+                        [
+                            -99.020989,
+                            19.345209,
+                            0
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "name": "XALPA II",
+                "description": {
+                    "@type": "html",
+                    "value": "Enlace: https://mxlamapia-cpu.github.io/Negosistema/Iztapalapa/mapas_Prod/xalpa2_productos.html<br>entidad: 9<br>cve_alc: 7<br>alcaldia: IZTAPALAPA<br>cve_col: 07-306<br>secc_com: 2566<br>secc_par: 2611<br>unnamed (1): 2612<br>unnamed (2): 2690<br>unnamed (3): 2610<br>unnamed (4): 2692<br>unnamed (5): <br>unnamed (6): <br>unnamed (7): "
+                },
+                "styleUrl": "#poly-FFD600-1200-76",
+                "fill-opacity": 0.2980392156862745,
+                "fill": "#ffd600",
+                "stroke-opacity": 1,
+                "stroke": "#ffd600",
+                "stroke-width": 1.2,
+                "Enlace": "https://mxlamapia-cpu.github.io/Negosistema/Iztapalapa/mapas_Prod/xalpa2_productos.html",
+                "entidad": "9.0",
+                "cve_alc": "7.0",
+                "alcaldia": "IZTAPALAPA",
+                "cve_col": "07-306",
+                "secc_com": "2566.0",
+                "secc_par": "2611.0",
+                "unnamed (1)": "2612.0",
+                "unnamed (2)": "2690.0",
+                "unnamed (3)": "2610.0",
+                "unnamed (4)": "2692.0",
+                "unnamed (5)": "",
+                "unnamed (6)": "",
+                "unnamed (7)": ""
+            },
+            "bbox": [
+                -99.021051,
+                19.337597,
+                -99.009069,
+                19.350061
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -99.012495,
+                            19.344517,
+                            0
+                        ],
+                        [
+                            -99.012289,
+                            19.345502,
+                            0
+                        ],
+                        [
+                            -99.012713,
+                            19.345808,
+                            0
+                        ],
+                        [
+                            -99.013007,
+                            19.345981,
+                            0
+                        ],
+                        [
+                            -99.013269,
+                            19.346135,
+                            0
+                        ],
+                        [
+                            -99.013044,
+                            19.347041,
+                            0
+                        ],
+                        [
+                            -99.012669,
+                            19.348643,
+                            0
+                        ],
+                        [
+                            -99.012606,
+                            19.348905,
+                            0
+                        ],
+                        [
+                            -99.012523,
+                            19.349304,
+                            0
+                        ],
+                        [
+                            -99.011618,
+                            19.349119,
+                            0
+                        ],
+                        [
+                            -99.010414,
+                            19.34924,
+                            0
+                        ],
+                        [
+                            -99.010381,
+                            19.349507,
+                            0
+                        ],
+                        [
+                            -99.010339,
+                            19.34974,
+                            0
+                        ],
+                        [
+                            -99.010327,
+                            19.349812,
+                            0
+                        ],
+                        [
+                            -99.010278,
+                            19.350083,
+                            0
+                        ],
+                        [
+                            -99.010262,
+                            19.350156,
+                            0
+                        ],
+                        [
+                            -99.010209,
+                            19.35042,
+                            0
+                        ],
+                        [
+                            -99.010147,
+                            19.350592,
+                            0
+                        ],
+                        [
+                            -99.008695,
+                            19.350308,
+                            0
+                        ],
+                        [
+                            -99.008475,
+                            19.350264,
+                            0
+                        ],
+                        [
+                            -99.008486,
+                            19.350381,
+                            0
+                        ],
+                        [
+                            -99.008496,
+                            19.350518,
+                            0
+                        ],
+                        [
+                            -99.010094,
+                            19.35086,
+                            0
+                        ],
+                        [
+                            -99.010229,
+                            19.350888,
+                            0
+                        ],
+                        [
+                            -99.010469,
+                            19.350936,
+                            0
+                        ],
+                        [
+                            -99.010867,
+                            19.351015,
+                            0
+                        ],
+                        [
+                            -99.011847,
+                            19.351209,
+                            0
+                        ],
+                        [
+                            -99.011939,
+                            19.351417,
+                            0
+                        ],
+                        [
+                            -99.012073,
+                            19.351745,
+                            0
+                        ],
+                        [
+                            -99.012213,
+                            19.352089,
+                            0
+                        ],
+                        [
+                            -99.012325,
+                            19.352421,
+                            0
+                        ],
+                        [
+                            -99.012438,
+                            19.352806,
+                            0
+                        ],
+                        [
+                            -99.012492,
+                            19.35299,
+                            0
+                        ],
+                        [
+                            -99.012545,
+                            19.353461,
+                            0
+                        ],
+                        [
+                            -99.013392,
+                            19.353106,
+                            0
+                        ],
+                        [
+                            -99.014847,
+                            19.352506,
+                            0
+                        ],
+                        [
+                            -99.01501,
+                            19.352432,
+                            0
+                        ],
+                        [
+                            -99.015184,
+                            19.352352,
+                            0
+                        ],
+                        [
+                            -99.015295,
+                            19.352305,
+                            0
+                        ],
+                        [
+                            -99.015941,
+                            19.351998,
+                            0
+                        ],
+                        [
+                            -99.016261,
+                            19.351805,
+                            0
+                        ],
+                        [
+                            -99.016786,
+                            19.351405,
+                            0
+                        ],
+                        [
+                            -99.017144,
+                            19.351036,
+                            0
+                        ],
+                        [
+                            -99.017483,
+                            19.350603,
+                            0
+                        ],
+                        [
+                            -99.017811,
+                            19.350061,
+                            0
+                        ],
+                        [
+                            -99.017588,
+                            19.349944,
+                            0
+                        ],
+                        [
+                            -99.016918,
+                            19.349495,
+                            0
+                        ],
+                        [
+                            -99.016584,
+                            19.34927,
+                            0
+                        ],
+                        [
+                            -99.01618,
+                            19.349072,
+                            0
+                        ],
+                        [
+                            -99.015876,
+                            19.348926,
+                            0
+                        ],
+                        [
+                            -99.01585,
+                            19.348519,
+                            0
+                        ],
+                        [
+                            -99.01584,
+                            19.348353,
+                            0
+                        ],
+                        [
+                            -99.015832,
+                            19.34823,
+                            0
+                        ],
+                        [
+                            -99.015876,
+                            19.348101,
+                            0
+                        ],
+                        [
+                            -99.015984,
+                            19.347957,
+                            0
+                        ],
+                        [
+                            -99.016055,
+                            19.347784,
+                            0
+                        ],
+                        [
+                            -99.016253,
+                            19.34724,
+                            0
+                        ],
+                        [
+                            -99.016262,
+                            19.347037,
+                            0
+                        ],
+                        [
+                            -99.01617,
+                            19.346811,
+                            0
+                        ],
+                        [
+                            -99.015864,
+                            19.346574,
+                            0
+                        ],
+                        [
+                            -99.015713,
+                            19.346457,
+                            0
+                        ],
+                        [
+                            -99.01569,
+                            19.34644,
+                            0
+                        ],
+                        [
+                            -99.015489,
+                            19.346389,
+                            0
+                        ],
+                        [
+                            -99.015314,
+                            19.34623,
+                            0
+                        ],
+                        [
+                            -99.015181,
+                            19.34611,
+                            0
+                        ],
+                        [
+                            -99.01502,
+                            19.345976,
+                            0
+                        ],
+                        [
+                            -99.014993,
+                            19.345821,
+                            0
+                        ],
+                        [
+                            -99.014937,
+                            19.345574,
+                            0
+                        ],
+                        [
+                            -99.014895,
+                            19.345519,
+                            0
+                        ],
+                        [
+                            -99.014764,
+                            19.345245,
+                            0
+                        ],
+                        [
+                            -99.014456,
+                            19.345164,
+                            0
+                        ],
+                        [
+                            -99.01443,
+                            19.345154,
+                            0
+                        ],
+                        [
+                            -99.014139,
+                            19.345041,
+                            0
+                        ],
+                        [
+                            -99.013966,
+                            19.344973,
+                            0
+                        ],
+                        [
+                            -99.013945,
+                            19.344965,
+                            0
+                        ],
+                        [
+                            -99.013781,
+                            19.344899,
+                            0
+                        ],
+                        [
+                            -99.013669,
+                            19.344854,
+                            0
+                        ],
+                        [
+                            -99.013609,
+                            19.34483,
+                            0
+                        ],
+                        [
+                            -99.013437,
+                            19.344761,
+                            0
+                        ],
+                        [
+                            -99.013235,
+                            19.34468,
+                            0
+                        ],
+                        [
+                            -99.012495,
+                            19.344517,
+                            0
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "name": "2A AMPLIACION SANTIAGO ACAHUALTEPEC I",
+                "description": {
+                    "@type": "html",
+                    "value": "Enlace: https://mxlamapia-cpu.github.io/Negosistema/Iztapalapa/mapas_Prod/2ampli1_productos.html<br>entidad: 9<br>cve_alc: 7<br>alcaldia: IZTAPALAPA<br>cve_col: 07-308<br>secc_com: 2567<br>secc_par: 2568<br>unnamed (1): 2586<br>unnamed (2): 2585<br>unnamed (3): <br>unnamed (4): <br>unnamed (5): <br>unnamed (6): <br>unnamed (7): "
+                },
+                "styleUrl": "#poly-F57C00-1200-76",
+                "fill-opacity": 0.2980392156862745,
+                "fill": "#f57c00",
+                "stroke-opacity": 1,
+                "stroke": "#f57c00",
+                "stroke-width": 1.2,
+                "Enlace": "https://mxlamapia-cpu.github.io/Negosistema/Iztapalapa/mapas_Prod/2ampli1_productos.html",
+                "entidad": "9.0",
+                "cve_alc": "7.0",
+                "alcaldia": "IZTAPALAPA",
+                "cve_col": "07-308",
+                "secc_com": "2567.0",
+                "secc_par": "2568.0",
+                "unnamed (1)": "2586.0",
+                "unnamed (2)": "2585.0",
+                "unnamed (3)": "",
+                "unnamed (4)": "",
+                "unnamed (5)": "",
+                "unnamed (6)": "",
+                "unnamed (7)": ""
+            },
+            "bbox": [
+                -99.017811,
+                19.344517,
+                -99.008475,
+                19.353461
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -99.012495,
+                            19.344517,
+                            0
+                        ],
+                        [
+                            -99.010856,
+                            19.344158,
+                            0
+                        ],
+                        [
+                            -99.010533,
+                            19.343932,
+                            0
+                        ],
+                        [
+                            -99.010224,
+                            19.343621,
+                            0
+                        ],
+                        [
+                            -99.010094,
+                            19.343297,
+                            0
+                        ],
+                        [
+                            -99.009973,
+                            19.343129,
+                            0
+                        ],
+                        [
+                            -99.009725,
+                            19.342785,
+                            0
+                        ],
+                        [
+                            -99.009659,
+                            19.342703,
+                            0
+                        ],
+                        [
+                            -99.00943,
+                            19.342415,
+                            0
+                        ],
+                        [
+                            -99.009212,
+                            19.342307,
+                            0
+                        ],
+                        [
+                            -99.009069,
+                            19.342237,
+                            0
+                        ],
+                        [
+                            -99.009069,
+                            19.341927,
+                            0
+                        ],
+                        [
+                            -99.009093,
+                            19.341795,
+                            0
+                        ],
+                        [
+                            -99.008775,
+                            19.34163,
+                            0
+                        ],
+                        [
+                            -99.008281,
+                            19.341275,
+                            0
+                        ],
+                        [
+                            -99.007887,
+                            19.341473,
+                            0
+                        ],
+                        [
+                            -99.007734,
+                            19.341366,
+                            0
+                        ],
+                        [
+                            -99.007418,
+                            19.341085,
+                            0
+                        ],
+                        [
+                            -99.007216,
+                            19.3409,
+                            0
+                        ],
+                        [
+                            -99.007332,
+                            19.341153,
+                            0
+                        ],
+                        [
+                            -99.007469,
+                            19.341447,
+                            0
+                        ],
+                        [
+                            -99.006525,
+                            19.341474,
+                            0
+                        ],
+                        [
+                            -99.005967,
+                            19.341456,
+                            0
+                        ],
+                        [
+                            -99.005713,
+                            19.341447,
+                            0
+                        ],
+                        [
+                            -99.005445,
+                            19.341439,
+                            0
+                        ],
+                        [
+                            -99.005085,
+                            19.341427,
+                            0
+                        ],
+                        [
+                            -99.005072,
+                            19.341776,
+                            0
+                        ],
+                        [
+                            -99.005061,
+                            19.341974,
+                            0
+                        ],
+                        [
+                            -99.005102,
+                            19.342037,
+                            0
+                        ],
+                        [
+                            -99.00518,
+                            19.342111,
+                            0
+                        ],
+                        [
+                            -99.005611,
+                            19.342133,
+                            0
+                        ],
+                        [
+                            -99.005989,
+                            19.342156,
+                            0
+                        ],
+                        [
+                            -99.005988,
+                            19.342193,
+                            0
+                        ],
+                        [
+                            -99.00597,
+                            19.342771,
+                            0
+                        ],
+                        [
+                            -99.005952,
+                            19.342973,
+                            0
+                        ],
+                        [
+                            -99.00586,
+                            19.344046,
+                            0
+                        ],
+                        [
+                            -99.005826,
+                            19.344482,
+                            0
+                        ],
+                        [
+                            -99.005924,
+                            19.344668,
+                            0
+                        ],
+                        [
+                            -99.005866,
+                            19.345192,
+                            0
+                        ],
+                        [
+                            -99.005808,
+                            19.345716,
+                            0
+                        ],
+                        [
+                            -99.005801,
+                            19.345998,
+                            0
+                        ],
+                        [
+                            -99.005802,
+                            19.346034,
+                            0
+                        ],
+                        [
+                            -99.005806,
+                            19.346222,
+                            0
+                        ],
+                        [
+                            -99.005843,
+                            19.346409,
+                            0
+                        ],
+                        [
+                            -99.005925,
+                            19.346748,
+                            0
+                        ],
+                        [
+                            -99.005972,
+                            19.34689,
+                            0
+                        ],
+                        [
+                            -99.006025,
+                            19.347049,
+                            0
+                        ],
+                        [
+                            -99.005996,
+                            19.347232,
+                            0
+                        ],
+                        [
+                            -99.005953,
+                            19.347513,
+                            0
+                        ],
+                        [
+                            -99.005911,
+                            19.347789,
+                            0
+                        ],
+                        [
+                            -99.005859,
+                            19.348124,
+                            0
+                        ],
+                        [
+                            -99.005822,
+                            19.348331,
+                            0
+                        ],
+                        [
+                            -99.005825,
+                            19.348515,
+                            0
+                        ],
+                        [
+                            -99.005814,
+                            19.34881,
+                            0
+                        ],
+                        [
+                            -99.005755,
+                            19.348903,
+                            0
+                        ],
+                        [
+                            -99.005628,
+                            19.349093,
+                            0
+                        ],
+                        [
+                            -99.005463,
+                            19.3493,
+                            0
+                        ],
+                        [
+                            -99.005294,
+                            19.349647,
+                            0
+                        ],
+                        [
+                            -99.005219,
+                            19.349778,
+                            0
+                        ],
+                        [
+                            -99.005162,
+                            19.3499,
+                            0
+                        ],
+                        [
+                            -99.005588,
+                            19.349981,
+                            0
+                        ],
+                        [
+                            -99.006403,
+                            19.350137,
+                            0
+                        ],
+                        [
+                            -99.006354,
+                            19.350057,
+                            0
+                        ],
+                        [
+                            -99.006375,
+                            19.349857,
+                            0
+                        ],
+                        [
+                            -99.006712,
+                            19.349922,
+                            0
+                        ],
+                        [
+                            -99.007036,
+                            19.349985,
+                            0
+                        ],
+                        [
+                            -99.007263,
+                            19.350029,
+                            0
+                        ],
+                        [
+                            -99.00745,
+                            19.350065,
+                            0
+                        ],
+                        [
+                            -99.008369,
+                            19.350244,
+                            0
+                        ],
+                        [
+                            -99.008475,
+                            19.350264,
+                            0
+                        ],
+                        [
+                            -99.008695,
+                            19.350308,
+                            0
+                        ],
+                        [
+                            -99.010147,
+                            19.350592,
+                            0
+                        ],
+                        [
+                            -99.010209,
+                            19.35042,
+                            0
+                        ],
+                        [
+                            -99.010262,
+                            19.350156,
+                            0
+                        ],
+                        [
+                            -99.010278,
+                            19.350083,
+                            0
+                        ],
+                        [
+                            -99.010327,
+                            19.349812,
+                            0
+                        ],
+                        [
+                            -99.010339,
+                            19.34974,
+                            0
+                        ],
+                        [
+                            -99.010381,
+                            19.349507,
+                            0
+                        ],
+                        [
+                            -99.010414,
+                            19.34924,
+                            0
+                        ],
+                        [
+                            -99.011618,
+                            19.349119,
+                            0
+                        ],
+                        [
+                            -99.012523,
+                            19.349304,
+                            0
+                        ],
+                        [
+                            -99.012606,
+                            19.348905,
+                            0
+                        ],
+                        [
+                            -99.012669,
+                            19.348643,
+                            0
+                        ],
+                        [
+                            -99.013044,
+                            19.347041,
+                            0
+                        ],
+                        [
+                            -99.013269,
+                            19.346135,
+                            0
+                        ],
+                        [
+                            -99.013007,
+                            19.345981,
+                            0
+                        ],
+                        [
+                            -99.012713,
+                            19.345808,
+                            0
+                        ],
+                        [
+                            -99.012289,
+                            19.345502,
+                            0
+                        ],
+                        [
+                            -99.012495,
+                            19.344517,
+                            0
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "name": "2A AMPLIACION SANTIAGO ACAHUALTEPEC II",
+                "description": {
+                    "@type": "html",
+                    "value": "Enlace: https://mxlamapia-cpu.github.io/Negosistema/Iztapalapa/mapas_Prod/2ampli2_productos.html<br>entidad: 9<br>cve_alc: 7<br>alcaldia: IZTAPALAPA<br>cve_col: 07-309<br>secc_com: 2587<br>secc_par: 2588<br>unnamed (1): 2589<br>unnamed (2): 2590<br>unnamed (3): 2608<br>unnamed (4): 2609<br>unnamed (5): 2964<br>unnamed (6): 2965<br>unnamed (7): 2610"
+                },
+                "styleUrl": "#poly-F9A825-1200-76",
+                "fill-opacity": 0.2980392156862745,
+                "fill": "#f9a825",
+                "stroke-opacity": 1,
+                "stroke": "#f9a825",
+                "stroke-width": 1.2,
+                "Enlace": "https://mxlamapia-cpu.github.io/Negosistema/Iztapalapa/mapas_Prod/2ampli2_productos.html",
+                "entidad": "9.0",
+                "cve_alc": "7.0",
+                "alcaldia": "IZTAPALAPA",
+                "cve_col": "07-309",
+                "secc_com": "2587.0",
+                "secc_par": "2588.0",
+                "unnamed (1)": "2589.0",
+                "unnamed (2)": "2590.0",
+                "unnamed (3)": "2608.0",
+                "unnamed (4)": "2609.0",
+                "unnamed (5)": "2964.0",
+                "unnamed (6)": "2965.0",
+                "unnamed (7)": "2610.0"
+            },
+            "bbox": [
+                -99.013269,
+                19.3409,
+                -99.005061,
+                19.350592
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.011436,
+                    19.343894,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Mecanico \"Pablito\"",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-015<br>Marca temporal: 1/04/2026 4:56:43<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 2. Talleres y Oficios<br>Nivel de servicio: 2 Conocido /Marca<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): <br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): <br>Horarios Ej: Lun - Sab 10am - 5pm: <br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): <br>Latitud-Longitud: 19.3438943, -99.0114364<br>👉 CLICK AQUÍ PARA CONTACTO: <br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: <br>Links: 🚗 Waze: https://waze.com19.3438943,-99.0114364&navigate=yes<br>📍 Google: https://google.com19.3438943,-99.0114364"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-015",
+                "Marca temporal": "1/04/2026 4:56:43",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "2. Talleres y Oficios",
+                "Nivel de servicio": "2 Conocido /Marca",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "",
+                "Latitud-Longitud": "19.3438943, -99.0114364",
+                "👉 CLICK AQUÍ PARA CONTACTO": "",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "",
+                "Links": "🚗 Waze: https://waze.com19.3438943,-99.0114364&navigate=yes\n📍 Google: https://google.com19.3438943,-99.0114364"
+            },
+            "bbox": [
+                -99.011436,
+                19.343894,
+                -99.011436,
+                19.343894
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.011255,
+                    19.343603,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Peluquería \"Bien peinado\"",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-016<br>Marca temporal: 1/04/2026 4:59:35<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 3. Bienestar y Estilo<br>Nivel de servicio: 3 Información<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Cortes si tuzarte<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Corte de soldadito,caballero y dama <br>Horarios Ej: Lun - Sab 10am - 5pm: Lun - Mar<br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): <br>Latitud-Longitud: 19.3436033, -99.0112553<br>👉 CLICK AQUÍ PARA CONTACTO: <br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: <br>Links: 🚗 Waze: https://waze.com19.3436033,-99.0112553&navigate=yes<br>📍 Google: https://google.com19.3436033,-99.0112553"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-016",
+                "Marca temporal": "1/04/2026 4:59:35",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "3. Bienestar y Estilo",
+                "Nivel de servicio": "3 Información",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Cortes si tuzarte",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Corte de soldadito,caballero y dama ",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Lun - Mar",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "",
+                "Latitud-Longitud": "19.3436033, -99.0112553",
+                "👉 CLICK AQUÍ PARA CONTACTO": "",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "",
+                "Links": "🚗 Waze: https://waze.com19.3436033,-99.0112553&navigate=yes\n📍 Google: https://google.com19.3436033,-99.0112553"
+            },
+            "bbox": [
+                -99.011255,
+                19.343603,
+                -99.011255,
+                19.343603
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.011499,
+                    19.343538,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Publicidad",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-021<br>Marca temporal: 1/04/2026 5:31:56<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 4. Profesional Y Tramites<br>Nivel de servicio: 5 Confianza<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): El altavoz que tu negocio necesita<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Ubicación, datos generales de tu negocio, contactos de tu negocio, acceso a tus redes sociales, sucursal digital 24/7<br>Horarios Ej: Lun - Sab 10am - 5pm: Lun - Vie 10am a 5pm<br>Enlace a redes propias: Blogger.com<br>Contacto de Servicio (WhatsApp): 5644317001<br>Latitud-Longitud: 19.3435375, -99.0114994<br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Ubicaci%C3%B3n%2C%20datos%20generales%20de%20tu%20negocio%2C%20contactos%20de%20tu%20negocio%2C%20acceso%20a%20tus%20redes%20sociales%2C%20sucursal%20digital%2024%2F7%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Publicidad.<br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: https://wa.me/525644317001?text=Hola%2C%20vi%20tu%20negocio%20Publicidad%20en%20el%20mapa.<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3435375,-99.0114994&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.3435375,-99.0114994"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-021",
+                "Marca temporal": "1/04/2026 5:31:56",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "4. Profesional Y Tramites",
+                "Nivel de servicio": "5 Confianza",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "El altavoz que tu negocio necesita",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Ubicación, datos generales de tu negocio, contactos de tu negocio, acceso a tus redes sociales, sucursal digital 24/7",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Lun - Vie 10am a 5pm",
+                "Enlace a redes propias": "Blogger.com",
+                "Contacto de Servicio (WhatsApp)": "5.644317001E9",
+                "Latitud-Longitud": "19.3435375, -99.0114994",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Ubicaci%C3%B3n%2C%20datos%20generales%20de%20tu%20negocio%2C%20contactos%20de%20tu%20negocio%2C%20acceso%20a%20tus%20redes%20sociales%2C%20sucursal%20digital%2024%2F7%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Publicidad.",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "https://wa.me/525644317001?text=Hola%2C%20vi%20tu%20negocio%20Publicidad%20en%20el%20mapa.",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3435375,-99.0114994&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.3435375,-99.0114994"
+            },
+            "bbox": [
+                -99.011499,
+                19.343538,
+                -99.011499,
+                19.343538
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.012657,
+                    19.342683,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Negosistema ",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-026<br>Marca temporal: 30/04/2026 19:46:39<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 4. Profesional Y Tramites<br>Nivel de servicio: 5 Confianza<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): El altavoz que tu negocio necesita <br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Geolocalización,publicidad, digitalización, páginas de ventas<br>Horarios Ej: Lun - Sab 10am - 5pm: Lun-Sab 11am a 5pm<br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): 5522989345<br>Latitud-Longitud: 19.3426833, -99.0126566<br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525522989345?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Geolocalizaci%C3%B3n%2Cpublicidad%2C%20digitalizaci%C3%B3n%2C%20p%C3%A1ginas%20de%20ventas%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Negosistema%20.<br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: https://wa.me/525522989345?text=Hola%2C%20vi%20tu%20negocio%20Negosistema%20%20en%20el%20mapa.<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3426833,-99.0126566&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.3426833,-99.0126566"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-026",
+                "Marca temporal": "30/04/2026 19:46:39",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "4. Profesional Y Tramites",
+                "Nivel de servicio": "5 Confianza",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "El altavoz que tu negocio necesita ",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Geolocalización,publicidad, digitalización, páginas de ventas",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Lun-Sab 11am a 5pm",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "5.522989345E9",
+                "Latitud-Longitud": "19.3426833, -99.0126566",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525522989345?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Geolocalizaci%C3%B3n%2Cpublicidad%2C%20digitalizaci%C3%B3n%2C%20p%C3%A1ginas%20de%20ventas%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Negosistema%20.",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "https://wa.me/525522989345?text=Hola%2C%20vi%20tu%20negocio%20Negosistema%20%20en%20el%20mapa.",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3426833,-99.0126566&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.3426833,-99.0126566"
+            },
+            "bbox": [
+                -99.012657,
+                19.342683,
+                -99.012657,
+                19.342683
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.010543,
+                    19.344322,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Asesoría Financiera ",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-001<br>Marca temporal: 1/04/2026 1:38:18<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 4. Profesional Y Tramites<br>Nivel de servicio: 4 Venta<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Pon a trabajar tu dinero <br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Asesoría, seguros,planes personales de retiro<br>Horarios Ej: Lun - Sab 10am - 5pm: Lun - Mart 6pm a 8pm<br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): 5583233840<br>Latitud-Longitud: 19.3443215, -99.0105432<br><br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525583233840?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Asesor%C3%ADa%2C%20seguros%2Cplanes%20personales%20de%20retiro%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Asesor%C3%ADa%20Financiera%20.<br>Personalizado: enlace especial <br>👉 CONTACTAR CLICK AQUÍ: https://wa.me/525583233840?text=enlace%20especial%20<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3443215,-99.0105432<br>&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.3443215,-99.0105432<br>"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-001",
+                "Marca temporal": "1/04/2026 1:38:18",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "4. Profesional Y Tramites",
+                "Nivel de servicio": "4 Venta",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Pon a trabajar tu dinero ",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Asesoría, seguros,planes personales de retiro",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Lun - Mart 6pm a 8pm",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "5.58323384E9",
+                "Latitud-Longitud": "19.3443215, -99.0105432\n",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525583233840?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Asesor%C3%ADa%2C%20seguros%2Cplanes%20personales%20de%20retiro%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Asesor%C3%ADa%20Financiera%20.",
+                "Personalizado": "enlace especial ",
+                "👉 CONTACTAR CLICK AQUÍ": "https://wa.me/525583233840?text=enlace%20especial%20",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3443215,-99.0105432\n&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.3443215,-99.0105432\n"
+            },
+            "bbox": [
+                -99.010543,
+                19.344322,
+                -99.010543,
+                19.344322
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.011817,
+                    19.343349,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Asesoría Financiera ",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-017<br>Marca temporal: 1/04/2026 5:04:31<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 4. Profesional Y Tramites<br>Nivel de servicio: 4 Venta<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Pon a trabajar tu dinero<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Planes personales de retiro, seguros,seguritos<br>Horarios Ej: Lun - Sab 10am - 5pm: Lun -Mar 12am 13pm<br>Enlace a redes propias: Http://gastalon.com.mx<br>Contacto de Servicio (WhatsApp): 5644317001<br>Latitud-Longitud: 19.3433488,-99.0118166<br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Planes%20personales%20de%20retiro%2C%20seguros%2Cseguritos%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Asesor%C3%ADa%20Financiera%20.<br>Personalizado: quiero poner a trabajar mi dinero, ayudame <br>👉 CONTACTAR CLICK AQUÍ: https://wa.me/525644317001?text=quiero%20poner%20a%20trabajar%20mi%20dinero%2C%20ayudame%20<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3433488,-99.0118166&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.3433488,-99.0118166"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-017",
+                "Marca temporal": "1/04/2026 5:04:31",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "4. Profesional Y Tramites",
+                "Nivel de servicio": "4 Venta",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Pon a trabajar tu dinero",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Planes personales de retiro, seguros,seguritos",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Lun -Mar 12am 13pm",
+                "Enlace a redes propias": "Http://gastalon.com.mx",
+                "Contacto de Servicio (WhatsApp)": "5.644317001E9",
+                "Latitud-Longitud": "19.3433488,-99.0118166",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Planes%20personales%20de%20retiro%2C%20seguros%2Cseguritos%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Asesor%C3%ADa%20Financiera%20.",
+                "Personalizado": "quiero poner a trabajar mi dinero, ayudame ",
+                "👉 CONTACTAR CLICK AQUÍ": "https://wa.me/525644317001?text=quiero%20poner%20a%20trabajar%20mi%20dinero%2C%20ayudame%20",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3433488,-99.0118166&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.3433488,-99.0118166"
+            },
+            "bbox": [
+                -99.011817,
+                19.343349,
+                -99.011817,
+                19.343349
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.011493,
+                    19.343718,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Sillas y mesas",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-018<br>Marca temporal: 1/04/2026 5:06:58<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 5. Hogar y Eventos<br>Nivel de servicio: 5 Confianza<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Los mejores sillas aguanta gorditos de la zona<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Sillas,mesas,lonas,carpas<br>Horarios Ej: Lun - Sab 10am - 5pm: Lun - Dom 10am 15pm<br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): 5644317001<br>Latitud-Longitud: 19.3437184,-99.0114927<br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Sillas%2Cmesas%2Clonas%2Ccarpas%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Sillas%20y%20mesas.<br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: https://wa.me/525644317001?text=Hola%2C%20vi%20tu%20negocio%20Sillas%20y%20mesas%20en%20el%20mapa.<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3437184,-99.0114927&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.3437184,-99.0114927"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-018",
+                "Marca temporal": "1/04/2026 5:06:58",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "5. Hogar y Eventos",
+                "Nivel de servicio": "5 Confianza",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Los mejores sillas aguanta gorditos de la zona",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Sillas,mesas,lonas,carpas",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Lun - Dom 10am 15pm",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "5.644317001E9",
+                "Latitud-Longitud": "19.3437184,-99.0114927",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Sillas%2Cmesas%2Clonas%2Ccarpas%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Sillas%20y%20mesas.",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "https://wa.me/525644317001?text=Hola%2C%20vi%20tu%20negocio%20Sillas%20y%20mesas%20en%20el%20mapa.",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3437184,-99.0114927&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.3437184,-99.0114927"
+            },
+            "bbox": [
+                -99.011493,
+                19.343718,
+                -99.011493,
+                19.343718
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.010112,
+                    19.344765,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Fiesta",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-004<br>Marca temporal: 1/04/2026 3:06:43<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 5. Hogar y Eventos<br>Nivel de servicio: 3 Información<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Fiesta fiesta<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Sillas y payasos<br>Horarios Ej: Lun - Sab 10am - 5pm: 5pm 10pm<br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): <br>Latitud-Longitud: 19.3447654, -99.0101123<br><br>👉 CLICK AQUÍ PARA CONTACTO: <br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: <br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3447654,-99.0101123<br>&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.3447654,-99.0101123<br>"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-004",
+                "Marca temporal": "1/04/2026 3:06:43",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "5. Hogar y Eventos",
+                "Nivel de servicio": "3 Información",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Fiesta fiesta",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Sillas y payasos",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "5pm 10pm",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "",
+                "Latitud-Longitud": "19.3447654, -99.0101123\n",
+                "👉 CLICK AQUÍ PARA CONTACTO": "",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3447654,-99.0101123\n&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.3447654,-99.0101123\n"
+            },
+            "bbox": [
+                -99.010112,
+                19.344765,
+                -99.010112,
+                19.344765
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.011353,
+                    19.344151,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Latosos",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-019<br>Marca temporal: 1/04/2026 5:10:31<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 6. Educación y Apoyo<br>Nivel de servicio: 5 Confianza<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Ayudamos a aprender a los latosos<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): Guardería,kinder y regularización <br>Horarios Ej: Lun - Sab 10am - 5pm: Lun - Vie 9am 4pm<br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): 5644317001<br>Latitud-Longitud: 19.3441512,-99.0113533<br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Guarder%C3%ADa%2Ckinder%20y%20regularizaci%C3%B3n%20%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Latosos.<br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: https://wa.me/525644317001?text=Hola%2C%20vi%20tu%20negocio%20Latosos%20en%20el%20mapa.<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3441512,-99.0113533&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.3441512,-99.0113533"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-019",
+                "Marca temporal": "1/04/2026 5:10:31",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "6. Educación y Apoyo",
+                "Nivel de servicio": "5 Confianza",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Ayudamos a aprender a los latosos",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "Guardería,kinder y regularización ",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Lun - Vie 9am 4pm",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "5.644317001E9",
+                "Latitud-Longitud": "19.3441512,-99.0113533",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20Guarder%C3%ADa%2Ckinder%20y%20regularizaci%C3%B3n%20%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Latosos.",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "https://wa.me/525644317001?text=Hola%2C%20vi%20tu%20negocio%20Latosos%20en%20el%20mapa.",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3441512,-99.0113533&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.3441512,-99.0113533"
+            },
+            "bbox": [
+                -99.011353,
+                19.344151,
+                -99.011353,
+                19.344151
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.01132,
+                    19.343748,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "Cerrageiria",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-020<br>Marca temporal: 1/04/2026 5:11:32<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Capa Servicios: 7. Urgencias 24/7<br>Nivel de servicio: 5 Confianza<br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): Protegete con los mejores<br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): copia de llaves, candados, chapas, arreglos, cerrageria, copia de llaves de auto, servicio express 24/7<br>Horarios Ej: Lun - Sab 10am - 5pm: Lun - Dom 14 hrs<br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): 5644317001<br>Latitud-Longitud: 19.3437475,-99.0113197<br>👉 CLICK AQUÍ PARA CONTACTO: https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20copia%20de%20llaves%2C%20candados%2C%20chapas%2C%20arreglos%2C%20cerrageria%2C%20copia%20de%20llaves%20de%20auto%2C%20servicio%20express%2024%2F7%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Cerrageiria.<br>Personalizado: No te quedes fuera <br>👉 CONTACTAR CLICK AQUÍ: https://wa.me/525644317001?text=No%20te%20quedes%20fuera%20<br>Links: 🚗 Waze: https://waze.com/ul?ll=19.3437475,-99.0113197&navigate=yes<br>📍 Google: https://www.google.com/maps/search/?api=1&query=19.3437475,-99.0113197"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-020",
+                "Marca temporal": "1/04/2026 5:11:32",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Capa Servicios": "7. Urgencias 24/7",
+                "Nivel de servicio": "5 Confianza",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "Protegete con los mejores",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "copia de llaves, candados, chapas, arreglos, cerrageria, copia de llaves de auto, servicio express 24/7",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "Lun - Dom 14 hrs",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "5.644317001E9",
+                "Latitud-Longitud": "19.3437475,-99.0113197",
+                "👉 CLICK AQUÍ PARA CONTACTO": "https://wa.me/525644317001?text=%C2%A1Hola%21%20Me%20interesa%20el%20servicio%20de%20copia%20de%20llaves%2C%20candados%2C%20chapas%2C%20arreglos%2C%20cerrageria%2C%20copia%20de%20llaves%20de%20auto%2C%20servicio%20express%2024%2F7%20que%20vi%20en%20el%20mapa%20para%20el%20negocio%20Cerrageiria.",
+                "Personalizado": "No te quedes fuera ",
+                "👉 CONTACTAR CLICK AQUÍ": "https://wa.me/525644317001?text=No%20te%20quedes%20fuera%20",
+                "Links": "🚗 Waze: https://waze.com/ul?ll=19.3437475,-99.0113197&navigate=yes\n📍 Google: https://www.google.com/maps/search/?api=1&query=19.3437475,-99.0113197"
+            },
+            "bbox": [
+                -99.01132,
+                19.343748,
+                -99.01132,
+                19.343748
+            ]
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -99.011644,
+                    19.343159,
+                    0
+                ]
+            },
+            "properties": {
+                "name": "1. Salud y Consultas",
+                "description": {
+                    "@type": "html",
+                    "value": "ID / Folio: XAL-014<br>Marca temporal: 1/04/2026 4:55:33<br>Colonia: Xalpa II<br>Mapa: Servicios<br>Capa Productos: <br>Nivel de servicio: 1 Incognito/ ubicación<br>Nombre Comercial(Titulo del pin): <br>Enlace a redes propias: <br>Contacto de Servicio (WhatsApp): <br>Latitud-Longitud: 19.3431591,-99.0116443<br>👉 CLICK AQUÍ PARA CONTACTO: <br>Personalizado: <br>👉 CONTACTAR CLICK AQUÍ: <br>Slogan/Descripción del elevador(Los Mejores Tacos de la Zona): <br>Lista de servicios(Tacos de tripa, alambres, gringas,burritos): <br>Horarios Ej: Lun - Sab 10am - 5pm: <br>Links: 🚗 Waze: https://waze.com19.3431591,-99.0116443&navigate=yes<br>📍 Google: https://google.com19.3431591,-99.0116443"
+                },
+                "styleUrl": "#icon-1899-DB4436",
+                "label-scale": 0,
+                "icon-opacity": 1,
+                "icon-color": "#db4436",
+                "icon-scale": 1,
+                "icon-offset": [
+                    32,
+                    64
+                ],
+                "icon-offset-units": [
+                    "pixels",
+                    "insetPixels"
+                ],
+                "icon": "https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png",
+                "ID / Folio": "XAL-014",
+                "Marca temporal": "1/04/2026 4:55:33",
+                "Colonia": "Xalpa II",
+                "Mapa": "Servicios",
+                "Capa Productos": "",
+                "Nivel de servicio": "1 Incognito/ ubicación",
+                "Nombre Comercial(Titulo del pin)": "",
+                "Enlace a redes propias": "",
+                "Contacto de Servicio (WhatsApp)": "",
+                "Latitud-Longitud": "19.3431591,-99.0116443",
+                "👉 CLICK AQUÍ PARA CONTACTO": "",
+                "Personalizado": "",
+                "👉 CONTACTAR CLICK AQUÍ": "",
+                "Slogan/Descripción del elevador(Los Mejores Tacos de la Zona)": "",
+                "Lista de servicios(Tacos de tripa, alambres, gringas,burritos)": "",
+                "Horarios Ej: Lun - Sab 10am - 5pm": "",
+                "Links": "🚗 Waze: https://waze.com19.3431591,-99.0116443&navigate=yes\n📍 Google: https://google.com19.3431591,-99.0116443"
+            },
+            "bbox": [
+                -99.011644,
+                19.343159,
+                -99.011644,
+                19.343159
+            ]
+        }
+    ]
+}
