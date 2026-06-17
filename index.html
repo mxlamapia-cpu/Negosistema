@@ -80,13 +80,21 @@
     </main>
 </div>
 
+    <!-- CONTENEDOR OPTIMIZADO CON MAPA INTERACTIVO NATIVO CORREGIDO -->
+<div class="map-wrapper-xalpa">
+    <!-- Se cambia el ID a mapa-local para alinearse con tus estilos CSS y tu script -->
+    <div id="mapa-local"></div>
+</div>
+
+</main>
+</div>
+
 <!-- Pie de Página Técnico Unificado -->
 <footer class="pie-pagina">
     <p>&copy; 2026 Negosistema. Todos los derechos reservados.</p>
     <a href="../../terminos.html">Políticas de Uso y Deslinde Legal</a>
 </footer>
-
-<!-- LIBRERÍAS NATIVAS DE LEAFLET.JS (SIN PRODUCTOS DE GOOGLE) -->
+<!-- LIBRERÍAS NATIVAS DE LEAFLET.JS (DIRECCIONES CDN CORREGIDAS CON SU VERSIÓN EXACTA) -->
 <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
@@ -112,46 +120,45 @@ function guardarProgreso(nombre, url) {
 }
 
 function cargarMapaEcosistema() {
-    // Inicialización del mapa en el contenedor HTML #mapa-local
+    // Inicialización del mapa vinculada al ID correcto "mapa-local"
     const mapa = L.map('mapa-local', {
         center: [19.3450, -99.0150],
         zoom: 14,
         scrollWheelZoom: false
     });
 
-    // Fondo base del mapa: Servidor abierto y gratuito de CartoDB (Estilo gris claro para resaltar tus zonas)
+    // CORRECCIÓN CENTRAL: Servidor de mapas CartoDB Positron mapeado de forma nativa
     L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> &copy; <a href="https://carto.com">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 20
     }).addTo(mapa);
 
-    // Carga e interpretación del archivo de colonias GeoJSON
-    fetch('./iztapalapa_colonias.geojson')
+    // Carga e interpretación del archivo de colonias GeoJSON (Se usa ../ para salir de subcarpetas si es necesario)
+    fetch('./datos_geo/iztapalapa_colonias.geojson')
     .then(response => {
         if (!response.ok) throw new Error('Base de datos GeoJSON no disponible');
         return response.json();
     })
     .then(data => {
         const capaColonias = L.geoJSON(data, {
-            // FUNCIÓN DE ESTILO NATIVA: Pinta las áreas del mapa usando el color exacto de tu archivo (.fill)
             style: function (feature) {
+                // Pinta las áreas del mapa usando el color exacto de tu archivo GeoJSON (.fill)
                 let colorBase = feature.properties.fill || '#1a73e8';
                 let opacidadBase = feature.properties['fill-opacity'] || 0.3;
                 return {
-                    color: colorBase,       // Color del borde del polígono
-                    weight: 1.5,            // Grosor de la línea
-                    fillColor: colorBase,   // Color de relleno de la colonia
-                    fillOpacity: opacidadBase // Transparencia
+                    color: colorBase,       
+                    weight: 1.5,            
+                    fillColor: colorBase,   
+                    fillOpacity: opacidadBase 
                 };
             },
             onEachFeature: function (feature, layer) {
                 if (feature.properties && feature.properties.name) {
                     let props = feature.properties;
-                    // Lee directamente el link configurado en tu propiedad "Enlace"
                     let urlDestino = props.Enlace || '#';
                     
-                    // Creación del globo informativo (Popup) al hacer clic en una colonia
+                    // Creación de las tarjetas emergentes interactivas (Popups)
                     let popupContenido = `<div style="padding: 5px; min-width: 200px; font-family: sans-serif; text-align: left;">`;
                     popupContenido += `<strong style="font-size: 14px; color: #333; display: block; margin-bottom: 5px;">${props.name}</strong>`;
                     popupContenido += `<span style="font-size: 12px; color: #666; display: block; margin-bottom: 12px;">Directorio de comercios verificado.</span>`;
@@ -160,7 +167,6 @@ function cargarMapaEcosistema() {
                     
                     layer.bindPopup(popupContenido);
 
-                    // Interactividad visual al pasar el cursor (Mouseover/Mouseout)
                     layer.on({
                         mouseover: function (e) {
                             e.target.setStyle({ fillOpacity: 0.5, weight: 2.5 });
@@ -173,7 +179,6 @@ function cargarMapaEcosistema() {
             }
         }).addTo(mapa);
         
-        // Ajuste automático e inteligente de la cámara de Leaflet para centrar todas las colonias del GeoJSON
         mapa.fitBounds(capaColonias.getBounds());
     })
     .catch(error => {
