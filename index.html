@@ -121,81 +121,98 @@
     <a href="../../terminos.html">Políticas de Uso y Deslinde Legal</a>
 </footer>
 
-<!-- CONTROL INTRÍNSECO DE MAPAS DE PRODUCTOS -->
+<!-- LIBRERÍAS NATIVAS DE LEAFLET.JS (SIN PRODUCTOS DE GOOGLE) -->
+<link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Almacenamiento seguro del progreso desde subcarpetas sin generar bucles redundantes
-    const infoColonia = {
-        nombre: "2 Ampliación Santiago 1",
-        url: "./Iztapalapa/mapas_Prod/2ampli1_productos.html"
-    };
-    localStorage.setItem('negosistema_ultima_visita', JSON.stringify(infoColonia));
-
-    inicializarMapaMercadoLocal();
+    // Sistema de persistencia local 24/7 (Historial de navegación)
+    const ultimaColonia = JSON.parse(localStorage.getItem('negosistema_ultima_visita'));
+    if (ultimaColonia && ultimaColonia.nombre && ultimaColonia.url) {
+        const bloque = document.getElementById('bloque-historial');
+        const enlace = document.getElementById('enlace-historial');
+        if (bloque && enlace) {
+            bloque.style.display = 'block';
+            enlace.href = ultimaColonia.url;
+            enlace.textContent = `Entrar directo a: ${ultimaColonia.nombre}`;
+        }
+    }
+    cargarMapaEcosistema();
 });
 
-function inicializarMapaMercadoLocal() {
-    // Encuadre centralizado sobre la primera franja del piloto comercial
-    const mapaLocales = L.map('mapa-productos', {
-        center: [19.3480, -99.0110],
-        zoom: 16,
+function guardarProgreso(nombre, url) {
+    const datos = { nombre: nombre, url: url };
+    localStorage.setItem('negosistema_ultima_visita', JSON.stringify(datos));
+}
+
+function cargarMapaEcosistema() {
+    // Inicialización del mapa en el contenedor HTML #mapa-local
+    const mapa = L.map('mapa-local', {
+        center: [19.3450, -99.0150],
+        zoom: 14,
         scrollWheelZoom: false
     });
 
+    // Fondo base del mapa: Servidor abierto y gratuito de CartoDB (Estilo gris claro para resaltar tus zonas)
     L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; CARTO &copy; OpenStreetMap',
+        attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> &copy; <a href="https://carto.com">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 20
-    }).addTo(mapaLocales);
+    }).addTo(mapa);
 
-    // Carga dinámica del catálogo de tiendas de esta calle/zona
-    fetch('../datos_Prod/2ampli1_tiendas.geojson')
+    // Carga e interpretación del archivo de colonias GeoJSON
+    fetch('./iztapalapa_colonias.geojson')
     .then(response => {
-        if (!response.ok) throw new Error('Catálogo comercial no disponible momentáneamente');
+        if (!response.ok) throw new Error('Base de datos GeoJSON no disponible');
         return response.json();
     })
     .then(data => {
-        const capaPuntos = L.geoJSON(data, {
-            pointToLayer: function (feature, latlng) {
-                // Segregación automática por los colores del marketplace (Verde, Naranja, etc.)
-                let colorEstablecimiento = feature.properties['marker-color'] || '#2e7d32';
-                
-                let marcadorEstilizado = L.divIcon({
-                    className: 'marcador-comercio-giro',
-                    html: `<div style="background-color: ${colorEstablecimiento}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>`,
-                    iconSize:,
-                    iconAnchor: [7, 7]
-                });
-                return L.marker(latlng, { icon: marcadorEstilizado });
+        const capaColonias = L.geoJSON(data, {
+            // FUNCIÓN DE ESTILO NATIVA: Pinta las áreas del mapa usando el color exacto de tu archivo (.fill)
+            style: function (feature) {
+                let colorBase = feature.properties.fill || '#1a73e8';
+                let opacidadBase = feature.properties['fill-opacity'] || 0.3;
+                return {
+                    color: colorBase,       // Color del borde del polígono
+                    weight: 1.5,            // Grosor de la línea
+                    fillColor: colorBase,   // Color de relleno de la colonia
+                    fillOpacity: opacidadBase // Transparencia
+                };
             },
             onEachFeature: function (feature, layer) {
-                if (feature.properties) {
+                if (feature.properties && feature.properties.name) {
                     let props = feature.properties;
-                    let popupHtml = `<div style="font-family: sans-serif; min-width: 190px; line-height: 1.4;">`;
-                    popupHtml += `<strong style="font-size: 14px; color: #0a2540; display: block; margin-bottom: 2px;">${props.name || 'Establecimiento Local'}</strong>`;
-                    popupHtml += `<span style="font-size: 11px; color: #795548; font-weight: bold; display: block; margin-bottom: 8px;">🛍️ ${props.giro || 'Giro Comercial'}</span>`;
+                    // Lee directamente el link configurado en tu propiedad "Enlace"
+                    let urlDestino = props.Enlace || '#';
                     
-                    if(props.description) {
-                        popupHtml += `<p style="font-size: 12px; color: #555; margin: 0 0 10px 0;">${props.description}</p>`;
-                    }
+                    // Creación del globo informativo (Popup) al hacer clic en una colonia
+                    let popupContenido = `<div style="padding: 5px; min-width: 200px; font-family: sans-serif; text-align: left;">`;
+                    popupContenido += `<strong style="font-size: 14px; color: #333; display: block; margin-bottom: 5px;">${props.name}</strong>`;
+                    popupContenido += `<span style="font-size: 12px; color: #666; display: block; margin-bottom: 12px;">Directorio de comercios verificado.</span>`;
+                    popupContenido += `<a href="${urlDestino}" style="display: block; text-align: center; background: #34a853; color: white !important; padding: 8px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onclick="guardarProgreso('${props.name}', '${urlDestino}')">Abrir Marketplace →</a>`;
+                    popupContenido += `</div>`;
                     
-                    // Canal de monetización directo: Botón de WhatsApp integrado 24/7
-                    if(props.telefono) {
-                        popupHtml += `<a href="https://wa.me{props.telefono}?text=Hola,%20vi%20tu%20catálogo%20en%20Negosistema.%20¿Me%20das%20informes?" target="_blank" style="display: block; text-align: center; background: #25d366; color: white !important; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">💬 Pedir por WhatsApp</a>`;
-                    }
-                    
-                    popupHtml += `</div>`;
-                    layer.bindPopup(popupHtml);
+                    layer.bindPopup(popupContenido);
+
+                    // Interactividad visual al pasar el cursor (Mouseover/Mouseout)
+                    layer.on({
+                        mouseover: function (e) {
+                            e.target.setStyle({ fillOpacity: 0.5, weight: 2.5 });
+                        },
+                        mouseout: function (e) {
+                            capaColonias.resetStyle(e.target);
+                        }
+                    });
                 }
             }
-        }).addTo(mapaLocales);
-
-        mapaLocales.fitBounds(capaPuntos.getBounds());
+        }).addTo(mapa);
+        
+        // Ajuste automático e inteligente de la cámara de Leaflet para centrar todas las colonias del GeoJSON
+        mapa.fitBounds(capaColonias.getBounds());
     })
     .catch(error => {
-        console.warn('Mapa en espera de archivo GeoJSON de negocios para esta calle:', error);
+        console.error('Error al renderizar el mapa vectorial:', error);
     });
 }
 </script>
