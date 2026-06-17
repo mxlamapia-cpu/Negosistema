@@ -596,5 +596,41 @@ max-height: 160px;
 }
 .info-title {
 font-size: 1.2rem;
+
+ /* ==========================================================================
+8. COMPLEMENTOS ADAPTATIVOS DE MAPAS NATIVOS (PRODUCTOS Y LOCALES)
+========================================================================== */
+#mapa-local, 
+#mapa-productos {
+    width: 100%;
+    height: 70vh;
+    min-height: 420px;
+    max-height: 600px;
+    background-color: #f4f6f9;
+    position: relative;
+    z-index: 1;
+}
+
+.marcador-comercio-giro {
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Optimización móvil estricta para evitar desbordes en los mapas */
+@media (max-width: 768px) {
+    #mapa-local, 
+    #mapa-productos {
+        height: 55vh;
+        min-height: 350px;
+    }
+    .leaflet-popup-content {
+        font-size: 0.85rem;
+        margin: 8px 10px !important;
+    }
+}
+
 }
 }
