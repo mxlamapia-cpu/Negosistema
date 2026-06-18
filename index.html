@@ -3,110 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Negosistema - Mapas Interactivos</title>
-    <!-- Bootstrap 5 CSS para el diseño responsivo -->
-    <link href="https://jsdelivr.net" rel="stylesheet">
-    <!-- Leaflet CSS para el mapa -->
+    <title>Marketplace Hiperlocal Iztapalapa</title>
+    <!-- Estilos de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com" />
     <style>
-        /* Estilos base con la paleta oscura de Negosistema */
-        body {
-            background-color: #11141a;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .navbar-custom {
-            background-color: #1a1f29;
-            border-bottom: 2px solid #0056b3;
-        }
-        .sidebar {
-            background-color: #1a1f29;
-            border-radius: 8px;
-            padding: 20px;
-            border: 1px solid #2d3545;
-            height: calc(100vh - 100px);
-        }
-        /* Contenedor del mapa que antes era el recuadro blanco */
-        .map-container {
-            background-color: #1a1f29;
-            border-radius: 8px;
-            border: 1px solid #2d3545;
-            overflow: hidden;
-            height: calc(100vh - 100px);
-            position: relative;
-        }
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-        /* Ajuste de colores para los popups de Leaflet para que combinen con la web */
-        .leaflet-popup-content-wrapper {
-            background: #1a1f29;
-            color: #ffffff;
-            border: 1px solid #0056b3;
-        }
-        .leaflet-popup-tip {
-            background: #1a1f29;
-        }
-        .btn-negosistema {
-            background-color: #0056b3;
-            color: white;
-            border: none;
-        }
-        .btn-negosistema:hover {
-            background-color: #004085;
-            color: white;
+        body, html { margin: 0; padding: 0; height: 100%; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 100vh; }
+        /* Estilo elegante para la tarjeta del negocio */
+        .popup-negocio { font-size: 14px; line-height: 1.5; min-width: 200px; }
+        .popup-title { font-size: 16px; font-weight: bold; color: #2c3e50; margin-bottom: 5px; }
+        .btn-whatsapp { 
+            display: inline-block; background-color: #25D366; color: white !important; 
+            padding: 8px 12px; border-radius: 5px; text-decoration: none; 
+            font-weight: bold; margin-top: 8px; text-align: center; width: 85%;
         }
     </style>
 </head>
 <body>
 
-    <!-- Barra de Navegación Superior -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="#">🌐 NEGOSISTEMA</a>
-            <span class="navbar-text text-muted d-none d-sm-inline">
-                Mapeo de Unidades Económicas - Iztapalapa
-            </span>
-        </div>
-    </nav>
+    <div id="map"></div>
 
-    <!-- Contenedor Principal del Tablero -->
-    <div class="container-fluid mt-3">
-        <div class="row g-3">
-            <!-- Barra Lateral de Información (Izquierda) -->
-            <div class="col-md-3">
-                <div class="sidebar d-flex flex-column justify-content-between">
-                    <div>
-                        <h4 class="fw-bold text-info">Panel de Control</h4>
-                        <p class="text-muted small">Selecciona una zona en el mapa para ver la distribución de negocios y productos.</p>
-                        <hr class="border-secondary">
-                        <div class="mb-3">
-                            <label class="form-label text-secondary small fw-bold">ALCALDÍA</label>
-                            <input type="text" class="form-control bg-dark text-white border-secondary" value="IZTAPALAPA" readonly>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <small class="text-muted">Negosistema © 2026</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contenedor del Mapa (Derecha) -->
-            <div class="col-md-9">
-                <div class="map-container">
-                    <!-- Aquí se inyecta el mapa interactivo de Leaflet -->
-                    <div id="map"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts de Dependencias Externas -->
-    <script src="https://jsdelivr.net"></script>
+    <!-- Scripts de Leaflet y lectores de KML -->
     <script src="https://unpkg.com"></script>
-    
-    <!-- ARCHIVO CENTRALIZADO: Aquí se controla la lógica para no repetir código -->
-    <script src="./js/motor-mapas.js"></script>
+    <script src="https://cloudflare.com"></script>
+
+    <script>
+        // 1. Inicializar el mapa centrado en Iztapalapa
+        const map = L.map('map').setView([19.3601, -99.0712], 14);
+
+        // 2. Capa de mapa fluida (OpenStreetMap versión limpia)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap colaboradores'
+        }).addTo(map);
+
+        // 3. Descargar y procesar el archivo KML de My Maps
+        fetch('negocios.kml')
+            .then(response => {
+                if (!response.ok) throw new Error("No se encontró el archivo negocios.kml en la carpeta");
+                return response.text();
+            })
+            .then(str => {
+                // Convertir el KML de Google a un formato que Leaflet entienda (GeoJSON)
+                const parser = new DOMParser();
+                const kml = parser.parseFromString(str, "text/xml");
+                const geojson = toGeoJSON.kml(kml);
+
+                // 4. Dibujar los pines y extraer la información oculta
+                L.geoJSON(geojson, {
+                    onEachFeature: function (feature, layer) {
+                        const props = feature.properties;
+                        
+                        // Extraer el nombre del negocio
+                        let nombre = props.name || "Negocio sin nombre";
+                        let descripcionOriginal = props.description || "";
+                        
+                        // --- TRUCO TECNICO: Buscar datos ocultos de WhatsApp o Teléfono ---
+                        let telefono = "";
+                        // Si Google metió los datos en tablas estructuradas, los buscamos aquí:
+                        if (props.ExtendedData) {
+                            // Tu IA te ayuda a limpiar el texto si vienen datos extra
+                            console.log("Datos encontrados para: " + nombre, props.ExtendedData);
+                        }
+
+                        // Intentar extraer un número de teléfono si existe en la descripción
+                        const phoneMatch = descripcionOriginal.match(/\d{10}/);
+                        if (phoneMatch) telefono = phoneMatch[0];
+
+                        // 5. Diseñar la tarjeta de información (Popup)
+                        let contenidoPopup = `
+                            <div class="popup-negocio">
+                                <div class="popup-title">🏬 ${nombre}</div>
+                                <p>${descripcionOriginal || 'Sin descripción disponible.'}</p>
+                        `;
+
+                        // Si encontramos un teléfono, le añadimos el botón automático de WhatsApp
+                        if (telefono) {
+                            contenidoPopup += `<a href="https://wa.me{telefono}" target="_blank" class="btn-whatsapp">💬 Pedir por WhatsApp</a>`;
+                        } else {
+                            // Botón genérico por si no detecta el número automáticamente en el texto
+                            contenidoPopup += `<a href="https://wa.me" target="_blank" class="btn-whatsapp">💬 Contactar</a>`;
+                        }
+
+                        contenidoPopup += `</div>`;
+                        layer.bindPopup(contenidoPopup);
+                    }
+                }).addTo(map);
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Error al cargar el mapa: Asegúrate de que el archivo se llame 'negocios.kml' y esté en la misma carpeta que este HTML.");
+            });
+    </script>
 </body>
 </html>
