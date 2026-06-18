@@ -3,113 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Negosistema - Directorio Hiperlocal</title>
-    <!-- Ruta exacta al archivo CSS centralizado -->
-    <link rel="stylesheet" href="./css/styles.css">
- 
-    <!-- LIBRERÍA DE LEAFLET (ESTILOS COMPATIBLES CON MÓVIL) -->
-    <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <title>Negosistema - Mapas Interactivos</title>
+    <!-- Bootstrap 5 CSS para el diseño responsivo -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <!-- Leaflet CSS para el mapa -->
+    <link rel="stylesheet" href="https://unpkg.com" />
+    <style>
+        /* Estilos base con la paleta oscura de Negosistema */
+        body {
+            background-color: #11141a;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-custom {
+            background-color: #1a1f29;
+            border-bottom: 2px solid #0056b3;
+        }
+        .sidebar {
+            background-color: #1a1f29;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #2d3545;
+            height: calc(100vh - 100px);
+        }
+        /* Contenedor del mapa que antes era el recuadro blanco */
+        .map-container {
+            background-color: #1a1f29;
+            border-radius: 8px;
+            border: 1px solid #2d3545;
+            overflow: hidden;
+            height: calc(100vh - 100px);
+            position: relative;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        /* Ajuste de colores para los popups de Leaflet para que combinen con la web */
+        .leaflet-popup-content-wrapper {
+            background: #1a1f29;
+            color: #ffffff;
+            border: 1px solid #0056b3;
+        }
+        .leaflet-popup-tip {
+            background: #1a1f29;
+        }
+        .btn-negosistema {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+        }
+        .btn-negosistema:hover {
+            background-color: #004085;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <!-- Menú de Navegación Superior -->
-    <nav class="navbar">
-        <a href="./index.html" class="logo"> NEGOSISTEMA</a> 📍
-        <div class="nav-links">
-            <a href="./anunciate.html" class="nav-item">Anúnciate</a>
-            <a href="./creditos.html" class="nav-item">Créditos</a>
-            <a href="./terminos.html" class="nav-item">Términos y Condiciones</a>
+
+    <!-- Barra de Navegación Superior -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#">🌐 NEGOSISTEMA</a>
+            <span class="navbar-text text-muted d-none d-sm-inline">
+                Mapeo de Unidades Económicas - Iztapalapa
+            </span>
         </div>
     </nav>
 
-    <!-- Contenedor Principal Ajustado al Centro -->
-    <main class="contenedor">
-        <!-- Encabezado de Bienvenida -->
-        <header class="encabezado">
-            <h1>Centro de Soluciones Hiperlocales</h1>
-            <p>Encuentra exactamente lo que necesitas en tu colonia sin saturarte de información.</p>
-        </header>
-
-        <!-- SECCIÓN: Acceso Rápido Automático (Historial LocalStorage) -->
-        <section id="bloque-historial" style="display: none; background: #e6f4ea; border: 1px solid #34a853; padding: 20px; border-radius: 8px; margin-bottom: 30px; text-align: center;">
-            <h3 style="margin-top: 0; color: #137333;"> Continuar donde te 📍 quedaste:</h3>
-            <p style="margin-bottom: 15px;">Detectamos que estabas exploring una zona recientemente:</p>
-            <a id="enlace-historial" href="#" style="display: inline-block; background: #34a853; color: white; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px;">
-                Entrar directo a mi última colonia
-            </a>
-        </section>
-
-        <!-- SECCIÓN: Selección Directa de Colonias -->
-        <section class="seccion-colonias">
-            <h2 style="text-align: center; margin-bottom: 10px;">Explora tu Comunidad en Iztapalapa</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 30px;">Selecciona tu colonia para abrir el mapa interactivo de comercios y servicios locales.</p>
-            
-            <div class="grid-eleccion-principal">
-                <!-- Colonia 1 -->
-                <a href="./Iztapalapa/mapas_Prod/2ampli1_productos.html" class="tarjeta-eleccion tarjeta-productos" onclick="guardarProgreso('2ampli_santiago_1', './Iztapalapa/mapas_Prod/2ampli1_productos.html')">
-                    <div class="icono-tarjeta">🏘</div>
-                    <h2>2ampli_santiago_1</h2>
-                    <p>Accede al directorio comercial, tiendas, talleres y servicios de esta zona.</p>
-                    <span class="btn-accion-tarjeta">Abrir Mapa →</span>
-                </a>
-                <!-- Colonia 2 -->
-                <a href="./Iztapalapa/mapas_Prod/2ampli2_productos.html" class="tarjeta-eleccion tarjeta-servicios" onclick="guardarProgreso('2ampli_santiago_2', './Iztapalapa/mapas_Prod/2ampli2_productos.html')">
-                    <div class="icono-tarjeta">🏘</div>
-                    <h2>2ampli_santiago_2</h2>
-                    <p>Accede al directorio comercial, tiendas, talleres y servicios de esta zona.</p>
-                    <span class="btn-accion-tarjeta">Abrir Mapa →</span>
-                </a>
-                <!-- Colonia 3 -->
-                <a href="./Iztapalapa/mapas_Prod/xalpa2_productos.html" class="tarjeta-eleccion tarjeta-productos" style="border-left: 5px solid #ff9800;" onclick="guardarProgreso('Xalpa2', './Iztapalapa/mapas_Prod/xalpa2_productos.html')">
-                    <div class="icono-tarjeta">🏘</div>
-                    <h2>Xalpa2</h2>
-                    <p>Accede al directorio comercial, tiendas, talleres y servicios de esta zona.</p>
-                    <span class="btn-accion-tarjeta">Abrir Mapa →</span>
-                </a>
+    <!-- Contenedor Principal del Tablero -->
+    <div class="container-fluid mt-3">
+        <div class="row g-3">
+            <!-- Barra Lateral de Información (Izquierda) -->
+            <div class="col-md-3">
+                <div class="sidebar d-flex flex-column justify-content-between">
+                    <div>
+                        <h4 class="fw-bold text-info">Panel de Control</h4>
+                        <p class="text-muted small">Selecciona una zona en el mapa para ver la distribución de negocios y productos.</p>
+                        <hr class="border-secondary">
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small fw-bold">ALCALDÍA</label>
+                            <input type="text" class="form-control bg-dark text-white border-secondary" value="IZTAPALAPA" readonly>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <small class="text-muted">Negosistema © 2026</small>
+                    </div>
+                </div>
             </div>
-        </section>
 
-                <!-- CONTENEDOR OPTIMIZADO CON MAPA INTERACTIVO NATIVO -->
-        <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-        <div class="map-wrapper-xalpa">
-            <div id="mapa-productos"></div>
-        </div>
-
-       
+            <!-- Contenedor del Mapa (Derecha) -->
+            <div class="col-md-9">
+                <div class="map-container">
+                    <!-- Aquí se inyecta el mapa interactivo de Leaflet -->
+                    <div id="map"></div>
+                </div>
             </div>
         </div>
-    </main>
-</div>
+    </div>
 
-    <!-- CONTENEDOR OPTIMIZADO CON MAPA INTERACTIVO NATIVO CORREGIDO -->
-<div class="map-wrapper-xalpa">
-    <!-- Se cambia el ID a mapa-local para alinearse con tus estilos CSS y tu script -->
-    <div id="mapa-local"></div>
-</div>
-
-</main>
-</div>
-
-<!-- Pie de Página Técnico Unificado -->
-<footer class="pie-pagina">
-    <p>&copy; 2026 Negosistema. Todos los derechos reservados.</p>
-    <a href="../../terminos.html">Políticas de Uso y Deslinde Legal</a>
-</footer>
-<!-- LIBRERÍAS NATIVAS DE LEAFLET.JS (DIRECCIONES CDN CORREGIDAS CON SU VERSIÓN EXACTA) -->
-</footer>
-
-<!-- 1. Descarga del motor nativo de Leaflet (DIRECCIÓN CORREGIDA Y COMPLETA) -->
-<script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
-<!-- 2. Enlace a tu archivo de control organizado en la carpeta js -->
-<script src="./js/motor_mapas.js"></script>
-
-<!-- 3. Activador único: Arranca el mapa de inmediato usando tus nuevas carpetas -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Llama a la función que guardamos en motor_mapas.js pasándole el ID del contenedor y la ruta del GeoJSON
-    inicializarMapaZonasGlobales('mapa-local', './datos_geo/iztapalapa_colonias.geojson');
-});
-</script>
-
+    <!-- Scripts de Dependencias Externas -->
+    <script src="https://jsdelivr.net"></script>
+    <script src="https://unpkg.com"></script>
+    
+    <!-- ARCHIVO CENTRALIZADO: Aquí se controla la lógica para no repetir código -->
+    <script src="mapa.js"></script>
 </body>
 </html>
