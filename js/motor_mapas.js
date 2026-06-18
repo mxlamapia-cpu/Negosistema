@@ -1,158 +1,82 @@
-/**
- * NEGOSISTEMA - MOTOR DE MAPAS CENTRALIZADO V1.0
- * Lógica universal para el control de mapas hiperlocales en Iztapalapa.
- */
+// 1. Inicializar el mapa de Leaflet centrado en Iztapalapa
+const map = L.map('map').setView([19.345, -99.015], 14);
 
-document.addEventListener("DOMContentLoaded", function() {
-    // 1. Verificación automática del historial de navegación local
-    const ultimaColonia = JSON.parse(localStorage.getItem('negosistema_ultima_visita'));
-    if (ultimaColonia && ultimaColonia.nombre && ultimaColonia.url) {
-        const bloque = document.getElementById('bloque-historial');
-        const enlace = document.getElementById('enlace-historial');
-        if (bloque && enlace) {
-            bloque.style.display = 'block';
-            enlace.href = ultimaColonia.url;
-            enlace.textContent = `Entrar directo a: ${ultimaColonia.nombre}`;
+// 2. Capa base de mapa (Estilo oscuro de CartoDB para combinar con Negosistema)
+L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors © CARTO'
+}).addTo(map);
+
+// 3. Tus datos extraídos limpios en formato GeoJSON (Xalpa II y Ampliaciones)
+const geojsonData = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-99.020989,19.345209],[-99.020672,19.34529],[-99.020033,19.345433],[-99.018379,19.345818],[-99.017765,19.345824],[-99.017611,19.345602],[-99.017578,19.344595],[-99.016519,19.343996],[-99.01614,19.343671],[-99.015597,19.342896],[-99.015021,19.342441],[-99.015412,19.341292],[-99.015666,19.340826],[-99.016436,19.340913],[-99.016653,19.340552],[-99.016867,19.339281],[-99.016392,19.339033],[-99.016676,19.337648],[-99.01622,19.338353],[-99.015634,19.338783],[-99.015352,19.339537],[-99.01481,19.339795],[-99.014663,19.340925],[-99.014327,19.340855],[-99.013569,19.340405],[-99.012855,19.340155],[-99.011703,19.340084],[-99.011119,19.339949],[-99.009835,19.339587],[-99.009657,19.340263],[-99.009401,19.340803],[-99.009093,19.341795],[-99.009069,19.342237],[-99.00943,19.342415],[-99.009973,19.343129],[-99.010533,19.343932],[-99.01128,19.344251],[-99.013235,19.34468],[-99.013781,19.344899],[-99.014139,19.345041],[-99.014764,19.345245],[-99.014993,19.345821],[-99.015314,19.34623],[-99.01569,19.34644],[-99.01617,19.346811],[-99.016253,19.34724],[-99.015984,19.347957],[-99.01584,19.348353],[-99.015876,19.348926],[-99.016584,19.34927],[-99.017588,19.349944],[-99.018147,19.349369],[-99.018665,19.348282],[-99.019494,19.346629],[-99.019976,19.346059],[-99.020576,19.3456],[-99.021051,19.345348],[-99.020989,19.345209]]]
+      },
+      "properties": {
+        "name": "XALPA II",
+        "fill": "#ffd600",
+        "Enlace": "https://github.io"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[-99.012495,19.344517],[-99.012289,19.345502],[-99.012713,19.345808],[-99.013007,19.345981],[-99.013269,19.346135],[-99.013044,19.347041],[-99.012669,19.348643],[-99.012606,19.348905],[-99.012523,19.349304],[-99.011618,19.349119],[-99.010414,19.34924],[-99.010381,19.349507],[-99.010339,19.34974],[-99.010327,19.349812],[-99.010278,19.350083],[-99.010262,19.350156],[-99.010209,19.35042],[-99.010147,19.350592],[-99.008695,19.350308],[-99.008475,19.350264],[-99.008486,19.350381],[-99.008496,19.350518],[-99.010094,19.35086],[-99.010229,19.350888],[-99.010469,19.350936],[-99.010867,19.351015],[-99.011847,19.351209],[-99.011939,19.351417],[-99.012073,19.351745],[-99.012213,19.352089],[-99.012325,19.352421],[-99.012438,19.352806],[-99.012492,19.35299],[-99.012545,19.353461],[-99.013392,19.353106],[-99.014847,19.352506],[-99.01501,19.352432],[-99.015184,19.352352],[-99.015295,19.352305],[-99.015941,19.351998],[-99.016261,19.351805],[-99.016786,19.351405],[-99.017144,19.351036],[-99.017483,19.350603],[-99.017811,19.350061],[-99.017588,19.349944],[-99.016918,19.349495],[-99.016584,19.34927],[-99.01618,19.349072],[-99.015876,19.348926],[-99.01585,19.348519],[-99.01584,19.348353],[-99.015832,19.34823],[-99.015876,19.348101],[-99.015984,19.347957],[-99.016055,19.347784],[-99.016253,19.34724],[-99.016262,19.347037],[-99.01617,19.346811],[-99.015864,19.346574],[-99.015713,19.346457],[-99.01569,19.34644],[-99.015489,19.346389],[-99.015314,19.34623],[-99.015181,19.34611],[-99.01502,19.345976],[-99.014993,19.345821],[-99.014937,19.345574],[-99.014895,19.345519],[-99.014764,19.345245],[-99.014456,19.345164],[-99.01443,19.345154],[-99.014139,19.345041],[-99.013966,19.344973],[-99.013945,19.344965],[-99.013781,19.344899],[-99.013669,19.344854],[-99.013609,19.34483],[-99.013437,19.344761],[-99.013235,19.34468],[-99.012495,19.344517]]]
+      },
+      "properties": {
+        "name": "2A AMPLIACION SANTIAGO ACAHUALTEPEC I",
+        "fill": "#f57c00",
+        "Enlace": "https://github.io"
+      }
+    }
+  ]
+};
+
+// 4. Dibujar polígonos interactivos con estilos dinámicos del JSON
+L.geoJSON(geojsonData, {
+    style: function(feature) {
+        return {
+            fillColor: feature.properties.fill || '#007bff',
+            weight: 2,
+            opacity: 0.8,
+            color: '#11141a', // Borde oscuro divisorio
+            fillOpacity: 0.4
+        };
+    },
+    onEachFeature: function(feature, layer) {
+        if (feature.properties && feature.properties.name) {
+            // Estructura visual interna del cuadro de información (Popup)
+            let popupContent = `
+                <div style="font-family: sans-serif; text-align: center;">
+                    <h6 style="margin: 0 0 8px 0; color: #56ccf2; font-weight: bold;">
+                        ${feature.properties.name}
+                    </h6>
+                    <p style="font-size: 11px; color: #bbb; margin-bottom: 12px;">
+                        Alcaldía Iztapalapa
+                    </p>
+                    <a href="${feature.properties.Enlace}" target="_blank" class="btn btn-sm btn-primary" style="font-size: 12px; font-weight: 600; padding: 4px 10px; background: #0056b3; border: none;">
+                        Ver Productos 🔍
+                    </a>
+                </div>
+            `;
+            layer.bindPopup(popupContent);
+            
+            // Efecto Hover: Resaltar zona al pasar el mouse por encima
+            layer.on({
+                mouseover: function(e) {
+                    let layer = e.target;
+                    layer.setStyle({ fillOpacity: 0.7, weight: 3 });
+                },
+                mouseout: function(e) {
+                    let layer = e.target;
+                    layer.setStyle({ fillOpacity: 0.4, weight: 2 });
+                }
+            });
         }
     }
-});
-
-/**
- * Registra de forma segura la navegación del usuario en el navegador
- * @param {string} nombre - Nombre comercial de la colonia o sector
- * @param {string} url - Enlace relativo o absoluto de la pantalla destino
- */
-function guardarProgreso(nombre, url) {
-    const datos = { nombre: nombre, url: url };
-    localStorage.setItem('negosistema_ultima_visita', JSON.stringify(datos));
-}
-
-/**
- * Configura la base estándar de Leaflet compartida por todos los mapas
- * @param {string} idContenedor - El ID del elemento DIV en el archivo HTML
- * @param {Array} coordenadasCentro - Arreglo [lat, lon] de inicio
- * @param {number} zoomInicial - Nivel de acercamiento de la cámara
- * @returns {L.Map} Instancia viva del mapa de Leaflet
- */
-function crearMapaBase(idContenedor, coordenadasCentro, zoomInicial) {
-    const mapaInstancia = L.map(idContenedor, {
-        center: coordenadasCentro,
-        zoom: zoomInicial,
-        scrollWheelZoom: false
-    });
-
-    // Carga de la capa base en gris claro (CartoDB Positron) para resaltar los negocios
-    L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> &copy; <a href="https://carto.com">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
-    }).addTo(mapaInstancia);
-
-    return mapaInstancia;
-}
-/**
- * Carga y dibuja las áreas vectoriales de las colonias en la página principal
- * @param {string} idContenedor - ID del DIV (ej. 'mapa-local')
- * @param {string} rutaGeoJSON - Ubicación del archivo de polígonos
- */
-function inicializarMapaZonasGlobales(idContenedor, rutaGeoJSON) {
-    // Centro geográfico aproximado de la zona piloto en Iztapalapa
-    const mapaGlobal = crearMapaBase(idContenedor, [19.3450, -99.0150], 14);
-
-    fetch(rutaGeoJSON)
-    .then(response => {
-        if (!response.ok) throw new Error('Archivo GeoJSON global no disponible');
-        return response.json();
-    })
-    .then(data => {
-        const capaZonas = L.geoJSON(data, {
-            style: function (feature) {
-                let colorPoligono = feature.properties.fill || '#1a73e8';
-                let opacidad = feature.properties['fill-opacity'] || 0.3;
-                return {
-                    color: colorPoligono,
-                    weight: 1.5,
-                    fillColor: colorPoligono,
-                    fillOpacity: opacidad
-                };
-            },
-            onEachFeature: function (feature, layer) {
-                if (feature.properties && feature.properties.name) {
-                    let p = feature.properties;
-                    let urlDestino = p.Enlace || '#';
-                    
-                    let popupContenido = `<div style="padding: 5px; min-width: 200px; font-family: sans-serif; text-align: left; line-height: 1.4;">`;
-                    popupContenido += `<strong style="font-size: 14px; color: #1a73e8; display: block; margin-bottom: 4px;">${p.name}</strong>`;
-                    popupContenido += `<span style="font-size: 12px; color: #666; display: block; margin-bottom: 10px;">Directorio verificado 24/7.</span>`;
-                    popupContenido += `<a href="${urlDestino}" style="display: block; text-align: center; background: #34a853; color: white !important; padding: 8px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onclick="guardarProgreso('${p.name}', '${urlDestino}')">Ver Marketplace Local →</a>`;
-                    popupContenido += `</div>`;
-                    
-                    layer.bindPopup(popupContenido);
-
-                    layer.on({
-                        mouseover: function (e) { e.target.setStyle({ fillOpacity: 0.5, weight: 2.5 }); },
-                        mouseout: function (e) { capaZonas.resetStyle(e.target); }
-                    });
-                }
-            }
-        }).addTo(mapaGlobal);
-        
-        mapaGlobal.fitBounds(capaZonas.getBounds());
-    })
-    .catch(error => console.error('Error al mapear las colonias vectoriales:', error));
-}
-
-/**
- * Carga y dibuja los puntos comerciales (tiendas/servicios) en los mapas internos
- * @param {string} idContenedor - ID del DIV (ej. 'mapa-productos')
- * @param {string} rutaGeoJSON - Ubicación del archivo de tiendas de la colonia
- * @param {Array} coordenadasCentro - Coordenadas específicas de la colonia [lat, lon]
- */
-function inicializarMapaMercadoLocal(idContenedor, rutaGeoJSON, coordenadasCentro) {
-    const mapaInterno = crearMapaBase(idContenedor, coordenadasCentro, 16);
-
-    fetch(rutaGeoJSON)
-    .then(response => {
-        if (!response.ok) throw new Error('Catálogo de comercios local ausente');
-        return response.json();
-    })
-    .then(data => {
-        const capaPuntos = L.geoJSON(data, {
-            pointToLayer: function (feature, latlng) {
-                // Segmentación automática por los colores de la guía del marketplace
-                let colorGiro = feature.properties['marker-color'] || '#2e7d32';
-                
-                let marcadorEstilizado = L.divIcon({
-                    className: 'marcador-comercio-giro',
-                    html: `<div style="background-color: ${colorGiro}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>`,
-                    iconSize:,
-                    iconAnchor:
-                });
-                return L.marker(latlng, { icon: marcadorEstilizado });
-            },
-            onEachFeature: function (feature, layer) {
-                if (feature.properties) {
-                    let props = feature.properties;
-                    let popupHtml = `<div style="font-family: sans-serif; min-width: 190px; line-height: 1.4;">`;
-                    popupHtml += `<strong style="font-size: 14px; color: #0a2540; display: block; margin-bottom: 2px;">${props.name || 'Negocio Local'}</strong>`;
-                    popupHtml += `<span style="font-size: 11px; color: #795548; font-weight: bold; display: block; margin-bottom: 8px;">🛍️ ${props.giro || 'Giro Comercial'}</span>`;
-                    
-                    if(props.description) {
-                        popupHtml += `<p style="font-size: 12px; color: #555; margin: 0 0 10px 0;">${props.description}</p>`;
-                    }
-                    
-                    // Canal de monetización directo por visibilidad premium
-                    if(props.telefono) {
-                        popupHtml += `<a href="https://wa.me{props.telefono}?text=Hola,%20vi%20tu%20negocio%20en%20Negosistema" target="_blank" style="display: block; text-align: center; background: #25d366; color: white !important; padding: 6px 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 12px;">💬 Pedir por WhatsApp</a>`;
-                    }
-                    
-                    popupHtml += `</div>`;
-                    layer.bindPopup(popupHtml);
-                }
-            }
-        }).addTo(mapaInterno);
-
-        mapaInterno.fitBounds(capaPuntos.getBounds());
-    })
-    .catch(error => console.warn('Mapa a la espera de archivo de comercios GeoJSON:', error));
-}
+}).addTo(map);
