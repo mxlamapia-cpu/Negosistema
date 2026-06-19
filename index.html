@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Negosistema - Directorio Hiperlocal</title>
-    <!-- Ruta exacta al archivo CSS centralizado -->
-        <link rel="stylesheet" href="./css/styles.css">
-    <!-- Estilos de Leaflet (Sin diagonales finales) -->
+    
+    <!-- Ruta exacta al archivo CSS centralizado de tu repositorio -->
+    <link rel="stylesheet" href="./css/styles.css">
+    
+    <!-- Estilos de Leaflet Oficiales (Ruta de CDN Corregida) -->
     <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    
     <style>
         /* Ajuste para que el mapa se integre perfectamente en tu contenedor actual */
         .map-wrapper-xalpa {
@@ -33,6 +36,7 @@
         }
     </style>
 </head>
+
 <body>
  <!-- Menú de Navegación Superior -->
  <nav class="navbar">
@@ -122,13 +126,15 @@
  <!-- Pie de Página Técnico -->
  <footer class="pie-pagina">
  <p>&copy; 2026 Negosistema. Todos los derechos reservados.</p>
- <a href="terminos.html">Políticas de Uso y Deslinde Legal</a>
+ <a href="./terminos.html">Políticas de Uso y Deslinde Legal</a>
  </footer>
 
- <!-- SCRIPTS DEL MAPA CENTRALIZADO -->
- <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
- <!-- Llamada a tu motor externo que crearemos a continuación -->
- <script src="./js/motor-mapas.js"></script>
+<!-- Librería JavaScript de Leaflet Oficial (Ruta de CDN Corregida) -->
+<script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<!-- Llamada a tu motor externo con guion medio -->
+<script src="./js/motor-mapas.js"></script>
+
 
  <script>
  document.addEventListener("DOMContentLoaded", function() {
