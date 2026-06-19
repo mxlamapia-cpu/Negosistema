@@ -7,11 +7,12 @@
 const CONFIG_NEGOSISTEMA = {
     // Reemplaza esta URL por tu enlace CSV público de la pestaña "salida mapa"
     urlCsvPublico: "https://google.com",
-    rutaGeoJson: "./data/iztapalapa-colonias.geojson",
+    rutaGeoJson: "https://github.io",
     coordenadasIztapalapa: [19.3455, -99.0130],
     zoomInicialIndex: 14,
     zoomInicialSeccion: 16
 };
+
 
 // Variables globales del sistema de mapeo
 let mapaNegosistema = null;
