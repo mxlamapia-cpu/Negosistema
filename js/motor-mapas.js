@@ -1,14 +1,14 @@
 /**
  * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * PARTE 1 DE 4: Configuración Maestra con Enlace de Producción y Arranque Nacio
+ * PARTE 1 DE 4: Configuración Maestra con Servidor de Mapas OpenStreetMap Seguro
  */
 
 // --- CONFIGURACIÓN MAESTRA DEL PROYECTO ---
 const CONFIG_NEGOSISTEMA = {
-    // Tu enlace CSV de producción oficial sincronizado al 100%
-    urlCsvPublico: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv",
+    // Enlace CSV de producción oficial sincronizado al 100%
+    urlCsvPublico: "https://google.com",
     
-    // Ruta absoluta estable para evitar pantallas en blanco en subcarpetas
+    // Ruta absoluta estable para evitar pantallas en blanco o gris en subcarpetas
     rutaGeoJson: "https://github.io",
     coordenadasIztapalapa: [19.3455, -99.0130],
     zoomInicialIndex: 14,
@@ -49,16 +49,17 @@ function inicializarArquitecturaMapa() {
         return;
     }
 
-    // Inicializar mapa nativo sin controles estorbosos para móviles
+    // Inicializar mapa nativo optimizado para móviles (Equivalente profesional a tu var map = L.map)
     mapaNegosistema = L.map(idContenedor, {
         zoomControl: false,
         dragging: true,
         tap: true
     }).setView(CONFIG_NEGOSISTEMA.coordenadasIztapalapa, zoom);
 
-    // Cargar capa base limpia (CartoDB Positron - Excelente contraste para pines metalizados)
-    L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
+    // 👇 CAMBIO CRÍTICO: Servidor oficial de OpenStreetMap que elimina el fondo gris en subcarpetas 👇
+    L.tileLayer('https://openstreetmap.org{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
     }).addTo(mapaNegosistema);
 
     // Inyectar control de zoom en esquina superior derecha de forma discreta
@@ -253,73 +254,73 @@ function procesarBaseDatosCsv(csvTexto, tipoMapa) {
  */
 function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todos") {
     capaMarcadoresGroup.clearLayers();
-    const boundsParaAjuste = [];
+    var boundsParaAjuste = [];
 
-    datosComerciosGlobales.forEach(comercio => {
+    datosComerciosGlobales.forEach(function(comercio) {
         if (filtroColonia !== "todos" && !comercio.coloniaOriginal.toLowerCase().includes(filtroColonia.toLowerCase())) return;
         if (filtroMapa !== "todos" && comercio.mapaObjetivo !== filtroMapa.toLowerCase()) return;
         if (filtroCapa !== "todos" && comercio.capaActivaMapeo !== filtroCapa.toLowerCase()) return;
 
         // --- INYECCIÓN VISUAL DE PIN METALIZADO (CSS MATCHING) ---
-        let claseNivelCss = `pin-nivel${comercio.nivelServicio}`;
-        let colorFondoGiro = obtenerColorHexagonalPorCapa(comercio.capaActivaMapeo);
-        let estiloInline = (comercio.nivelServicio === 1) ? '' : `background-color: ${colorFondoGiro};`;
+        var claseNivelCss = "pin-nivel" + comercio.nivelServicio;
+        var colorFondoGiro = obtenerColorHexagonalPorCapa(comercio.capaActivaMapeo);
+        var estiloInline = (comercio.nivelServicio === 1) ? '' : "background-color: " + colorFondoGiro + ";";
 
-        // Tamaño y centro numérico puro para evitar fallos de corchetes del chat
-        const iconoPersonalizadoHtml = L.divIcon({
-            className: `pin-negosistema ${claseNivelCss}`,
-            html: `<div style="${estiloInline} width:14px; height:14px; border-radius:50%;"></div>`,
+        // Parámetros fijos numéricos blindados contra cortes de sintaxis
+        var iconoPersonalizadoHtml = L.divIcon({
+            className: "pin-negosistema " + claseNivelCss,
+            html: '<div style="' + estiloInline + ' width:14px; height:14px; border-radius:50%;"></div>',
             iconSize: 14,
             iconAnchor: 7
         });
 
         // --- CONSTRUCCIÓN DEL MURO DE PRIVACIDAD EN POPUPS ---
-        let popupContenidoHtml = `<div class="tarjeta-popup">`;
-        popupContenidoHtml += `<h3>${comercio.nivelServicio >= 2 ? comercio.nombre : 'Comercio Registrado'}</h3>`;
-        popupContenidoHtml += `<p style="font-size:11px; margin: 0 0 6px 0; color:#95a5a6;">ID Ref: ${comercio.id}</p>`;
+        var popupContenidoHtml = '<div class="tarjeta-popup">';
+        popupContenidoHtml += '<h3>' + (comercio.nivelServicio >= 2 ? comercio.nombre : 'Comercio Registrado') + '</h3>';
+        popupContenidoHtml += '<p style="font-size:11px; margin: 0 0 6px 0; color:#95a5a6;">ID Ref: ' + comercio.id + '</p>';
 
         if (comercio.nivelServicio >= 3) {
-            if (comercio.slogan) popupContenidoHtml += `<div class="slogan">"${comercio.slogan}"</div>`;
-            if (comercio.productosServicios) popupContenidoHtml += `<div class="productos"><strong>Ofrece:</strong> ${comercio.productosServicios}</div>`;
-            if (comercio.horarios) popupContenidoHtml += `<div class="semaforo-horario horario-abierto">Abierto Ahora: ${comercio.horarios}</div>`;
+            if (comercio.slogan) popupContenidoHtml += '<div class="slogan">"' + comercio.slogan + '"</div>';
+            if (comercio.productosServicios) popupContenidoHtml += '<div class="productos"><strong>Ofrece:</strong> ' + comercio.productosServicios + '</div>';
+            if (comercio.horarios) popupContenidoHtml += '<div class="semaforo-horario horario-abierto">Abierto Ahora: ' + comercio.horarios + '</div>';
         }
 
         if (comercio.nivelServicio >= 4) {
-            const urlWhatsAppActiva = comercio.clickPersonalizado || comercio.clickGenerico;
+            var urlWhatsAppActiva = comercio.clickPersonalizado || comercio.clickGenerico;
             if (urlWhatsAppActiva) {
-                popupContenidoHtml += `<a href="${urlWhatsAppActiva}" target="_blank" class="btn-whatsapp-comercial">💬 Contactar por WhatsApp</a>`;
+                popupContenidoHtml += '<a href="' + urlWhatsAppActiva + '" target="_blank" class="btn-whatsapp-comercial">💬 Contactar por WhatsApp</a>';
             }
             if (comercio.redes) {
-                popupContenidoHtml += `<p style="margin: 8px 0 4px 0; font-size:12px; text-align:center;">🔗 <a href="${comercio.redes}" target="_blank" style="color:#1a73e8; font-weight:600;">Ver Redes Sociales</a></p>`;
+                popupContenidoHtml += '<p style="margin: 8px 0 4px 0; font-size:12px; text-align:center;">🔗 <a href="' + comercio.redes + '" target="_blank" style="color:#1a73e8; font-weight:600;">Ver Redes Sociales</a></p>';
             }
         }
 
         if (comercio.nivelServicio === 5) {
             if (comercio.enlaceVideo) {
-                const idVideoLimpio = extraerIdVideoPlataformas(comercio.enlaceVideo);
+                var idVideoLimpio = extraerIdVideoPlataformas(comercio.enlaceVideo);
                 if (idVideoLimpio) {
-                    popupContenidoHtml += `<div class="contenedor-video" style="margin-top:8px;"><iframe src="https://youtube.com{idVideoLimpio}" allowfullscreen></iframe></div>`;
+                    popupContenidoHtml += '<div class="contenedor-video" style="margin-top:8px;"><iframe src="https://youtube.com' + idVideoLimpio + '" allowfullscreen></iframe></div>';
                 }
             }
             if (comercio.linksWebPropia) {
-                popupContenidoHtml += `<a href="${comercio.linksWebPropia}" target="_blank" class="btn-web-comercial">🌐 Visitar Página Web Oficial</a>`;
+                popupContenidoHtml += '<a href="' + comercio.linksWebPropia + '" target="_blank" class="btn-web-comercial">🌐 Visitar Página Web Oficial</a>';
             }
         }
 
         if (comercio.nivelServicio <= 3) {
-            popupContenidoHtml += `<div class="bloque-bloqueado-upsell" style="margin-top:6px;">🔒 Canales de contacto directo exclusivos para cuentas Premium</div>`;
+            popupContenidoHtml += '<div class="bloque-bloqueado-upsell" style="margin-top:6px;">🔒 Canales de contacto directo exclusivos para cuentas Premium</div>';
         }
 
-        popupContenidoHtml += `</div>`;
+        popupContenidoHtml += '</div>';
 
-        const marcadorFinal = L.marker([comercio.latitud, comercio.longitud], { icon: iconoPersonalizadoHtml })
+        var marcadorFinal = L.marker([comercio.latitud, comercio.longitud], { icon: iconoPersonalizadoHtml })
             .bindPopup(popupContenidoHtml, { maxWidth: 290 });
 
         capaMarcadoresGroup.addLayer(marcadorFinal);
         boundsParaAjuste.push([comercio.latitud, comercio.longitud]);
     });
 
-    // Enfoque numérico directo blindado contra errores de sintaxis
+    // Encuadre de mapa con número entero para saltarse errores de comas sueltas
     if (boundsParaAjuste.length > 0 && filtroColonia !== "todos") {
         mapaNegosistema.fitBounds(boundsParaAjuste, { padding: 40, maxZoom: 16 });
     }
@@ -330,7 +331,7 @@ function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todo
  */
 function obtenerColorHexagonalPorCapa(nombreCapa) {
     if (!nombreCapa) return "#7f8c8d";
-    const capaClean = nombreCapa.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    var capaClean = nombreCapa.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
     if (capaClean.includes("basica") || capaClean.includes("abarrotes") || capaClean.includes("carnic") || capaClean.includes("recaud") || capaClean.includes("tortill") || capaClean.includes("cremer") || capaClean.includes("poller") || capaClean.includes("purificadora")) return "#27ae60"; 
     if (capaClean.includes("preparada") || capaClean.includes("taco") || capaClean.includes("pizz") || capaClean.includes("rostic") || capaClean.includes("panader") || capaClean.includes("hamburguesa") || capaClean.includes("alitas") || capaClean.includes("pastel") || capaClean.includes("helado") || capaClean.includes("cafe")) return "#e67e22"; 
@@ -355,9 +356,9 @@ function obtenerColorHexagonalPorCapa(nombreCapa) {
  * 6. Analiza la URL para aplicar filtros automáticos en secciones finales
  */
 function ejecutarFiltroAutomaticoPaginaInterna() {
-    const urlActual = window.location.pathname.toLowerCase();
-    let zonaMapeo = "todos";
-    let segmentoMapa = "todos";
+    var urlActual = window.location.pathname.toLowerCase();
+    var zonaMapeo = "todos";
+    var segmentoMapa = "todos";
 
     if (urlActual.includes("xalpa")) zonaMapeo = "xalpa";
     if (urlActual.includes("ampli1") || urlActual.includes("santiago")) zonaMapeo = "santiago";
@@ -368,13 +369,13 @@ function ejecutarFiltroAutomaticoPaginaInterna() {
 }
 
 /**
- * 7. Extrae el identificador de 11 caracteres de enlaces de YouTube (Corregido y Blindado)
+ * 7. Extrae el identificador de 11 caracteres de enlaces de YouTube (Validado con RegExp Seguro)
  */
 function extraerIdVideoPlataformas(urlVideo) {
     if (!urlVideo) return null;
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = urlVideo.match(regExp);
-    if (match && match[2].length === 11) {
+    if (match && match[2] && match[2].length === 11) {
         return match[2];
     }
     return null;
