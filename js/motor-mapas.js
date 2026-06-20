@@ -6,7 +6,7 @@
 // --- CONFIGURACIÓN MAESTRA DEL PROYECTO ---
 const CONFIG_NEGOSISTEMA = {
     // ⚠️ REEMPLAZA ESTA URL POR TU ENLACE CSV REAL DE LA PESTAÑA "SALIDA MAPA" CUANDO ESTÉ LISTO
-    urlCsvPublico: "https://github.io", 
+    urlCsvPublico: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ3RF8wgXtMbBld_N_VP0IFi0NwvE7p3cKcmqlMtSJyE0bQDC6jSSnjtotVvXYGPYxUwIRpApFiQJPv/pub?gid=70807169&single=true&output=csv", 
     rutaGeoJson: "https://github.io",
     coordenadasIztapalapa: [19.3455, -99.0130],
     zoomInicialIndex: 14,
