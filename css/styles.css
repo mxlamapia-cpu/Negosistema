@@ -1,8 +1,9 @@
 /* ==========================================================================
-   NEGOSISTEMA (2026) - Arquitectura de Estilos para Mapeo Hiperlocal
+   NEGOSISTEMA (2026) - Hoja de Estilos Fusionada de Alta Compatibilidad
+   Parte 1 de 2: Estilos Base del Index Original y Contenedores Adaptables
    ========================================================================== */
 
-/* --- Configuración Base y Pantalla Completa --- */
+/* --- Normalización y Estilos Base de tu Documento --- */
 html, body {
     margin: 0;
     padding: 0;
@@ -10,20 +11,127 @@ html, body {
     height: 100%;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: #f4f6f9;
-    overflow-x: hidden;
 }
 
-/* --- Contenedores de Mapas (Index e Internas) --- */
-#mapa_general, #mapa_seccion {
+/* --- Ajuste Original de tu Contenedor de Bloque Xalpa (Wrapper) --- */
+.map-wrapper-xalpa {
     width: 100%;
-    height: 100vh; /* Ocupa el 100% de la pantalla del celular */
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+    height: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin: 20px 0;
+    position: relative;
 }
 
-/* --- Botonera de Filtros Flotantes Inferiores (Diseño Táctil Móvil) --- */
+/* --- Conservación de tus IDs de Mapas Originales (Evita Pantallas en Blanco) --- */
+#mapa_general {
+    width: 100%;
+    height: 100%;
+    background-color: #e5e3df;
+}
+
+#mapa_seccion {
+    width: 100%;
+    height: 100vh; /* Ocupa pantalla completa en las secciones finales */
+    display: block;
+    position: relative;
+}
+
+/* --- Diseño Elegante Original de tus Popups y Tarjetas --- */
+.popup-comercio { 
+    font-family: 'Segoe UI', sans-serif; 
+    min-width: 200px; 
+}
+
+.popup-comercio h3 { 
+    margin: 0 0 5px 0; 
+    color: #1a252f; 
+    font-size: 15px; 
+    border-bottom: 1px solid #ddd; 
+    padding-bottom: 4px; 
+}
+
+.popup-comercio p { 
+    margin: 5px 0 10px 0; 
+    color: #555; 
+    font-size: 13px; 
+}
+
+/* --- Tu Botón Original de Contacto de WhatsApp --- */
+.btn-popup-wa {
+    display: block; 
+    background-color: #25D366; 
+    color: white !important; 
+    text-align: center;
+    padding: 8px; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    font-size: 12px;
+}
+
+/* --- ESTRUCTURA DE PINES PREMIUM: Capas de Marcadores en Leaflet --- */
+.pin-negosistema {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* Nivel 1: Incógnito (Punto Gris de Presencia Pura) */
+.pin-nivel1 {
+    background-color: #7f8c8d !important;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Nivel 2: Marca (Punto de Color según su Giro Comercial) */
+.pin-nivel2 {
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* Nivel 3: Bronce (Información Completa + Brillo Metálico Fijo) */
+.pin-nivel3 {
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 10px #b87333, inset 0 0 4px #b87333;
+}
+
+/* Nivel 4: Plata (Contacto Activo + Brillo Pulsante Avanzado) */
+.pin-nivel4 {
+    border: 2px solid #ffffff;
+    animation: pulsoPlataNegosistema 2s infinite ease-in-out;
+}
+
+/* Nivel 5: Oro / Destacado (Todo Full + Parpadeo Dorado de Alta Confianza) */
+.pin-nivel5 {
+    border: 2px solid #ffffff;
+    animation: parpadeoOroNegosistema 1.5s infinite ease-in-out;
+}
+/* ==========================================================================
+   NEGOSISTEMA (2026) - Hoja de Estilos Fusionada de Alta Compartibilidad
+   Parte 2 de 2: Animaciones Avanzadas, Botoneras de Filtro y Multimedia
+   ========================================================================== */
+
+/* --- ANIMACIONES CSS PARA NIVELES PREMIUM --- */
+@keyframes pulsoPlataNegosistema {
+    0% { box-shadow: 0 0 0 0px rgba(192, 192, 192, 0.8), 0 2px 5px rgba(0,0,0,0.2); }
+    70% { box-shadow: 0 0 0 10px rgba(192, 192, 192, 0), 0 2px 5px rgba(0,0,0,0.2); }
+    100% { box-shadow: 0 0 0 0px rgba(192, 192, 192, 0), 0 2px 5px rgba(0,0,0,0.2); }
+}
+
+@keyframes parpadeoOroNegosistema {
+    0% { box-shadow: 0 0 4px #ffd700, 0 0 12px #ffd700; filter: brightness(1); }
+    50% { box-shadow: 0 0 8px #ffd700, 0 0 22px #ff8c00; filter: brightness(1.2); }
+    100% { box-shadow: 0 0 4px #ffd700, 0 0 12px #ffd700; filter: brightness(1); }
+}
+
+/* --- BOTONERA DE FILTROS FLOTANTES (DISEÑO TÁCTIL MÓVIL) --- */
 .botonera-filtros {
     position: fixed;
     bottom: 20px;
@@ -40,11 +148,11 @@ html, body {
     max-width: 90%;
     overflow-x: auto;
     white-space: nowrap;
-    scrollbar-width: none; /* Ocultar scroll en Firefox */
+    scrollbar-width: none;
 }
 
 .botonera-filtros::-webkit-scrollbar {
-    display: none; /* Ocultar scroll en Chrome/Safari */
+    display: none; /* Oculta la barra de desplazamiento */
 }
 
 .btn-filtro {
@@ -65,89 +173,18 @@ html, body {
     transform: scale(0.95);
 }
 
-/* --- Colores de los Botones de Filtro (Categorías Oficiales) --- */
+/* --- Identificadores de Botones (Filtros Avanzados) --- */
 .btn-canasta { background-color: #27ae60; color: #fff; }
 .btn-comida  { background-color: #e67e22; color: #fff; }
 .btn-urgencias { background-color: #111111; color: #fff; border: 1px solid #333; }
 .btn-todos    { background-color: #7f8c8d; color: #fff; }
 
-/* --- ESTRUCTURA PREMIUM: Pines Metalizados en Leaflet --- */
-.pin-negosistema {
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-/* Nivel 1: Incógnito (Punto Gris) */
-.pin-nivel1 {
-    background-color: #7f8c8d !important;
-    border: 2px solid #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-
-/* Nivel 2: Marca (Punto de Color según Categoría) */
-.pin-nivel2 {
-    border: 2px solid #ffffff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-}
-
-/* Nivel 3: Bronce (Información Completa + Brillo) */
-.pin-nivel3 {
-    border: 2px solid #ffffff;
-    box-shadow: 0 0 10px #b87333, inset 0 0 4px #b87333;
-}
-
-/* Nivel 4: Plata (Contacto + Brillo Pulsante) */
-.pin-nivel4 {
-    border: 2px solid #ffffff;
-    animation: pulsoPlata 2s infinite ease-in-out;
-}
-
-/* Nivel 5: Oro / Diamante (Todo Full + Parpadeo Dorado Intenso) */
-.pin-nivel5 {
-    border: 2px solid #ffffff;
-    animation: parpadeoOro 1.5s infinite ease-in-out;
-}
-
-/* --- ANIMACIONES CSS PARA NIVELES PREMIUM --- */
-@keyframes pulsoPlata {
-    0% { box-shadow: 0 0 0 0px rgba(192, 192, 192, 0.8), 0 2px 5px rgba(0,0,0,0.2); }
-    70% { box-shadow: 0 0 0 10px rgba(192, 192, 192, 0), 0 2px 5px rgba(0,0,0,0.2); }
-    100% { box-shadow: 0 0 0 0px rgba(192, 192, 192, 0), 0 2px 5px rgba(0,0,0,0.2); }
-}
-
-@keyframes parpadeoOro {
-    0% { box-shadow: 0 0 4px #ffd700, 0 0 12px #ffd700; filter: brightness(1); }
-    50% { box-shadow: 0 0 8px #ffd700, 0 0 22px #ff8c00; filter: brightness(1.2); }
-    100% { box-shadow: 0 0 4px #ffd700, 0 0 12px #ffd700; filter: brightness(1); }
-}
-
-/* --- DISEÑO DE TARJETAS DINÁMICAS (Popups de Leaflet) --- */
-.leaflet-popup-content-wrapper {
-    border-radius: 12px;
-    padding: 6px;
-    box-shadow: 0 4px 25px rgba(0,0,0,0.2);
-}
-
+/* --- SECCIONES EXTRA DENTRO DE LOS POPUPS EXTENDIDOS --- */
 .tarjeta-popup {
     max-width: 280px;
     font-size: 14px;
     color: #2c3e50;
     line-height: 1.4;
-}
-
-.tarjeta-popup h3 {
-    margin: 0 0 6px 0;
-    font-size: 16px;
-    color: #1a252f;
-    font-weight: 700;
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 4px;
 }
 
 .tarjeta-popup .slogan {
@@ -179,10 +216,10 @@ html, body {
 .horario-abierto { background-color: #d4edda; color: #155724; }
 .horario-cerrado { background-color: #f8d7da; color: #721c24; }
 
-/* --- CONTENEDORES MULTIMEDIA (Nivel 5) --- */
+/* --- CONTENEDORES MULTIMEDIA (NIVEL 5) --- */
 .contenedor-video {
     position: relative;
-    padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+    padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
     border-radius: 8px;
@@ -199,7 +236,6 @@ html, body {
     border: 0;
 }
 
-/* --- BOTÓN PREMIUM DE REDIRECCIÓN A WHATSAPP --- */
 .btn-whatsapp-comercial {
     display: flex;
     align-items: center;
@@ -216,11 +252,6 @@ html, body {
     transition: background-color 0.2s;
 }
 
-.btn-whatsapp-comercial:hover {
-    background-color: #128c7e;
-}
-
-/* Enlace Web Nivel 5 */
 .btn-web-comercial {
     display: block;
     background-color: #3498db;
@@ -234,7 +265,7 @@ html, body {
     font-size: 12px;
 }
 
-/* --- BANNER DE RETENCIÓN / UP-SELL (Nivel 1, 2 y 3) --- */
+/* --- BANNER DE RETENCIÓN / UP-SELL (NIVEL 1, 2 Y 3) --- */
 .bloque-bloqueado-upsell {
     background-color: #fcf8e3;
     border: 1px dashed #fbeed5;
