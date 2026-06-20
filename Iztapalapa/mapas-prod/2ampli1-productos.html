@@ -1,110 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Negosistema - 2 Ampliación Santiago 1 (Productos)</title>
- <!-- Ruta absoluta corregida para subcarpetas -->
- <link rel="stylesheet" href="../../css/styles.css">
- <!-- Estilos de Leaflet -->
- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
- <style>
-    .map-wrapper-xalpa { width: 100%; height: 550px; border-radius: 8px; margin: 20px 0; overflow: hidden; }
-    #mapa_seccion { width: 100%; height: 100%; }
-    .popup-comercio { font-family: sans-serif; min-width: 200px; }
-    .btn-popup-wa { display: block; background: #25D366; color: white !important; text-align: center; padding: 8px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 8px; }
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2A Ampliación Santiago I - Productos | Negosistema</title>
+ 
+    <!-- Hoja de Estilos Centralizada de tu Repositorio -->
+    <link rel="stylesheet" href="../../css/styles.css">
+
+    <!-- AQUÍ PEGA TU ENLACE STYLE DEL HOJA DE ESTILOS (CSS) DE LEAFLET -->
+    Pega_Aqui_El_Enlace_CSS_De_La_Pagina_Leaflet
 </head>
 <body>
- <!-- Menú de Navegación Superior Unificado -->
- <nav class="navbar">
- <a href="../../index.html" class="logo"> NEGOSISTEMA</a> 📍
- <div class="nav-links">
- <a href="../../anunciate.html" class="nav-item">Anúnciate</a>
- <a href="../../creditos.html" class="nav-item">Créditos</a>
- <a href="../../terminos.html" class="nav-item">Términos y Condiciones</a>
- </div>
- </nav>
- <!-- Contenedor Principal de la Página -->
- <div class="contenedor-productos">
- <main>
- <header style="margin-bottom: 20px;">
- <h1 class="section-title">2 Ampliación Santiago 1: Directorio de Productos</h1> 🍎
- <p class="intro-text">Localice los puntos de venta, comida y comercios en la zona.</p> 
- </header>
 
- <!-- SECCIÓN: SLIDER DE OFERTAS ANIMADO -->
- <div class="info-container">
- <h2 class="info-title">Promociones de Productos en 2 Ampliación santiago 1</h2> 🔥
- <p class="info-text">Aproveche los descuentos y promociones en mantenimiento, salud y cuidado personal de la colonia.</p>
- </div>
+    <!-- Menú de Navegación Superior Unificado -->
+    <nav class="navbar">
+        <a href="../../index.html" class="logo"> NEGOSISTEMA</a> 📍
+        <div class="nav-links">
+            <a href="../../anunciate.html" class="nav-item">Anúnciate</a>
+            <a href="../../creditos.html" class="nav-item">Créditos</a>
+            <a href="../../terminos.html" class="nav-item">Términos y Condiciones</a>
+        </div>
+    </nav>
 
- <div class="slider-viewport">
- <div class="slider-track">
- <!-- GRUPO 1 -->
- <div class="slide-group">
- <div class="feature-card-link">
- <a href="#" class="feature-card">
- <div class="card-image"><img src="../../Imagenes/caballete.png" alt="Estética"></div>
- <div class="card-content"><h3>Espacio para buenas ofertas</h3><p>cuando haya buenas ofertas busca aqui.</p></div>
- </a>
- <a href="https://wa.me" class="btn-wa-float" target="_blank"><i class="fab fa-whatsapp"></i> ¡PEDIR!</a>
- </div>
- </div>
- </div>
- </div>
+    <!-- Contenedor de la Sección Geográfica -->
+    <div class="contenedor">
+        <header class="encabezado">
+            <h1>Santiago Acahualtepec I 🍎</h1>
+            <p>Directorio Hiperlocal de Productos y Canasta Básica en la 2da Ampliación. Filtra por categoría usando la botonera inferior.</p>
+        </header>
 
- <!-- BOTÓN SWITCH INTERACTIVO -->
- <div style="margin: 25px 0 15px 0;">
- <a href="../mapas_Serv/2ampli1_servicios.html" class="btn-gps-xalpa">Ver Servicios</a>
- Cambiar a Mapa de Servicios (Oficios y Expertos) 🛠
- </div>
+        <!-- Contenedor Maestro para la Visualización del Mapa Local -->
+        <div class="map-wrapper-xalpa">
+            <!-- El motor-mapas.js buscará este ID para inyectar los pines filtrados de esta colonia -->
+            <div id="mapa_seccion"></div>
+        </div>
+    </div>
+    <!-- 1. BOTONERA DE FILTROS FLOTANTES INFERIORES (TÁCTIL MÓVIL) -->
+    <div class="botonera-filtros">
+        <!-- Filtro General -->
+        <button class="btn-filtro btn-todos" onclick="aplicarFiltroCapaBotonera('todos')">
+            🌐 Todos
+        </button>
+        <!-- Filtro Capa 1: Canasta Básica -->
+        <button class="btn-filtro btn-canasta" onclick="aplicarFiltroCapaBotonera('canasta')">
+            🍏 Canasta Básica
+        </button>
+        <!-- Filtro Capa 2: Comida Preparada -->
+        <button class="btn-filtro btn-comida" onclick="aplicarFiltroCapaBotonera('comida')">
+            🌮 Comida Preparada
+        </button>
+        <!-- Filtro Capa 7: Urgencias 24/7 -->
+        <button class="btn-filtro btn-urgencias" onclick="aplicarFiltroCapaBotonera('urgencia')">
+            🚨 Urgencias 24/7
+        </button>
+    </div>
 
- <!-- CONTENEDOR DEL MAPA NATIVO LEAFLET -->
- <div class="map-wrapper-xalpa">
-     <div id="mapa_seccion"></div>
- </div>
+    <!-- Pie de Página Unificado -->
+    <footer class="pie-pagina" style="text-align: center; padding: 20px 10px; color: #666; margin-top: 30px;">
+        <p>&copy; 2026 <strong>Negosistema</strong>. Todos los derechos reservados.</p>
+        <p style="font-size: 0.8rem; opacity: 0.6; margin: 5px 0;">Impulsando el comercio de proximidad en la 2da Ampliación Santiago Acahualtepec.</p>
+    </footer>
 
- <!-- GUÍA DE COLORES POR CAPAS (MAPA PRODUCTOS) -->
- <div class="guia-colores-contenedor">
- <h3 class="guia-titulo">Guía de Colores: Mapa de Productos</h3> 🍎
- <div class="guia-grid">
- <div class="guia-item"><span class="punto-color" style="background: #2e7d32;"></span><div><strong>Verde:</strong> Canasta Básica</div></div>
- <div class="guia-item"><span class="punto-color" style="background: #ef6c00;"></span><div><strong>Naranja:</strong> Comida Prepared</div></div>
- <div class="guia-item"><span class="punto-color" style="background: #fbc02d;"></span><div><strong>Amarillo:</strong> Ferretería y Hogar</div></div>
- <div class="guia-item"><span class="punto-color" style="background: #c62828;"></span><div><strong>Rojo:</strong> Salud y Farmacia</div></div>
- <div class="guia-item"><span class="punto-color" style="background: #E4007C;"></span><div><strong>Rosa:</strong> Variedades y Moda</div></div>
- <div class="guia-item"><span class="punto-color" style="background: #795548;"></span><div><strong>Café:</strong> Mascotas</div></div>
- <div class="guia-item"><span class="punto-color" style="background: #1565c0;"></span><div><strong>Azul:</strong> Tecnología</div></div>
- <div class="guia-item" style="opacity: 0.7;"><span class="punto-color" style="background: #9e9e9e;"></span><div><strong>Gris:</strong> Directorio Base</div></div>
- </div>
- </div>
- </main>
- </div>
+    <!-- 2. AQUÍ PEGA TU ENLACE SCRIPT DEL JAVASCRIPT DE LEAFLET (DESDE LA PÁGINA OFICIAL) -->
+    Pega_Aqui_El_Enlace_JS_De_La_Pagina_Leaflet
 
- <footer class="pie-pagina">
- <p>&copy; 2026 Negosistema. Todos los derechos reservados.</p>
- <a href="../../terminos.html">Políticas de Uso y Deslinde Legal</a>
- </footer>
+    <!-- 3. Enlace Final a tu Lógica Centralizada con Guion Medio -->
+    <script src="../../js/motor-mapas.js"></script>
 
- <!-- SCRIPTS DEL MAPA CENTRALIZADO -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
- <!-- Subimos dos niveles de carpeta para alcanzar el JS centralizado -->
- <script src="../../js/motor_mapas.js"></script>
- <script>
- document.addEventListener("DOMContentLoaded", function() {
-     // Inicializa el mapa filtrando solo por la zona 'ampli1' y la rama 'producto'
-     if (typeof cargarMapaPorZona === 'function') {
-         cargarMapaPorZona('ampli1', 'producto');
-     }
-
-     // Tu historial inteligente
-     const infoColonia = {
-         nombre: "2ampli1 prod (Productos)",
-         url: "./Iztapalapa/mapas_Prod/2ampli1_productos.html"
-     };
-     localStorage.setItem('negosistema_ultima_visita', JSON.stringify(infoColonia));
- });
- </script>
 </body>
 </html>
