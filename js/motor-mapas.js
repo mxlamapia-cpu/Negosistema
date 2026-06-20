@@ -1,12 +1,14 @@
 /**
  * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * PARTE 1 DE 3: Configuración Blindada y Arranque Automático de Contenedores
+ * PARTE 1 DE 4: Configuración Maestra con Enlace de Producción y Arranque Nacio
  */
 
 // --- CONFIGURACIÓN MAESTRA DEL PROYECTO ---
 const CONFIG_NEGOSISTEMA = {
-    // ⚠️ REEMPLAZA ESTA URL POR TU ENLACE CSV REAL DE LA PESTAÑA "SALIDA MAPA" CUANDO ESTÉ LISTO
-    urlCsvPublico: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv", 
+    // Tu enlace CSV de producción oficial sincronizado al 100%
+    urlCsvPublico: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv",
+    
+    // Ruta absoluta estable para evitar pantallas en blanco en subcarpetas
     rutaGeoJson: "https://github.io",
     coordenadasIztapalapa: [19.3455, -99.0130],
     zoomInicialIndex: 14,
@@ -54,12 +56,15 @@ function inicializarArquitecturaMapa() {
         tap: true
     }).setView(CONFIG_NEGOSISTEMA.coordenadasIztapalapa, zoom);
 
-    // Cargar capa base limpia (CartoDB Positron)
+    // Cargar capa base limpia (CartoDB Positron - Excelente contraste para pines metalizados)
     L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
     }).addTo(mapaNegosistema);
 
+    // Inyectar control de zoom en esquina superior derecha de forma discreta
     L.control.zoom({ position: 'topright' }).addTo(mapaNegosistema);
+
+    // Inicializar grupo de marcadores para permitir filtrados rápidos en tiempo real
     capaMarcadoresGroup = L.layerGroup().addTo(mapaNegosistema);
 
     // Arrancar la carga encadenada de archivos de datos
@@ -67,11 +72,11 @@ function inicializarArquitecturaMapa() {
 }
 /**
  * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * PARTE 2 DE 3: Compuerta de Simulación para Anúnciate y Procesador CSV Estándar
+ * PARTE 2 DE 4: Carga de Polígonos de Iztapalapa y Sistema Lógico Failsafe
  */
 
 /**
- * 2. Carga el GeoJSON de polígonos y gestiona la llamada al CSV con Failsafe integrado
+ * 2. Carga el GeoJSON de polígonos y posteriormente el CSV de los comercios
  */
 function cargarDatosGeograficosYComerciales(tipoMapa) {
     fetch(CONFIG_NEGOSISTEMA.rutaGeoJson)
@@ -107,11 +112,15 @@ function cargarDatosGeograficosYComerciales(tipoMapa) {
         })
         .catch(error => {
             console.warn("Negosistema Failsafe: Activando modo de contingencia por ausencia de datos en Sheets.", error);
-            // Si el Google Sheets está vacío o en mantenimiento, el index no se quedará en blanco
+            // Evita que el mapa colapse en blanco inyectando una fila de prueba estructurada
             const csvSincronizacionFailsafe = "ID,Marca,Colonia,Mapa,CapaProd,CapaServ,Nivel,Nombre,Slogan,Ofrece,Horario,Redes,Video,WhatsApp,Coordenadas\n000-FAIL,2026,XALPA II,productos,canasta,,1,Negosistema Inicializado,Modo de espera activo,,,Sugerido,7am-10pm,,,19.3455-99.0130";
             procesarBaseDatosCsv(csvSincronizacionFailsafe, tipoMapa);
         });
 }
+/**
+ * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
+ * PARTE 3 DE 4: Procesamiento CSV, Doble Presencia y Simulación de Negocios
+ */
 
 /**
  * 3. Parsea el CSV, controla la Doble Presencia e inyecta la simulación de tus 26 negocios en 'Anúnciate'
@@ -201,29 +210,30 @@ function procesarBaseDatosCsv(csvTexto, tipoMapa) {
             redes: cleanCols[11],
             enlaceVideo: cleanCols[12],
             whatsappNumero: cleanCols[13],
-            coordenadasRaw: cleanCols[14],
+            coordenadasRaw: cleanCols[14], // Columna O
             clickGenerico: cleanCols[15],
             personalizadoFrase: cleanCols[16],
             clickPersonalizado: cleanCols[17],
             linksWebPropia: cleanCols[18]
         };
 
-        if (!comercio.coordenadasRaw || !comercio.coordenadasRaw.includes("-")) continue;
+        if (!comercio.coordenadasRaw || !comercio.coordenadasRaw.includes(",")) continue;
 
-        const partesCoords = comercio.coordenadasRaw.split("-");
+        const partesCoords = comercio.coordenadasRaw.split(",");
         comercio.latitud = parseFloat(partesCoords[0]);
         comercio.longitud = parseFloat(partesCoords[1]);
 
         if (isNaN(comercio.latitud) || isNaN(comercio.longitud)) continue;
 
+        // --- SISTEMA DE DOBLE PRESENCIA POR COMAS (NIVEL 4 Y 5) ---
         const categoriasProductos = comercio.capaProductos ? comercio.capaProductos.split(",") : [];
-        const categoriasServicios = comercio.capaServicios ? comercio.capaServicios.split(",") : [];
-        const todasLasCapasAsignadas = [...categoriasProductos, ...categoriasServicios];
+        const categoriesServicios = comercio.capaServicios ? comercio.capaServicios.split(",") : [];
+        const todasLasCapasAsignadas = [...categoriasProductos, ...categoriesServicios];
 
         if (todasLasCapasAsignadas.length > 1 && (comercio.nivelServicio === 4 || comercio.nivelServicio === 5)) {
             todasLasCapasAsignadas.forEach(capa => {
                 const copiaComercio = { ...comercio, capaActivaMapeo: capa.trim().toLowerCase() };
-        datosComerciosGlobales.push(copiaComercio);
+                datosComerciosGlobales.push(copiaComercio);
             });
         } else {
             let capaDefecto = (comercio.mapaObjetivo === "productos" ? comercio.capaProductos : comercio.capaServicios);
@@ -231,7 +241,6 @@ function procesarBaseDatosCsv(csvTexto, tipoMapa) {
             datosComerciosGlobales.push(comercio);
         }
     }
-
     if (tipoMapa === "GENERAL") {
         renderizarPinesEnPantalla("todos", "todos");
     } else {
@@ -240,7 +249,7 @@ function procesarBaseDatosCsv(csvTexto, tipoMapa) {
 }
 
 /**
- * 4. Dibuja los marcadores aplicando el Muro de Privacidad en Popups
+ * 4. Dibuja los marcadores en tiempo real aplicando las reglas de la Escalera de Valor
  */
 function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todos") {
     capaMarcadoresGroup.clearLayers();
@@ -251,18 +260,20 @@ function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todo
         if (filtroMapa !== "todos" && comercio.mapaObjetivo !== filtroMapa.toLowerCase()) return;
         if (filtroCapa !== "todos" && comercio.capaActivaMapeo !== filtroCapa.toLowerCase()) return;
 
+        // --- INYECCIÓN VISUAL DE PIN METALIZADO (CSS MATCHING) ---
         let claseNivelCss = `pin-nivel${comercio.nivelServicio}`;
         let colorFondoGiro = obtenerColorHexagonalPorCapa(comercio.capaActivaMapeo);
         let estiloInline = (comercio.nivelServicio === 1) ? '' : `background-color: ${colorFondoGiro};`;
 
+        // Tamaño y centro numérico puro para evitar fallos de corchetes del chat
         const iconoPersonalizadoHtml = L.divIcon({
             className: `pin-negosistema ${claseNivelCss}`,
             html: `<div style="${estiloInline} width:14px; height:14px; border-radius:50%;"></div>`,
-            iconSize:14,
-            iconAnchor: [7, 7]
+            iconSize: 14,
+            iconAnchor: 7
         });
 
-
+        // --- CONSTRUCCIÓN DEL MURO DE PRIVACIDAD EN POPUPS ---
         let popupContenidoHtml = `<div class="tarjeta-popup">`;
         popupContenidoHtml += `<h3>${comercio.nivelServicio >= 2 ? comercio.nombre : 'Comercio Registrado'}</h3>`;
         popupContenidoHtml += `<p style="font-size:11px; margin: 0 0 6px 0; color:#95a5a6;">ID Ref: ${comercio.id}</p>`;
@@ -307,12 +318,13 @@ function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todo
         capaMarcadoresGroup.addLayer(marcadorFinal);
         boundsParaAjuste.push([comercio.latitud, comercio.longitud]);
     });
-           // CORRECCIÓN MANUAL INMUNE A ERRORES EN TU ARCHIVO JS
+
+    // Enfoque numérico directo blindado contra errores de sintaxis
     if (boundsParaAjuste.length > 0 && filtroColonia !== "todos") {
         mapaNegosistema.fitBounds(boundsParaAjuste, { padding: 40, maxZoom: 16 });
     }
-
 }
+
 /**
  * 5. Taxonomía de las 16 Capas Unificadas del Negosistema (Productos y Servicios)
  */
@@ -356,24 +368,28 @@ function ejecutarFiltroAutomaticoPaginaInterna() {
 }
 
 /**
- * 7. Extrae el identificador de 11 caracteres de enlaces de YouTube (Validado)
+ * 7. Extrae el identificador de 11 caracteres de enlaces de YouTube (Corregido y Blindado)
  */
 function extraerIdVideoPlataformas(urlVideo) {
     if (!urlVideo) return null;
-    let match = urlVideo.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
-    return (match && match[2].length === 11) ? match[2] : null;
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = urlVideo.match(regExp);
+    if (match && match[2].length === 11) {
+        return match[2];
+    }
+    return null;
 }
 
 /**
  * INTERFAZ PÚBLICA: Escucha los clics de las botoneras flotantes de tu HTML
  */
 function aplicarFiltroCapaBotonera(nombreCapa) {
-    const contenedorIndex = document.getElementById("mapa_general");
-    let zonaMapeo = "todos";
-    let segmentoMapa = "todos";
+    var contenedorIndex = document.getElementById("mapa_general");
+    var zonaMapeo = "todos";
+    var segmentoMapa = "todos";
 
     if (!contenedorIndex) {
-        const urlActual = window.location.pathname.toLowerCase();
+        var urlActual = window.location.pathname.toLowerCase();
         if (urlActual.includes("xalpa")) zonaMapeo = "xalpa";
         if (urlActual.includes("ampli1") || urlActual.includes("santiago")) zonaMapeo = "santiago";
         if (urlActual.includes("productos")) segmentoMapa = "productos";
