@@ -6,7 +6,7 @@
 // --- CONFIGURACIÓN MAESTRA DEL PROYECTO ---
 const CONFIG_NEGOSISTEMA = {
     // Enlace CSV de producción oficial sincronizado al 100%
-    urlCsvPublico: "https://google.com",
+    urlCsvPublico: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pubhtml?gid=1369751544&single=true",
     
     // Ruta absoluta estable para evitar pantallas en blanco o gris en subcarpetas
     rutaGeoJson: "https://github.io",
@@ -57,10 +57,13 @@ function inicializarArquitecturaMapa() {
     }).setView(CONFIG_NEGOSISTEMA.coordenadasIztapalapa, zoom);
 
     // 👇 CAMBIO CRÍTICO: Servidor oficial de OpenStreetMap que elimina el fondo gris en subcarpetas 👇
-    L.tileLayer('https://openstreetmap.org{z}/{x}/{y}.png', {
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapaNegosistema);
+
+
+    
 
     // Inyectar control de zoom en esquina superior derecha de forma discreta
     L.control.zoom({ position: 'topright' }).addTo(mapaNegosistema);
