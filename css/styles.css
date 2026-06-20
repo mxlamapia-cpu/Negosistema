@@ -1,77 +1,391 @@
 /* ==========================================================================
-   NEGOSISTEMA (2026) - Hoja de Estilos Fusionada de Alta Compatibilidad
-   Parte 1 de 2: Estilos Base del Index Original y Contenedores Adaptables
+   NEGOSISTEMA (2026) - Hoja de Estilos Oficial Completa e Integrada
+   Parte 1 de 2: Estructura Base, Componentes Comunes y Carrusel Automático
    ========================================================================== */
 
-/* --- Normalización y Estilos Base de tu Documento --- */
-html, body {
+/* --- 1. CONFIGURACIÓN GLOBAL Y RESETEO (PC y Smartphones) --- */
+* {
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
     background-color: #f4f6f9;
+    color: #333;
+    min-height: 100vh;
 }
 
-/* --- Ajuste Original de tu Contenedor de Bloque Xalpa (Wrapper) --- */
-.map-wrapper-xalpa {
-    width: 100%;
-    height: 500px;
-    border-radius: 8px;
+/* --- 2. COMPONENTES COMUNES (Barra de Navegación y Contenedores) --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.logo {
+    font-weight: bold;
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-item {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.nav-item:hover {
+    color: #1a73e8;
+}
+
+.contenedor {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 25px 20px;
+}
+
+.encabezado {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.encabezado h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #111;
+}
+
+.encabezado p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+/* --- 3. ETAPA 1: DISEÑO DEL INICIO (Cuadrícula de Colonias y Escalera) --- */
+.grid-eleccion-principal {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+.tarjeta-eleccion {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.icono-tarjeta {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.tarjeta-eleccion h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #111;
+}
+
+.tarjeta-eleccion p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.btn-accion-tarjeta {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #1a73e8;
+}
+
+.tarjeta-productos:hover {
+    border-color: #ff9800;
+}
+
+.tarjeta-servicios:hover {
+    border-color: #1a73e8;
+}
+
+@media (hover: hover) {
+    .tarjeta-eleccion:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    }
+}
+
+/* --- Escalera de Valor --- */
+.seccion-escalera {
+    background: #ffffff;
+    padding: 30px 20px;
+    border-radius: 16px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 40px;
+}
+
+.seccion-escalera h2 {
+    text-align: center;
+    font-size: 1.4rem;
+    color: #111;
+    margin-bottom: 5px;
+}
+
+.subtitulo-escalera {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+.bloques-escalera {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.escalon {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.numero-escalon {
+    background: #1a73e8;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1rem;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.escalon h3 {
+    font-size: 1.1rem;
+    color: #111;
+    margin-bottom: 5px;
+}
+
+.escalon p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* --- Info Containers Adicionales --- */
+.info-container {
+    max-width: 100%;
+    margin: 10px auto 20px;
+    padding: 0 10px;
+    font-family: sans-serif;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.info-title {
+    color: #0a2540;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    display: inline-block;
+    padding-bottom: 3px;
+    border-bottom: 3px solid #0070f3;
+}
+
+.info-text {
+    font-size: 0.95rem;
+    color: #64748b;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* --- Contenedor Principal del Slider de Ofertas --- */
+.slider-viewport {
+    max-width: 100%;
+    margin: 15px auto 5px auto;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin: 20px 0;
+    position: relative;
+    background: #f1f5f9;
+    border-radius: 15px;
+    border: 1px solid #e2e8f0;
+}
+
+.slider-track {
+    display: flex;
+    width: 300%;
+    animation: scroll-autoslide 15s infinite ease-in-out;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide-group {
+    display: flex;
+    width: 33.333%;
+    justify-content: center;
+    gap: 15px;
+    flex-shrink: 0;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.feature-card-link {
+    text-decoration: none;
+    display: flex;
+    flex: 1;
+    max-width: 420px;
+    transition: transform 0.3s ease;
     position: relative;
 }
 
-/* --- Conservación de tus IDs de Mapas Originales (Evita Pantallas en Blanco) --- */
-#mapa_general {
+.feature-card-link:hover {
+    transform: translateY(-4px);
+}
+
+.feature-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e2e8f0;
+    height: 100%;
+}
+/* ==========================================================================
+   NEGOSISTEMA (2026) - Hoja de Estilos Oficial Completa e Integrada
+   Parte 2 de 2: Multimedia, Responsividad Estricta e Inyección de Leaflet
+   ========================================================================== */
+
+/* --- 4. CONTINUACIÓN DEL CARRUSEL: Imágenes y Contenido --- */
+.card-image {
+    width: 100%;
+    background: #fff; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.card-image img {
+    width: 100%;
+    height: auto;
+    max-height: 140px;
+    object-fit: contain;
+    display: block;
+}
+
+.card-content { 
+    padding: 12px; 
+    text-align: center; 
+    padding-bottom: 50px;
+}
+
+.card-content h3 { 
+    color: #0a2540; 
+    margin-bottom: 4px; 
+    font-size: 1rem; 
+}
+
+.card-content p { 
+    color: #64748b; 
+    font-size: 0.85rem; 
+    margin: 0; 
+}
+
+.btn-wa-float {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: #25D366;
+    color: white !important;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none !important;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    z-index: 10;
+    transition: background 0.3s;
+}
+
+.btn-wa-float:hover {
+    background-color: #128c7e;
+}
+
+.nav-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.dot.active, .dot:hover {
+    background-color: #0070f3; 
+    width: 20px; 
+    border-radius: 10px;
+}
+
+@keyframes scroll-autoslide {
+    0%, 25% { transform: translateX(0); }
+    33%, 58% { transform: translateX(-33.333%); }
+    66%, 91% { transform: translateX(-66.666%); }
+    100% { transform: translateX(0); }
+}
+
+/* --- 5. ADAPTACIÓN DE MAPAS INTERNOS Y RESPETO A TU MAQUETACIÓN --- */
+.map-wrapper-xalpa {
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    position: relative;
+    width: 100%;
+    height: 500px; /* Dimensiones fijas seguras para evitar colapso de Leaflet */
+    margin-bottom: 25px;
+}
+
+/* Tus IDs nativos mapeados sin position absolute invasivo */
+#mapa_general, #mapa_seccion {
     width: 100%;
     height: 100%;
-    background-color: #e5e3df;
-}
-
-#mapa_seccion {
-    width: 100%;
-    height: 100vh; /* Ocupa pantalla completa en las secciones finales */
     display: block;
-    position: relative;
 }
 
-/* --- Diseño Elegante Original de tus Popups y Tarjetas --- */
-.popup-comercio { 
-    font-family: 'Segoe UI', sans-serif; 
-    min-width: 200px; 
-}
-
-.popup-comercio h3 { 
-    margin: 0 0 5px 0; 
-    color: #1a252f; 
-    font-size: 15px; 
-    border-bottom: 1px solid #ddd; 
-    padding-bottom: 4px; 
-}
-
-.popup-comercio p { 
-    margin: 5px 0 10px 0; 
-    color: #555; 
-    font-size: 13px; 
-}
-
-/* --- Tu Botón Original de Contacto de WhatsApp --- */
-.btn-popup-wa {
-    display: block; 
-    background-color: #25D366; 
-    color: white !important; 
-    text-align: center;
-    padding: 8px; 
-    border-radius: 5px; 
-    text-decoration: none; 
-    font-weight: bold; 
-    font-size: 12px;
-}
-
-/* --- ESTRUCTURA DE PINES PREMIUM: Capas de Marcadores en Leaflet --- */
+/* --- 6. INYECCIÓN PREMIUM: Pines Metalizados del Negosistema --- */
 .pin-negosistema {
     border-radius: 50%;
     display: flex;
@@ -83,108 +397,59 @@ html, body {
     transition: all 0.3s ease;
 }
 
-/* Nivel 1: Incógnito (Punto Gris de Presencia Pura) */
 .pin-nivel1 {
     background-color: #7f8c8d !important;
     border: 2px solid #ffffff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
 
-/* Nivel 2: Marca (Punto de Color según su Giro Comercial) */
 .pin-nivel2 {
     border: 2px solid #ffffff;
     box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-/* Nivel 3: Bronce (Información Completa + Brillo Metálico Fijo) */
 .pin-nivel3 {
     border: 2px solid #ffffff;
     box-shadow: 0 0 10px #b87333, inset 0 0 4px #b87333;
 }
 
-/* Nivel 4: Plata (Contacto Activo + Brillo Pulsante Avanzado) */
 .pin-nivel4 {
     border: 2px solid #ffffff;
-    animation: pulsoPlataNegosistema 2s infinite ease-in-out;
+    animation: pulsoPlataFusión 2s infinite ease-in-out;
 }
 
-/* Nivel 5: Oro / Destacado (Todo Full + Parpadeo Dorado de Alta Confianza) */
 .pin-nivel5 {
     border: 2px solid #ffffff;
-    animation: parpadeoOroNegosistema 1.5s infinite ease-in-out;
+    animation: parpadeoOroFusión 1.5s infinite ease-in-out;
 }
-/* ==========================================================================
-   NEGOSISTEMA (2026) - Hoja de Estilos Fusionada de Alta Compartibilidad
-   Parte 2 de 2: Animaciones Avanzadas, Botoneras de Filtro y Multimedia
-   ========================================================================== */
 
-/* --- ANIMACIONES CSS PARA NIVELES PREMIUM --- */
-@keyframes pulsoPlataNegosistema {
+@keyframes pulsoPlataFusión {
     0% { box-shadow: 0 0 0 0px rgba(192, 192, 192, 0.8), 0 2px 5px rgba(0,0,0,0.2); }
     70% { box-shadow: 0 0 0 10px rgba(192, 192, 192, 0), 0 2px 5px rgba(0,0,0,0.2); }
     100% { box-shadow: 0 0 0 0px rgba(192, 192, 192, 0), 0 2px 5px rgba(0,0,0,0.2); }
 }
 
-@keyframes parpadeoOroNegosistema {
+@keyframes parpadeoOroFusión {
     0% { box-shadow: 0 0 4px #ffd700, 0 0 12px #ffd700; filter: brightness(1); }
     50% { box-shadow: 0 0 8px #ffd700, 0 0 22px #ff8c00; filter: brightness(1.2); }
     100% { box-shadow: 0 0 4px #ffd700, 0 0 12px #ffd700; filter: brightness(1); }
 }
 
-/* --- BOTONERA DE FILTROS FLOTANTES (DISEÑO TÁCTIL MÓVIL) --- */
-.botonera-filtros {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999; /* Por encima de Leaflet */
-    display: flex;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 8px 12px;
-    border-radius: 30px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(5px);
-    max-width: 90%;
-    overflow-x: auto;
-    white-space: nowrap;
-    scrollbar-width: none;
-}
-
-.botonera-filtros::-webkit-scrollbar {
-    display: none; /* Oculta la barra de desplazamiento */
-}
-
-.btn-filtro {
-    border: none;
-    padding: 8px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.btn-filtro:active {
-    transform: scale(0.95);
-}
-
-/* --- Identificadores de Botones (Filtros Avanzados) --- */
-.btn-canasta { background-color: #27ae60; color: #fff; }
-.btn-comida  { background-color: #e67e22; color: #fff; }
-.btn-urgencias { background-color: #111111; color: #fff; border: 1px solid #333; }
-.btn-todos    { background-color: #7f8c8d; color: #fff; }
-
-/* --- SECCIONES EXTRA DENTRO DE LOS POPUPS EXTENDIDOS --- */
+/* --- 7. COMPONENTES EXTRA DENTRO DE POPUPS DEL MOTOR --- */
 .tarjeta-popup {
     max-width: 280px;
     font-size: 14px;
     color: #2c3e50;
     line-height: 1.4;
+}
+
+.tarjeta-popup h3 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    color: #1a252f;
+    font-weight: 700;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 4px;
 }
 
 .tarjeta-popup .slogan {
@@ -203,7 +468,6 @@ html, body {
     border-left: 3px solid #34495e;
 }
 
-/* --- Semáforo de Horarios --- */
 .semaforo-horario {
     display: inline-block;
     padding: 3px 8px;
@@ -216,7 +480,6 @@ html, body {
 .horario-abierto { background-color: #d4edda; color: #155724; }
 .horario-cerrado { background-color: #f8d7da; color: #721c24; }
 
-/* --- CONTENEDORES MULTIMEDIA (NIVEL 5) --- */
 .contenedor-video {
     position: relative;
     padding-bottom: 56.25%;
@@ -249,7 +512,6 @@ html, body {
     font-weight: 700;
     text-align: center;
     box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
-    transition: background-color 0.2s;
 }
 
 .btn-web-comercial {
@@ -265,7 +527,6 @@ html, body {
     font-size: 12px;
 }
 
-/* --- BANNER DE RETENCIÓN / UP-SELL (NIVEL 1, 2 Y 3) --- */
 .bloque-bloqueado-upsell {
     background-color: #fcf8e3;
     border: 1px dashed #fbeed5;
@@ -275,4 +536,54 @@ html, body {
     text-align: center;
     font-size: 11px;
     font-weight: 600;
+}
+
+/* --- 8. BOTONERA DE FILTROS FLOTANTES (MÓVIL) --- */
+.botonera-filtros {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 12px;
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+    max-width: 90%;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+}
+
+.botonera-filtros::-webkit-scrollbar { display: none; }
+
+.btn-filtro {
+    border: none; padding: 8px 14px; border-radius: 20px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-canasta { background-color: #27ae60; color: #fff; }
+.btn-comida  { background-color: #e67e22; color: #fff; }
+.btn-urgencias { background-color: #111111; color: #fff; border: 1px solid #333; }
+.btn-todos    { background-color: #7f8c8d; color: #fff; }
+
+/* --- 9. RESPONSIVIDAD ESTRICTA (Tablets y PC) --- */
+@media (min-width: 768px) {
+    .encabezado h1 { font-size: 2.3rem; }
+    .grid-eleccion-principal { grid-template-columns: repeat(2, 1fr); }
+    .bloques-escalera { flex-direction: row; }
+    .escalon { flex-direction: column; flex: 1; text-align: center; align-items: center; }
+}
+
+@media (max-width: 768px) {
+    .slide-group { gap: 0; padding: 8px; }
+    .feature-card-link:nth-child(n+2) { display: none; }
+    .feature-card-link { max-width: 100%; }
+    .card-image img { max-height: 160px; }
+    .info-title { font-size: 1.2rem; }
 }
