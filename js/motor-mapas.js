@@ -1,18 +1,17 @@
 /**
  * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * PARTE 1 DE 3: Inicialización de Entorno, Variables Globales y Capa Base
+ * PARTE 1 DE 3: Configuración Blindada y Arranque Automático de Contenedores
  */
 
 // --- CONFIGURACIÓN MAESTRA DEL PROYECTO ---
 const CONFIG_NEGOSISTEMA = {
-    // Reemplaza esta URL por tu enlace CSV público de la pestaña "salida mapa"
-    urlCsvPublico: "https://google.com",
+    // ⚠️ REEMPLAZA ESTA URL POR TU ENLACE CSV REAL DE LA PESTAÑA "SALIDA MAPA" CUANDO ESTÉ LISTO
+    urlCsvPublico: "https://github.io", 
     rutaGeoJson: "https://github.io",
     coordenadasIztapalapa: [19.3455, -99.0130],
     zoomInicialIndex: 14,
     zoomInicialSeccion: 16
 };
-
 
 // Variables globales del sistema de mapeo
 let mapaNegosistema = null;
@@ -55,23 +54,24 @@ function inicializarArquitecturaMapa() {
         tap: true
     }).setView(CONFIG_NEGOSISTEMA.coordenadasIztapalapa, zoom);
 
-    // Cargar capa base limpia (CartoDB Positron - Excelente contraste para pines metalizados)
+    // Cargar capa base limpia (CartoDB Positron)
     L.tileLayer('https://{s}://{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
     }).addTo(mapaNegosistema);
 
-    // Inyectar control de zoom en esquina superior derecha de forma discreta
     L.control.zoom({ position: 'topright' }).addTo(mapaNegosistema);
-
-    // Inicializar grupo de marcadores para permitir filtrados rápidos en tiempo real
     capaMarcadoresGroup = L.layerGroup().addTo(mapaNegosistema);
 
     // Arrancar la carga encadenada de archivos de datos
     cargarDatosGeograficosYComerciales(tipoMapa);
 }
+/**
+ * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
+ * PARTE 2 DE 3: Compuerta de Simulación para Anúnciate y Procesador CSV Estándar
+ */
 
 /**
- * 2. Carga el GeoJSON de polígonos y posteriormente el CSV de los comercios
+ * 2. Carga el GeoJSON de polígonos y gestiona la llamada al CSV con Failsafe integrado
  */
 function cargarDatosGeograficosYComerciales(tipoMapa) {
     fetch(CONFIG_NEGOSISTEMA.rutaGeoJson)
@@ -98,38 +98,94 @@ function cargarDatosGeograficosYComerciales(tipoMapa) {
 
             return fetch(CONFIG_NEGOSISTEMA.urlCsvPublico);
         })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error("Base de datos en Sheets no disponible momentáneamente.");
+            return response.text();
+        })
         .then(csvTexto => {
             procesarBaseDatosCsv(csvTexto, tipoMapa);
         })
-        .catch(error => console.error("Error en el flujo de datos del Negosistema:", error));
+        .catch(error => {
+            console.warn("Negosistema Failsafe: Activando modo de contingencia por ausencia de datos en Sheets.", error);
+            // Si el Google Sheets está vacío o en mantenimiento, el index no se quedará en blanco
+            const csvSincronizacionFailsafe = "ID,Marca,Colonia,Mapa,CapaProd,CapaServ,Nivel,Nombre,Slogan,Ofrece,Horario,Redes,Video,WhatsApp,Coordenadas\n000-FAIL,2026,XALPA II,productos,canasta,,1,Negosistema Inicializado,Modo de espera activo,,,Sugerido,7am-10pm,,,19.3455-99.0130";
+            procesarBaseDatosCsv(csvSincronizacionFailsafe, tipoMapa);
+        });
 }
-/**
- * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * PARTE 2 DE 3: Procesamiento Extensivo del CSV y Lógica de Doble Presencia
- */
 
 /**
- * 3. Parsea el CSV e implementa la Doble Presencia y Geofencing en memoria
+ * 3. Parsea el CSV, controla la Doble Presencia e inyecta la simulación de tus 26 negocios en 'Anúnciate'
  */
 function procesarBaseDatosCsv(csvTexto, tipoMapa) {
+    const urlActual = window.location.pathname.toLowerCase();
+    datosComerciosGlobales = [];
+
+    // --- 🚀 COMPUERTA AUTOMÁTICA MODO ANÚNCIATE (CATÁLOGO VIVO) ---
+    if (urlActual.includes("anunciate")) {
+        console.log("Negosistema: Desplegando simulación estratégica de 26 negocios de muestra.");
+        
+        // Base de datos integrada de simulación comercial
+        const simulacion26NegociosDemo = [
+            // NEGOCIO PRINCIPAL - MÁXIMO NIVEL DE SERVICIO (ORO/DIAMANTE PREMIUM)
+            { id: "306-PREMIUM", coloniaOriginal: "XALPA II", mapaObjetivo: "productos", capaActivaMapeo: "tecnologia", nivelServicio: 5, nombre: "🔥 NEGOCIO MAESTRO PREMIUM", slogan: "El ejemplo perfecto del Nivel de Servicio Máximo contratado", productosServicios: "Páginas Web, Video Embebido de YouTube/TikTok, Animación Parpadeante en Oro y Contacto Directo Personalizado sin Muros", horarios: "Lunes a Domingo - 24 Horas Activo", clickPersonalizado: "https://wa.me", redes: "https://facebook.com", enlaceVideo: "https://youtube.com", linksWebPropia: "https://github.io", coordenadasRaw: "19.3455-99.0130" },
+            
+            // MUESTRAS NIVEL 4 (PLATA CON PULSACIÓN & CONTACTO DE WHATSAPP GENÉRICO O PERSONALIZADO)
+            { id: "306-N4-01", coloniaOriginal: "XALPA II", mapaObjetivo: "productos", capaActivaMapeo: "comida", nivelServicio: 4, nombre: "Taquería El Pastor Demo", slogan: "Pines de Color con Brillo Pulsante de Plata", productosServicios: "Tacos al pastor, alambre y gringas", horarios: "Mar a Dom 6pm - 1am", clickGenerico: "https://wa.me", coordenadasRaw: "19.3465-99.0115" },
+            { id: "308-N4-02", coloniaOriginal: "SANTIAGO I", mapaObjetivo: "servicios", capaActivaMapeo: "taller", nivelServicio: 4, nombre: "Mecánica Automotriz Santiago", slogan: "Tu auto en manos de expertos certificados", productosServicios: "Afinación, frenos y suspensión", horarios: "Lun a Sáb 9am - 7pm", clickPersonalizado: "https://wa.me", coordenadasRaw: "19.3490-99.0060" },
+            { id: "306-N4-03", coloniaOriginal: "XALPA II", mapaObjetivo: "productos", capaActivaMapeo: "salud", nivelServicio: 4, nombre: "Farmacia de Descuento Prueba", slogan: "Salud y ahorro directo para tu bolsillo", productosServicios: "Medicamentos de patente y genéricos", horarios: "8am - 10pm", clickGenerico: "https://wa.me", coordenadasRaw: "19.3445-99.0155" },
+            
+            // MUESTRAS NIVEL 3 (BRONCE CON BRILLO METÁLICO FIJO, SLOGAN, PRODUCTOS Y HORARIOS - CONTACTO BLOQUEADO)
+            { id: "306-N3-01", coloniaOriginal: "XALPA II", mapaObjetivo: "productos", capaActivaMapeo: "canasta", nivelServicio: 3, nombre: "Abarrotes La Esquina Ficticio", slogan: "Surtido completo para el hogar", productosServicios: "Lácteos, embutidos, refrescos y pan", horarios: "Lun a Dom 7am - 10pm", coordenadasRaw: "19.3430-99.0145" },
+            { id: "309-N3-02", coloniaOriginal: "SANTIAGO II", mapaObjetivo: "servicios", capaActivaMapeo: "bienestar", nivelServicio: 3, nombre: "Estética y Barbería Deluxe", slogan: "Cortes modernos con estilo premium", productosServicios: "Corte de cabello, barba y diseño", horarios: "Mar a Sáb 10am - 8pm", coordenadasRaw: "19.3415-99.0080" },
+            { id: "306-N3-03", coloniaOriginal: "XALPA II", mapaObjetivo: "productos", capaActivaMapeo: "ferreteria", nivelServicio: 3, nombre: "Tlapalería El Clavo Demo", slogan: "Todo para tus reparaciones domésticas", productosServicios: "Material eléctrico, plomería y pinturas", horarios: "Lun a Sáb 8am - 6pm", coordenadasRaw: "19.3475-99.0125" }
+        ];
+
+        // Rellenar de forma automática los 20 negocios restantes para completar el volumen de 26 muestras distribuidas
+        for (let j = 1; j <= 20; j++) {
+            let nivelAsignado = (j % 3) + 1; // Distribución controlada entre Nivel 1, Nivel 2 y Nivel 3
+            let capaMuestra = j % 2 === 0 ? "canasta" : "comida";
+            let latOffset = (Math.sin(j) * 0.004);
+            let lonOffset = (Math.cos(j) * 0.004);
+            
+            simulacion26NegociosDemo.push({
+                id: `306-DEMO-N${nivelAsignado}-0${j}`,
+                coloniaOriginal: "XALPA II",
+                mapaObjetivo: "productos",
+                capaActivaMapeo: capaMuestra,
+                nivelServicio: nivelAsignado,
+                nombre: `Comercio Demo Nivel ${nivelAsignado} (#${j})`,
+                slogan: `Demostración visual de posicionamiento en la capa de ${capaMuestra}`,
+                productosServicios: "Artículos de muestra y consumos de prueba para el barrio",
+                horarios: "Abierto en horario comercial de prueba",
+                coordenadasRaw: `${19.3455 + latOffset}-${99.0130 + lonOffset}`
+            });
+        }
+
+        // Convertir strings de ubicación en coordenadas numéricas para Leaflet
+        simulacion26NegociosDemo.forEach(comercio => {
+            const partes = comercio.coordenadasRaw.split("-");
+            comercio.latitud = parseFloat(partes[0]);
+            comercio.longitud = parseFloat(partes[1]);
+            datosComerciosGlobales.push(comercio);
+        });
+
+        renderizarPinesEnPantalla("todos", "todos");
+        return;
+    }
+
+    // --- PROCESAMIENTO ESTÁNDAR OPERATIVO DE TU HOJA GENERAL ---
     const lineas = csvTexto.split("\n");
     if (lineas.length < 2) return;
-
-    datosComerciosGlobales = [];
 
     for (let i = 1; i < lineas.length; i++) {
         const linea = lineas[i].trim();
         if (!linea) continue;
 
-        // Expresión regular robusta para dividir por comas respetando comillas
         const columnas = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
         const cleanCols = columnas.map(c => c.replace(/^"|"$/g, '').trim());
 
-        // Asegurar que la fila contiene al menos los datos mínimos de mapeo
         if (cleanCols.length < 15) continue;
 
-        // Mapeo milimétrico de las 19 columnas públicas del Google Sheet
         const comercio = {
             id: cleanCols[0],
             marcaTemporal: cleanCols[1],
@@ -145,7 +201,7 @@ function procesarBaseDatosCsv(csvTexto, tipoMapa) {
             redes: cleanCols[11],
             enlaceVideo: cleanCols[12],
             whatsappNumero: cleanCols[13],
-            coordenadasRaw: cleanCols[14], // Columna O: Latitud-Longitud
+            coordenadasRaw: cleanCols[14],
             clickGenerico: cleanCols[15],
             personalizadoFrase: cleanCols[16],
             clickPersonalizado: cleanCols[17],
@@ -160,7 +216,6 @@ function procesarBaseDatosCsv(csvTexto, tipoMapa) {
 
         if (isNaN(comercio.latitud) || isNaN(comercio.longitud)) continue;
 
-        // --- SISTEMA DE DOBLE PRESENCIA (EXCLUSIVO NIVEL 4 Y 5) ---
         const categoriasProductos = comercio.capaProductos ? comercio.capaProductos.split(",") : [];
         const categoriasServicios = comercio.capaServicios ? comercio.capaServicios.split(",") : [];
         const todasLasCapasAsignadas = [...categoriasProductos, ...categoriasServicios];
@@ -168,10 +223,9 @@ function procesarBaseDatosCsv(csvTexto, tipoMapa) {
         if (todasLasCapasAsignadas.length > 1 && (comercio.nivelServicio === 4 || comercio.nivelServicio === 5)) {
             todasLasCapasAsignadas.forEach(capa => {
                 const copiaComercio = { ...comercio, capaActivaMapeo: capa.trim().toLowerCase() };
-                datosComerciosGlobales.push(copiaComercio);
+        datosComerciosGlobales.push(copiaComercio);
             });
         } else {
-            // Asignación de categoría única por defecto si no es multi-capa o es nivel bajo
             let capaDefecto = (comercio.mapaObjetivo === "productos" ? comercio.capaProductos : comercio.capaServicios);
             comercio.capaActivaMapeo = capaDefecto ? capaDefecto.toString().trim().toLowerCase() : "";
             datosComerciosGlobales.push(comercio);
@@ -184,13 +238,9 @@ function procesarBaseDatosCsv(csvTexto, tipoMapa) {
         ejecutarFiltroAutomaticoPaginaInterna();
     }
 }
-/**
- * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * PARTE 3 DE 3: Renderizado de Marcadores, Muro de Privacidad y Filtros Interactivos
- */
 
 /**
- * 4. Filtra y dibuja los marcadores en tiempo real aplicando las reglas de visualización por nivel
+ * 4. Dibuja los marcadores aplicando el Muro de Privacidad en Popups
  */
 function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todos") {
     capaMarcadoresGroup.clearLayers();
@@ -201,80 +251,52 @@ function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todo
         if (filtroMapa !== "todos" && comercio.mapaObjetivo !== filtroMapa.toLowerCase()) return;
         if (filtroCapa !== "todos" && comercio.capaActivaMapeo !== filtroCapa.toLowerCase()) return;
 
-        // --- INYECCIÓN VISUAL DE PIN METALIZADO (CSS MATCHING) ---
         let claseNivelCss = `pin-nivel${comercio.nivelServicio}`;
         let colorFondoGiro = obtenerColorHexagonalPorCapa(comercio.capaActivaMapeo);
-        
-        // El Nivel 1 anula visualmente el color de giro para volverse Gris de Presencia
         let estiloInline = (comercio.nivelServicio === 1) ? '' : `background-color: ${colorFondoGiro};`;
 
         const iconoPersonalizadoHtml = L.divIcon({
             className: `pin-negosistema ${claseNivelCss}`,
             html: `<div style="${estiloInline} width:14px; height:14px; border-radius:50%;"></div>`,
-            iconSize:,
-            iconAnchor: [12, 12]
+            iconSize:14,
+            iconAnchor: [7, 7]
         });
 
-        // --- CONSTRUCCIÓN DEL MURO DE PRIVACIDAD EN POPUPS ---
-        let popupContenidoHtml = `<div class="tarjeta-popup">`;
 
-        // Nivel 1 muestra título genérico, Nivel 2 en adelante muestra su nombre real
+        let popupContenidoHtml = `<div class="tarjeta-popup">`;
         popupContenidoHtml += `<h3>${comercio.nivelServicio >= 2 ? comercio.nombre : 'Comercio Registrado'}</h3>`;
         popupContenidoHtml += `<p style="font-size:11px; margin: 0 0 6px 0; color:#95a5a6;">ID Ref: ${comercio.id}</p>`;
 
-        // Sumar Slogan, Lista de productos y Horarios a partir del Nivel 3
         if (comercio.nivelServicio >= 3) {
             if (comercio.slogan) popupContenidoHtml += `<div class="slogan">"${comercio.slogan}"</div>`;
             if (comercio.productosServicios) popupContenidoHtml += `<div class="productos"><strong>Ofrece:</strong> ${comercio.productosServicios}</div>`;
-            
-            if (comercio.horarios) {
-                // Estado en verde fijo "Abierto Ahora" por estrategia hiperlocal para incentivar clics
-                popupContenidoHtml += `<div class="semaforo-horario horario-abierto">Abierto Ahora: ${comercio.horarios}</div>`;
-            }
+            if (comercio.horarios) popupContenidoHtml += `<div class="semaforo-horario horario-abierto">Abierto Ahora: ${comercio.horarios}</div>`;
         }
 
-        // Sumar Canales de Contacto Directo de WhatsApp y Redes en Nivel 4 y 5
         if (comercio.nivelServicio >= 4) {
             const urlWhatsAppActiva = comercio.clickPersonalizado || comercio.clickGenerico;
-            
             if (urlWhatsAppActiva) {
-                popupContenidoHtml += `<a href="${urlWhatsAppActiva}" target="_blank" class="btn-whatsapp-comercial">
-                    💬 Contactar por WhatsApp
-                </a>`;
+                popupContenidoHtml += `<a href="${urlWhatsAppActiva}" target="_blank" class="btn-whatsapp-comercial">💬 Contactar por WhatsApp</a>`;
             }
-
             if (comercio.redes) {
-                popupContenidoHtml += `<p style="margin: 8px 0 4px 0; font-size:12px; text-align:center;">
-                    🔗 <a href="${comercio.redes}" target="_blank" style="color:#2980b9; font-weight:600;">Ver Redes Sociales</a>
-                </p>`;
+                popupContenidoHtml += `<p style="margin: 8px 0 4px 0; font-size:12px; text-align:center;">🔗 <a href="${comercio.redes}" target="_blank" style="color:#1a73e8; font-weight:600;">Ver Redes Sociales</a></p>`;
             }
         }
 
-        // Sumar Contenedor Multimedia de Video (YouTube/TikTok) y Web Propia para Nivel 5
         if (comercio.nivelServicio === 5) {
             if (comercio.enlaceVideo) {
                 const idVideoLimpio = extraerIdVideoPlataformas(comercio.enlaceVideo);
                 if (idVideoLimpio) {
-                    popupContenidoHtml += `
-                    <div class="contenedor-video" style="margin-top:8px;">
-                        <iframe src="https://youtube.com{idVideoLimpio}" allowfullscreen></iframe>
-                    </div>`;
+                    popupContenidoHtml += `<div class="contenedor-video" style="margin-top:8px;"><iframe src="https://youtube.com{idVideoLimpio}" allowfullscreen></iframe></div>`;
                 }
             }
-            
             if (comercio.linksWebPropia) {
-                popupContenidoHtml += `<a href="${comercio.linksWebPropia}" target="_blank" class="btn-web-comercial">
-                    🌐 Visitar Página Web Oficial
-                </a>`;
+                popupContenidoHtml += `<a href="${comercio.linksWebPropia}" target="_blank" class="btn-web-comercial">🌐 Visitar Página Web Oficial</a>`;
             }
         }
 
-        // Bloque informativo de Up-sell para motivar contratación en niveles bajos (1, 2 y 3)
         if (comercio.nivelServicio <= 3) {
-            popupContenidoHtml += `
-            <div class="bloque-bloqueado-upsell" style="margin-top:6px;">
-                🔒 Canales de contacto directo exclusivos para cuentas Premium
-            </div>`;
+            popupContenidoHtml += `<div class="bloque-bloqueado-upsell" style="margin-top:6px;">🔒 Canales de contacto directo exclusivos para cuentas Premium</div>`;
         }
 
         popupContenidoHtml += `</div>`;
@@ -285,169 +307,40 @@ function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todo
         capaMarcadoresGroup.addLayer(marcadorFinal);
         boundsParaAjuste.push([comercio.latitud, comercio.longitud]);
     });
-
+           // CORRECCIÓN MANUAL INMUNE A ERRORES EN TU ARCHIVO JS
     if (boundsParaAjuste.length > 0 && filtroColonia !== "todos") {
-        mapaNegosistema.fitBounds(boundsParaAjuste, { padding:, maxZoom: 16 });
+        mapaNegosistema.fitBounds(boundsParaAjuste, { padding: 40, maxZoom: 16 });
     }
-}
 
+}
 /**
- * 5. Taxonomía de colores comerciales oficiales por tipo de Capa
- */
-/**
- * 5. TAXONOMÍA INTEGRAL DE COLORES (MAPA A: PRODUCTOS & MAPA B: SERVICIOS)
- * Procesa las 16 capas unificadas del Negosistema (2026) para Iztapalapa.
+ * 5. Taxonomía de las 16 Capas Unificadas del Negosistema (Productos y Servicios)
  */
 function obtenerColorHexagonalPorCapa(nombreCapa) {
-    if (!nombreCapa) return "#7f8c8d"; // Gris por defecto si la celda está vacía
-    
-    // Limpiar el texto para evitar errores por espacios, mayúsculas o acentos
-    const capaClean = nombreCapa.trim().toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    if (!nombreCapa) return "#7f8c8d";
+    const capaClean = nombreCapa.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    // ==========================================
-    // 🍎 MAPA A: XALPA COMPRA (PRODUCTOS)
-    // ==========================================
+    if (capaClean.includes("basica") || capaClean.includes("abarrotes") || capaClean.includes("carnic") || capaClean.includes("recaud") || capaClean.includes("tortill") || capaClean.includes("cremer") || capaClean.includes("poller") || capaClean.includes("purificadora")) return "#27ae60"; 
+    if (capaClean.includes("preparada") || capaClean.includes("taco") || capaClean.includes("pizz") || capaClean.includes("rostic") || capaClean.includes("panader") || capaClean.includes("hamburguesa") || capaClean.includes("alitas") || capaClean.includes("pastel") || capaClean.includes("helado") || capaClean.includes("cafe")) return "#e67e22"; 
+    if (capaClean.includes("ferreter") || capaClean.includes("tlapaler") || capaClean.includes("construc") || capaClean.includes("electrico") || capaClean.includes("pintura") || capaClean.includes("jarcer") || capaClean.includes("muebl") || capaClean.includes("gas") || capaClean.includes("carbon")) return "#f1c40f"; 
+    if (capaClean.includes("farmacia") || capaClean.includes("extraer") || capaClean.includes("dentista") || capaClean.includes("laboratorio")) return "#e74c3c"; 
+    if (capaClean.includes("variedades") || capaClean.includes("moda") || capaClean.includes("papeler") || capaClean.includes("zapater") || capaClean.includes("boutique") || capaClean.includes("mercer") || capaClean.includes("juguet") || capaClean.includes("joyer") || capaClean.includes("regalo") || capaClean.includes("cosmetic") || capaClean.includes("ropa")) return "#e84393"; 
+    if (capaClean.includes("mascota") || capaClean.includes("perro") || capaClean.includes("gato") || capaClean.includes("acuario") || capaClean.includes("canina")) return "#6f3e1a"; 
+    if (capaClean.includes("tecnolog") || capaClean.includes("celular") || capaClean.includes("computa") || capaClean.includes("videojuego") || capaClean.includes("camara") || capaClean.includes("electron") || capaClean.includes("alarma")) return "#0984e3"; 
+    if (capaClean.includes("consulta") || capaClean.includes("medico") || capaClean.includes("psicolog") || capaClean.includes("veterinar") || capaClean.includes("terapia") || capaClean.includes("nutriolog") || capaClean.includes("enfermer")) return "#22a6b3"; 
+    if (capaClean.includes("taller") || capaClean.includes("oficio") || capaClean.includes("mecanic") || capaClean.includes("llantera") || capaClean.includes("plomero") || capaClean.includes("herrero") || capaClean.includes("carpinter") || capaClean.includes("albañil") || capaClean.includes("tapicer") || capaClean.includes("electrodomesticos")) return "#2c3e50"; 
+    if (capaClean.includes("bienestar") || capaClean.includes("estilo") || capaClean.includes("barber") || capaClean.includes("estetica") || capaClean.includes("uñas") || capaClean.includes("gimnasio") || capaClean.includes("yoga") || capaClean.includes("spa") || capaClean.includes("tatuaje") || capaClean.includes("podolog")) return "#9b59b6"; 
+    if (capaClean.includes("asesoria") || capaClean.includes("oficina") || capaClean.includes("seguro") || capaClean.includes("financier") || capaClean.includes("contador") || capaClean.includes("abogado") || capaClean.includes("ciber") || capaClean.includes("mensajeria") || capaClean.includes("inmobiliari") || capaClean.includes("arquitecto")) return "#34495e"; 
+    if (capaClean.includes("evento") || capaClean.includes("fiesta") || `l${capaClean}`.includes("lavander") || capaClean.includes("tintorer") || capaClean.includes("cerrajer") || capaClean.includes("sastreria") || capaClean.includes("flete") || capaClean.includes("cisterna") || capaClean.includes("banquete") || capaClean.includes("plagas")) return "#74001a"; 
+    if (capaClean.includes("educacion") || capaClean.includes("apoyo") || capaClean.includes("tarea") || capaClean.includes("clase") || capaClean.includes("escuela") || capaClean.includes("colegio") || capaClean.includes("guarderia") || capaClean.includes("idioma") || capaClean.includes("manejo") || capaClean.includes("adulto")) return "#f5f6fa"; 
+    if (capaClean.includes("urgencia") || capaClean.includes("nocturna") || capaClean.includes("grua") || capaClean.includes("fuga") || capaClean.includes("ambulancia") || capaClean.includes("emergencia")) return "#111111"; 
+    if (capaClean.includes("directorio") || capaClean.includes("base") || capaClean.includes("verificacion") || capaClean.includes("limbo") || capaClean.includes("semifijo") || capaClean.includes("gris")) return "#7f8c8d"; 
 
-    // 1. Canasta Básica -> Verde (#27ae60)
-    if (capaClean.includes("basica") || capaClean.includes("abarrotes") || 
-        capaClean.includes("carnic") || capaClean.includes("recaud") || 
-        capaClean.includes("tortill") || capaClean.includes("cremer") || 
-        capaClean.includes("poller") || capaClean.includes("purificadora")) {
-        return "#27ae60"; 
-    }
-    
-    // 2. Comida Preparada -> Naranja (#e67e22)
-    if (capaClean.includes("preparada") || capaClean.includes("taco") || 
-        capaClean.includes("pizz") || capaClean.includes("rostic") || 
-        capaClean.includes("panader") || capaClean.includes("hamburguesa") || 
-        capaClean.includes("alitas") || capaClean.includes("pastel") || 
-        capaClean.includes("helado") || capaClean.includes("cafe")) {
-        return "#e67e22"; 
-    }
-    
-    // 3. Ferretería y Hogar -> Amarillo (#f1c40f)
-    if (capaClean.includes("ferreter") || capaClean.includes("tlapaler") || 
-        capaClean.includes("construc") || capaClean.includes("electrico") || 
-        capaClean.includes("pintura") || capaClean.includes("jarcer") || 
-        capaClean.includes("muebl") || capaClean.includes("gas") || 
-        capaClean.includes("carbon")) {
-        return "#f1c40f"; 
-    }
-    
-    // 4. Salud y Farmacia (Venta de Productos) -> Rojo (#e74c3c)
-    if (capaClean.includes("farmacia") || capaClean.includes("optic") || 
-        capaClean.includes("dentista") || capaClean.includes("laboratorio")) {
-        return "#e74c3c"; 
-    }
-    
-    // 5. Variedades y Moda -> Rosa (#e84393)
-    if (capaClean.includes("variedades") || capaClean.includes("moda") || 
-        capaClean.includes("papeler") || capaClean.includes("zapater") || 
-        capaClean.includes("boutique") || capaClean.includes("mercer") || 
-        capaClean.includes("juguet") || capaClean.includes("joyer") || 
-        capaClean.includes("regalo") || capaClean.includes("cosmetic") || 
-        capaClean.includes("ropa")) {
-        return "#e84393"; 
-    }
-    
-    // 6. Mascotas -> Café (#6f3e1a)
-    if (capaClean.includes("mascota") || capaClean.includes("perro") || 
-        capaClean.includes("gato") || capaClean.includes("acuario") || 
-        capaClean.includes("canina")) {
-        return "#6f3e1a"; 
-    }
-    
-    // 7. Tecnología -> Azul Eléctrico (#0984e3)
-    if (capaClean.includes("tecnolog") || capaClean.includes("celular") || 
-        capaClean.includes("computa") || capaClean.includes("videojuego") || 
-        capaClean.includes("camara") || capaClean.includes("electron") || 
-        capaClean.includes("alarma")) {
-        return "#0984e3"; 
-    }
-
-    // ==========================================
-    // 🛠️ MAPA B: XALPA RESUELVE (SERVICIOS)
-    // ==========================================
-
-    // 1. Salud y Consultas -> Azul Claro / Celeste (#22a6b3)
-    if (capaClean.includes("consulta") || capaClean.includes("medico") || 
-        capaClean.includes("psicolog") || capaClean.includes("veterinar") || 
-        capaClean.includes("terapia") || capaClean.includes("nutriolog") || 
-        capaClean.includes("enfermer")) {
-        return "#22a6b3"; 
-    }
-
-    // 2. Talleres y Oficios -> Azul Marino / Oscuro (#2c3e50)
-    if (capaClean.includes("taller") || capaClean.includes("oficio") || 
-        capaClean.includes("mecanic") || capaClean.includes("llantera") || 
-        capaClean.includes("plomero") || capaClean.includes("herrero") || 
-        capaClean.includes("carpinter") || capaClean.includes("albañil") || 
-        capaClean.includes("tapicer") || capaClean.includes("electrodomesticos")) {
-        return "#2c3e50"; 
-    }
-
-    // 3. Bienestar y Estilo -> Morado (#9b59b6)
-    if (capaClean.includes("bienestar") || capaClean.includes("estilo") || 
-        capaClean.includes("barber") || capaClean.includes("estetica") || 
-        capaClean.includes("uñas") || capaClean.includes("gimnasio") || 
-        capaClean.includes("yoga") || capaClean.includes("spa") || 
-        capaClean.includes("tatuaje") || capaClean.includes("podolog")) {
-        return "#9b59b6"; 
-    }
-
-    // 4. Asesoría y Oficina -> Gris Oscuro / Oxford (#34495e)
-    if (capaClean.includes("asesoria") || capaClean.includes("oficina") || 
-        capaClean.includes("seguro") || capaClean.includes("financier") || 
-        capaClean.includes("contador") || capaClean.includes("abogado") || 
-        capaClean.includes("ciber") || capaClean.includes("mensajeria") || 
-        capaClean.includes("inmobiliari") || capaClean.includes("arquitecto")) {
-        return "#34495e"; 
-    }
-
-    // 5. Hogar y Eventos -> Vino / Guinda (#74001a)
-    if (capaClean.includes("evento") || capaClean.includes("fiesta") || 
-        `l${capaClean}`.includes("lavander") || capaClean.includes("tintorer") || 
-        capaClean.includes("cerrajer") || capaClean.includes("sastreria") || 
-        capaClean.includes("flete") || capaClean.includes("cisterna") || 
-        capaClean.includes("banquete") || capaClean.includes("plagas")) {
-        return "#74001a"; 
-    }
-
-    // 6. Educación y Apoyo -> Blanco / Hueso (#f5f6fa)
-    if (capaClean.includes("educacion") || capaClean.includes("apoyo") || 
-        capaClean.includes("tarea") || capaClean.includes("clase") || 
-        capaClean.includes("escuela") || capaClean.includes("colegio") || 
-        capaClean.includes("guarderia") || capaClean.includes("idioma") || 
-        capaClean.includes("manejo") || capaClean.includes("adulto")) {
-        return "#f5f6fa"; 
-    }
-
-    // 7. Urgencias 24/7 -> Negro Absoluto (#111111) [1]
-    if (capaClean.includes("urgencia") || capaClean.includes("nocturna") || 
-        capaClean.includes("grua") || capaClean.includes("fuga") || 
-        capaClean.includes("ambulancia") || capaClean.includes("emergencia")) {
-        return "#111111"; 
-    }
-
-    // ==========================================
-    // 🌐 CATEGORÍA DE CONTROL GENERAL
-    // ==========================================
-
-    // 8. Directorio Base / Limbo (Negocios en verificación o Nivel 1) -> Gris Control (#7f8c8d)
-    if (capaClean.includes("directorio") || capaClean.includes("base") || 
-        capaClean.includes("verificacion") || capaClean.includes("limbo") || 
-        capaClean.includes("semifijo") || capaClean.includes("gris")) {
-        return "#7f8c8d"; 
-    }
-
-    // Color de respaldo por si el nombre de la capa no encaja en ninguna regla
     return "#57606f"; 
 }
 
-
 /**
- * 6. Analiza la URL y el entorno de las páginas de las colonias para filtrar dinámicamente
+ * 6. Analiza la URL para aplicar filtros automáticos en secciones finales
  */
 function ejecutarFiltroAutomaticoPaginaInterna() {
     const urlActual = window.location.pathname.toLowerCase();
@@ -456,7 +349,6 @@ function ejecutarFiltroAutomaticoPaginaInterna() {
 
     if (urlActual.includes("xalpa")) zonaMapeo = "xalpa";
     if (urlActual.includes("ampli1") || urlActual.includes("santiago")) zonaMapeo = "santiago";
-
     if (urlActual.includes("productos")) segmentoMapa = "productos";
     if (urlActual.includes("servicios")) segmentoMapa = "servicios";
 
@@ -464,17 +356,16 @@ function ejecutarFiltroAutomaticoPaginaInterna() {
 }
 
 /**
- * 7. Extrae el identificador puro de un enlace de video de YouTube (Corregido y Validado)
+ * 7. Extrae el identificador de 11 caracteres de enlaces de YouTube (Validado)
  */
 function extraerIdVideoPlataformas(urlVideo) {
     if (!urlVideo) return null;
-    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    let match = urlVideo.match(regExp);
+    let match = urlVideo.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
     return (match && match[2].length === 11) ? match[2] : null;
 }
 
 /**
- * INTERFAZ PÚBLICA: Función disparada por los botones de filtros flotantes de tu HTML
+ * INTERFAZ PÚBLICA: Escucha los clics de las botoneras flotantes de tu HTML
  */
 function aplicarFiltroCapaBotonera(nombreCapa) {
     const contenedorIndex = document.getElementById("mapa_general");
