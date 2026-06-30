@@ -28,57 +28,48 @@ const CONFIG_NEGOSISTEMA = {
   }
 };
 
-/**
- * 2. ORQUESTADOR DE ENTORNO: Lee la URL, extrae la alcaldía activa 
- * y descarga en paralelo el esqueleto GeoJSON y su pestaña correspondiente.
+ * 2. ENRUTADOR DE ENTORNO: Identifica la vista y configura Leaflet nativo
  */
-function ejecutarCargaPorCanal(modo) {
-  if (modo === "INDEX_GENERAL") {
-    const parametrosUrl = new URLSearchParams(window.location.search);
-    let alcaldiaClave = parametrosUrl.get("alcaldia");
+function inicializarArquitecturaEcosistema() {
+  const contenedorIndex = document.getElementById("mapa_general");
+  const contenedorSeccion = document.getElementById("mapa_seccion");
+  const urlActual = window.location.pathname.toLowerCase();
 
-    if (alcaldiaClave) {
-      alcaldiaClave = alcaldiaClave.trim().toLowerCase();
-    }
+  let idContenedor = "";
+  let zoomInicial = CONFIG_NEGOSISTEMA.catalogoAlcaldias.cdmx.zoom;
+  let modoEjecucion = "";
 
-    // Si no se define alcaldía en la URL, por defecto se muestra la CDMX completa
-    if (!alcaldiaClave || !CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave]) {
-      alcaldiaClave = "cdmx";
-    }
-
-    const recursosZona = CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave];
-    mapaNegosistema.setView(recursosZona.coordenadas, recursosZona.zoom);
-
-    // Descarga en paralelo del esqueleto cartográfico y la pestaña "Estatus"
-    Promise.all([
-      fetch(recursosZona.geojson).then(res => res.json()),
-      fetch(recursosZona.urlCsvEstatus).then(res => res.text())
-    ])
-    .then(([geoJsonData, csvTexto]) => {
-      // Envía los datos a la función de simbiosis que ya corregimos con coordsToLatLng
-      renderizarPoligonosPiloto(geoJsonData, csvTexto);
-    })
-    .catch(err => console.error(`Error de conexión en la alcaldía ${recursosZona.nombre}:`, err));
-
-  } else if (modo === "INTERNO_CAMALEON") {
-    // Las páginas internas comerciales cargan los negocios reales desde la pestaña "Salida Mapa"
-    const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
-
-    Promise.all([
-      fetch(recursoIztapalapa.geojson).then(res => res.json()),
-      fetch(recursoIztapalapa.urlCsvSalidaMapa).then(res => res.text())
-    ])
-    .then(([geoJsonData, csvTexto]) => {
-      L.geoJSON(geoJsonData, {
-        coordsToLatLng: function (coords) { return new L.LatLng(coords[1], coords[0]); },
-        style: { color: "#34495e", weight: 2, opacity: 0.3, fillColor: "#34495e", fillOpacity: 0.02 }
-      }).addTo(capaPoligonosGroup);
-
-      // Desglosa el directorio filtrado por el embudo de cobros de tu Sheets
-      procesarBaseDatosCsvNegocios(csvTexto);
-    })
-    .catch(err => console.error("Error al conectar con la pestaña Salida Mapa:", err));
+  if (contenedorIndex) {
+    idContenedor = "mapa_general";
+    modoEjecucion = urlActual.includes("anunciate") ? "SIMULACION" : "INDEX_GENERAL";
+  } else if (contenedorSeccion) {
+    idContenedor = "mapa_seccion";
+    modoEjecucion = "INTERNO_CAMALEON";
+    zoomInicial = CONFIG_NEGOSISTEMA.catalogoAlcaldias.iztapalapa.zoom;
+  } else {
+    console.error("Negosistema: No se localizó un contenedor cartográfico válido.");
+    return;
   }
+
+  // Instanciar Leaflet con optimizaciones táctiles para smartphones
+  mapaNegosistema = L.map(idContenedor, {
+    zoomControl: false,
+    dragging: true,
+    tap: true
+  }).setView(CONFIG_NEGOSISTEMA.catalogoAlcaldias.cdmx.coordenadas, zoomInicial);
+
+  L.tileLayer('https://openstreetmap.org{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; Negosistema 2026'
+  }).addTo(mapaNegosistema);
+
+  L.control.zoom({ position: 'topright' }).addTo(mapaNegosistema);
+
+  // Declarar los grupos de capas independientes en memoria
+  capaPoligonosGroup = L.layerGroup().addTo(mapaNegosistema);
+  capaMarcadoresGroup = L.layerGroup().addTo(mapaNegosistema);
+
+  ejecutarCargaPorCanal(modoEjecucion);
 }
 
 
