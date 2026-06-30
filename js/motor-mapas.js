@@ -132,33 +132,39 @@ function ejecutarCargaPorCanal(modo) {
     })
     .catch(err => console.error("Error al conectar con la pestaña Salida Mapa:", err));
   }
-}
-/**
+}/**
  * 4. RENDERIZADO CON SIMBIOSIS TRICOLOR INDEPENDIENTE: Cruza el GeoJSON de la CDMX
- * con el CSV para aplicar Verde, Blanco-Amarillento o Rojo según la fase de trabajo.
+ * con tu tabla real de 10 columnas para aplicar Verde, Blanco o Rojo según la fase.
  */
 function renderizarPoligonosPiloto(geoJson, csvTexto) {
   const estatusAlcaldiasCdmx = {};
-  const lineas = csvTexto.split("\n");
   
-  for (let i = 1; i < lineas.length; i++) {
-    const linea = lineas[i].trim();
-    if (!linea) continue;
+  // Usamos PapaParse nativo para romper las filas respetando tabuladores de Sheets
+  const filasParseadas = Papa.parse(csvTexto, { skipEmptyLines: true }).data;
 
-    const columns = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
-    if (columns.length < 2) continue;
+  // Empezamos en i = 1 para saltarnos la fila de encabezados
+  for (let i = 1; i < filasParseadas.length; i++) {
+    const columnas = filasParseadas[i];
+    
+    // Validar que la fila tenga los datos completos de tu pestaña "CDMX"
+    if (columnas.length < 10) continue;
 
-    const nombreAlcaldiaCsv = columns[0].replace(/^"|"$/g, '').trim().toLowerCase()
+    // Columna índice: NOMGEO (Azcapotzalco, Coyoacán, Iztapalapa...)
+    const nombreAlcaldiaCsv = columnas[6].replace(/^"|"$/g, '').trim().toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     
-    const estatusCsv = columns[1].replace(/^"|"$/g, '').trim().toUpperCase();
+    // Columna índice: Estatus alcaldia (Explorando, Completada...)
+    const estatusCsv = columnas[9].replace(/^"|"$/g, '').trim().toUpperCase();
+
     estatusAlcaldiasCdmx[nombreAlcaldiaCsv] = estatusCsv;
   }
 
   L.geoJSON(geoJson, {
+    // Corrección Definitiva: Retorna el par ordenado nativo de Leaflet
     coordsToLatLng: function (coords) {
-      return new L.LatLng(coords[1], coords[0]);
+      return new L.LatLng(coords, coords);
     },
+
 
     style: function(feature) {
       var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
