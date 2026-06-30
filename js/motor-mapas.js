@@ -161,15 +161,12 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
         L.marker(centroide, {
           icon: L.divIcon({
             className: 'label-colonia-flotante',
-            html: '<div style="font-family:-apple-system,sans-serif; font-weight:700; font-size:12px; color:#2c3e50; text-shadow:1px 1px 3px white; text-align:center; transform:translateX(-50%); white-space:nowrap;">' + nombreVector + '</div>',
-            iconSize:[14, 14],
-            iconAnchor: [7, 7]
+            html: '<div style="font-family:-apple-system,sans-serif; font-weight:700; font-size:12px; color:#2c3e50; text-shadow:1px 1px 3px white; text-align:center; transform:translateX(-50%); white-space:nowrap;">' + nombreVector + '</div>'
           })
         }).addTo(capaPoligonosGroup);
 
         // Disparador dinámico para recargar la página index.html con el parámetro de la zona
         layer.on('click', function() {
-          // El navegador viaja a la URL camaleónica (ej. index.html?alcaldia=iztapalapa)
           window.location.href = "./index.html?alcaldia=" + nombreLimpio;
         });
 
