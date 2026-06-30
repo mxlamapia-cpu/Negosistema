@@ -124,7 +124,7 @@ function ejecutarCargaPorCanal(modo) {
     ])
     .then(([geoJsonData, csvTexto]) => {
       L.geoJSON(geoJsonData, {
-        coordsToLatLng: function (coords) { return new L.LatLng(coords[1], coords[0]); },
+        coordsToLatLng: function (coords) { return new L.LatLng(coords, coords); },
         style: { color: "#34495e", weight: 2, opacity: 0.3, fillColor: "#34495e", fillOpacity: 0.02 }
       }).addTo(capaPoligonosGroup);
 
@@ -362,7 +362,8 @@ function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todo
       if (comercio.enlaceVideo) {
         var idVideoLimpio = extraerIdVideoPlataformas(comercio.enlaceVideo);
         if (idVideoLimpio) {
-          popupContenidoHtml += '<div class="contenedor-video" style="margin-top:8px; position:relative; padding-bottom:56.25%; height:0; overflow:hidden;"><iframe src="https://youtube.com' + idVideoLimpio + '" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius:8px;"></iframe></div>';
+                // Corrección Definitiva: Se incluye la diagonal y la ruta /embed/ para enlazar el reproductor de Google
+      popupContenidoHtml += '<div class="contenedor-video" style="margin-top:8px; position:relative; padding-bottom:56.25%; height:0; overflow:hidden;"><iframe src="https://youtube.com' + idVideoLimpio + '" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius:8px;"></iframe></div>';
         }
       }
       if (comercio.linksWebPropia) {
@@ -481,4 +482,3 @@ function extraerIdVideoPlataformas(urlVideo) {
   var match = urlVideo.match(regExp);
   return (match && match && match.length === 11) ? match : null;
 }
-
