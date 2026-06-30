@@ -146,28 +146,25 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
   for (let i = 1; i < filasParseadas.length; i++) {
     const columnas = filasParseadas[i];
     
-    // Validar que la fila tenga los datos completos de tu pestaña "CDMX"
-        // --- CORRECCIÓN QUIRÚRGICA: ASIGNACIÓN DE ÍNDICES PARA TUS 10 COLUMNAS REALES ---
-    // Cortar la línea del CSV exactamente por la coma física standard
-    var columnas = linea.split(",");
-    if (columnas.length < 10) continue;
+       // --- CORRECCIÓN QUIRÚRGICA: EVITA EL DESPLAZAMIENTO POR COMAS DECIMALES ---
+    // Expresión regular que corta solo las comas separadoras de columnas de Google Sheets
+    var columnas = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
+    
+    // Validación de seguridad para asegurar que la fila no venga mocha
+    if (!columnas || columnas.length < 8) continue;
 
-    // Columna índice: NOMGEO (Azcapotzalco, Coyoacán, Iztapalapa...)
-    var nombreAlcaldiaCsv = columnas[6].replace(/^"|"$/g, '').trim().toLowerCase()
+    // Columna NOMGEO: Busca de forma dinámica el nombre de la alcaldía al final
+    var nombreAlcaldiaCsv = (columnas[columnas.length - 4] || "").replace(/^"|"$/g, '').trim().toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     
-    // Columna índice: Estatus alcaldia (Explorando, Completada...)
-    var estatusCsv = columnas[9].replace(/^"|"$/g, '').trim().toUpperCase();
+    // Columna Estatus alcaldia: Es estrictamente la última celda de tu fila real
+    var estatusCsv = (columnas[columnas.length - 1] || "").replace(/^"|"$/g, '').trim().toUpperCase();
 
-    // Guardar en la memoria caché del navegador
-    estatusAlcaldiasCdmx[nombreAlcaldiaCsv] = estatusCsv;
-  }
+    // Guardar coincidencia en memoria caché
+    if (nombreAlcaldiaCsv) {
+      estatusAlcaldiasCdmx[nombreAlcaldiaCsv] = estatusCsv;
+    }
 
-  L.geoJSON(geoJson, {
-    // Corrección Definitiva: Retorna el par ordenado nativo de Leaflet
-    coordsToLatLng: function (coords) {
-      return new L.LatLng(coords, coords);
-    },
 
 
     style: function(feature) {
