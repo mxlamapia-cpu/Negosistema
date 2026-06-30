@@ -112,10 +112,9 @@
   <!-- SCRIPTS DEL MAPA CENTRALIZADO -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="./js/motor-mapas.js"></script>
-
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Lógica de Historial LocalStorage optimizada y limpia
+      // 1. Tu lógica existente de Historial (Se queda exactamente igual)
       const ultimaColonia = JSON.parse(localStorage.getItem('negosistema_ultima_visita'));
       if (ultimaColonia && ultimaColonia.nombre && ultimaColonia.url) {
         const bloque = document.getElementById('bloque-historial');
@@ -126,7 +125,15 @@
           enlace.textContent = `Entrar directo a: ${ultimaColonia.nombre}`;
         }
       }
+
+      // 2. CORRECCIÓN QUIRÚRGICA: Fuerza el repintado gráfico de los mosaicos en gris
+      setTimeout(function() {
+        if (typeof mapaNegosistema !== 'undefined' && mapaNegosistema !== null) {
+          mapaNegosistema.invalidateSize();
+        }
+      }, 350); // Pausa de 350ms para permitir que el HTML se estire por completo
     });
   </script>
+
 </body>
 </html>
