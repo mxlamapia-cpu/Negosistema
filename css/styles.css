@@ -587,3 +587,32 @@ body {
     .card-image img { max-height: 160px; }
     .info-title { font-size: 1.2rem; }
 }
+/* ==========================================================================
+   NEGOSISTEMA (2026) - AJUSTES CRÍTICOS DE CAPAS PARA MAPA TRICOLOR
+   Colocar este bloque al final de tu archivo styles.css
+   ========================================================================== */
+
+/* 1. Modificación a la clase del marco exterior para controlar su renderizado */
+.map-wrapper-xalpa {
+  position: relative !important;
+  z-index: 1 !important; /* Capa base controlada para que no colapse en gris */
+}
+
+/* 2. Nueva clase para que los nombres de las alcaldías floten sobre los polígonos */
+.label-colonia-flotante {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  z-index: 2000 !important; /* Obliga al texto a estar arriba del color verde/blanco/rojo */
+}
+
+/* 3. Estilo del texto plano interior del label de la alcaldía */
+.label-colonia-flotante div {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  color: #2c3e50 !important;
+  text-shadow: 1px 1px 3px #ffffff, -1px -1px 3px #ffffff, 1px -1px 3px #ffffff, -1px 1px 3px #ffffff !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
