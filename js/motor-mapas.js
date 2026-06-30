@@ -147,15 +147,19 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
     const columnas = filasParseadas[i];
     
     // Validar que la fila tenga los datos completos de tu pestaña "CDMX"
+        // --- CORRECCIÓN QUIRÚRGICA: ASIGNACIÓN DE ÍNDICES PARA TUS 10 COLUMNAS REALES ---
+    // Cortar la línea del CSV exactamente por la coma física standard
+    var columnas = linea.split(",");
     if (columnas.length < 10) continue;
 
     // Columna índice: NOMGEO (Azcapotzalco, Coyoacán, Iztapalapa...)
-    const nombreAlcaldiaCsv = columnas[6].replace(/^"|"$/g, '').trim().toLowerCase()
+    var nombreAlcaldiaCsv = columnas[6].replace(/^"|"$/g, '').trim().toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     
     // Columna índice: Estatus alcaldia (Explorando, Completada...)
-    const estatusCsv = columnas[9].replace(/^"|"$/g, '').trim().toUpperCase();
+    var estatusCsv = columnas[9].replace(/^"|"$/g, '').trim().toUpperCase();
 
+    // Guardar en la memoria caché del navegador
     estatusAlcaldiasCdmx[nombreAlcaldiaCsv] = estatusCsv;
   }
 
