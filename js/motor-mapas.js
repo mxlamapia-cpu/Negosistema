@@ -7,9 +7,9 @@ const CONFIG_NEGOSISTEMA = {
       nombre: "Ciudad de México (Macro)",
       coordenadas: [19.4326, -99.1332],
       zoom: 11,
-      geojson: "https://githubusercontent.com",
+      geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/alcaldias.geojson",
       // CSV Macro para controlar cuáles de las 16 alcaldías están activas
-      urlCsvEstatus: "https://google.com"
+      urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1670206752&single=true&output=csv"
     },
     "iztapalapa": {
       nombre: "Iztapalapa (Piloto)",
@@ -18,10 +18,10 @@ const CONFIG_NEGOSISTEMA = {
       geojson: "https://githubusercontent.com",
       
       // [SIMBIOSIS] Pestaña 5: "Estatus" (Solo columnas Nombre y Estatus para iluminar el mapa)
-      urlCsvEstatus: "https://google.com",
+      urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=383048417&single=true&output=csv",
       
       // [TABLERO COMERCIAL] Pestaña 4: "Salida Mapa" (Filtro maestro de negocios y niveles)
-      urlCsvSalidaMapa: "https://google.com"
+      urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv"
     }
     // Cuando abras una nueva alcaldía (ej. Coyoacán), solo copias el bloque de iztapalapa
     // aquí abajo y reemplazas los enlaces y GIDs de su propio Google Sheets.
