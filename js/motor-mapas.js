@@ -83,94 +83,106 @@ function ejecutarCargaPorCanal(modo) {
 
 
 /**
- * 4. RENDERIZADO CON SIMBIOSIS DINÁMICA: Cruza el GeoJSON vectorial
- * con las 2 columnas ("nombre" y "estatus") de tu CSV ligero de alcaldía.
+ * 4. RENDERIZADO CON SIMBIOSIS TRICOLOR INDEPENDIENTE: Cruza el GeoJSON de la CDMX
+ * con el CSV para aplicar Verde, Blanco-Amarillento o Rojo según la fase de trabajo.
  */
 function renderizarPoligonosPiloto(geoJson, csvTexto) {
-  // Diccionario dinámico que se llenará con la simbiosis del CSV
-  const estatusColoniasPiloto = {};
+  // Diccionario en memoria para asociar cada Alcaldía con su estatus real
+  const estatusAlcaldiasCdmx = {};
 
-  // Parsear el CSV ligero de 2 columnas línea por línea
+  // Parsear el CSV ligero de la CDMX línea por línea
   const lineas = csvTexto.split("\n");
   
   for (let i = 1; i < lineas.length; i++) {
     const linea = lineas[i].trim();
     if (!linea) continue;
 
-    // Separar las columnas (Nombre, Estatus) respetando comillas
+    // Separar las columnas (Alcaldía, Estatus)
     const columnas = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
     if (columnas.length < 2) continue;
 
-    // Limpiar comillas y espacios para asegurar una coincidencia exacta de texto
-    const nombreCsv = columnas[0].replace(/^"|"$/g, '').trim().toLowerCase();
+    // Estandarizar el texto para evitar que los acentos rompan la coincidencia
+    const nombreAlcaldiaCsv = columnas[0].replace(/^"|"$/g, '').trim().toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
     const estatusCsv = columnas[1].replace(/^"|"$/g, '').trim().toUpperCase();
 
-    // Guardar en el mapa de memoria
-    estatusColoniasPiloto[nombreCsv] = estatusCsv;
+    // Guardar el registro en el mapa de memoria
+    estatusAlcaldiasCdmx[nombreAlcaldiaCsv] = estatusCsv;
   }
 
-  // Pintar el GeoJSON aplicando el filtro dinámico del CSV
+  // Dibujar la división política en Leaflet con estilos independientes
   L.geoJSON(geoJson, {
     // Invierte el orden [Longitud, Latitud] nativo del archivo GeoJSON de origen
     coordsToLatLng: function (coords) {
       return new L.LatLng(coords[1], coords[0]);
     },
 
-    // Aplica tus colores basados en la columna "estatus" del CSV
+    // Aplicación estricta de la Escalera Cromática Tricolor Vecinal
     style: function(feature) {
-      // Extrae el nombre desde las propiedades internas del mapa vectorial
-      const nombreColonia = (feature.properties.Nombre || feature.properties.name || "").toLowerCase().trim();
-      const estatus = estatusColoniasPiloto[nombreColonia] || "INACTIVO";
+      // Extrae el nombre de la alcaldía desde las propiedades del mapa vectorial
+      var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
+      
+      var nombreLimpio = nombreVector.toLowerCase().trim()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-      if (estatus === "ACTIVO") {
-        return { color: "#27ae60", weight: 2, opacity: 0.8, fillColor: "#2ecc71", fillOpacity: 0.35 }; // Verde
+      // Consultar el estatus guardado en el Sheets
+      var estatus = estatusAlcaldiasCdmx[nombreLimpio] || "INACTIVO";
+
+      if (estatus === "COMPLETADA") {
+        // TRICOLOR 1: Verde brillante para zonas listas y operativas al 100%
+        return { color: "#27ae60", weight: 2, opacity: 0.8, fillColor: "#2ecc71", fillOpacity: 0.4 };
       } else if (estatus === "EXPLORANDO") {
-        return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.5 }; // Blanco-Amarillento Claro
+        // TRICOLOR 2: Blanco-Amarillento claro para levantamiento de datos en campo (Piloto)
+        return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.55 };
+      } else if (estatus === "PROXIMAMENTE") {
+        // TRICOLOR 3: Rojo suave/discreto para alertar de la siguiente zona de apertura
+        return { color: "#c0392b", weight: 2, opacity: 0.7, fillColor: "#e74c3c", fillOpacity: 0.35 };
       } else {
-        return { color: "transparent", weight: 0, opacity: 0, fillColor: "transparent", fillOpacity: 0 }; // Inactivas ocultas
+        // VACÍO: Si está inactiva o la celda está vacía, el polígono y sus líneas se vuelven invisibles
+        return { color: "transparent", weight: 0, opacity: 0, fillColor: "transparent", fillOpacity: 0 };
       }
     },
 
-    // Inyección de comportamiento dinámico e interactividad a los polígonos válidos
+    // Habilitar los nombres flotantes y el brinco dinámico de URLs
     onEachFeature: function(feature, layer) {
-      const nombreColonia = (feature.properties.Nombre || feature.properties.name || "");
-      const nombreClean = nombreColonia.toLowerCase().trim();
-      const estatus = estatusColoniasPiloto[nombreClean] || "INACTIVO";
+      var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
+      
+      var nombreLimpio = nombreVector.toLowerCase().trim()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
+      var estatus = estatusAlcaldiasCdmx[nombreLimpio] || "INACTIVO";
+
+      // Solo las zonas activas reciben interacción para no confundir al usuario
       if (estatus !== "INACTIVO") {
-        // Encontrar el centro del polígono para estampar el label
-        const centroide = layer.getBounds().getCenter();
+        var centroide = layer.getBounds().getCenter();
         
-        // Crear label flotante con formato de texto plano seguro
+        // Estampar el nombre de la alcaldía exactamente en su centro geométrico
         L.marker(centroide, {
           icon: L.divIcon({
             className: 'label-colonia-flotante',
-            html: `<div style="font-family:-apple-system,sans-serif; font-weight:700; font-size:11px; color:#2c3e50; text-shadow:1px 1px 2px white; text-align:center; transform:translateX(-50%); white-space:nowrap;">${nombreColonia}</div>`,
-            iconSize:[100, 20],
-            iconAnchor: [50, 10]
+            html: '<div style="font-family:-apple-system,sans-serif; font-weight:700; font-size:12px; color:#2c3e50; text-shadow:1px 1px 3px white; text-align:center; transform:translateX(-50%); white-space:nowrap;">' + nombreVector + '</div>',
+            iconSize:[14, 14],
+            iconAnchor: [7, 7]
           })
         }).addTo(capaPoligonosGroup);
 
-        // Enlace dinámico camaleónico al hacer clic
-        layer.on('click', () => {
-          let urlDestino = "./Iztapalapa/mapas-prod/xalpa2-Productos.html";
-          if (nombreClean.includes("santiago") && nombreClean.includes("ii")) {
-            urlDestino = "./Iztapalapa/mapas-prod/2ampli2-productos.html";
-          } else if (nombreClean.includes("santiago")) {
-            urlDestino = "./Iztapalapa/mapas-prod/2ampli1-productos.html";
-          }
-          
-          localStorage.setItem('negosistema_ultima_visita', JSON.stringify({ nombre: nombreColonia, url: urlDestino }));
-          window.location.href = urlDestino;
+        // Disparador dinámico para recargar la página index.html con el parámetro de la zona
+        layer.on('click', function() {
+          // El navegador viaja a la URL camaleónica (ej. index.html?alcaldia=iztapalapa)
+          window.location.href = "./index.html?alcaldia=" + nombreLimpio;
         });
 
-        layer.on('mouseover', () => layer.setStyle({ fillOpacity: 0.55 }));
-        layer.on('mouseout', () => layer.setStyle({ fillOpacity: estatus === "ACTIVO" ? 0.35 : 0.5 }));
+        // Efectos táctiles de selección visual
+        layer.on('mouseover', function() { layer.setStyle({ fillOpacity: 0.65 }); });
+        layer.on('mouseout', function() { 
+          var opacidadBase = (estatus === "EXPLORANDO") ? 0.55 : 0.4;
+          if (estatus === "PROXIMAMENTE") opacidadBase = 0.35;
+          layer.setStyle({ fillOpacity: opacidadBase }); 
+        });
       }
     }
   }).addTo(capaPoligonosGroup);
-
-  mapaNegosistema.setView(CONFIG_NEGOSISTEMA.coordenadasIztapalapa, 13);
 }
 
 /**
