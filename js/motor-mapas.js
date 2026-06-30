@@ -15,7 +15,7 @@ const CONFIG_NEGOSISTEMA = {
       nombre: "Iztapalapa (Piloto)",
       coordenadas: [19.3455, -99.0130],
       zoom: 13,
-      geojson: "raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/iztapal/iztapalapa.geojson",
+      geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/iztapal/iztapalapa.geojson",
       
       // [SIMBIOSIS] Pestaña 5: "Estatus" (Solo columnas Nombre y Estatus para iluminar el mapa)
       urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=383048417&single=true&output=csv",
