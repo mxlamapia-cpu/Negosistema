@@ -27,7 +27,18 @@ const CONFIG_NEGOSISTEMA = {
     // aquí abajo y reemplazas los enlaces y GIDs de su propio Google Sheets.
   }
 };
+// Variables globales de control del Lienzo
+let mapaNegosistema = null;
+let capaMarcadoresGroup = null;
+let capaPoligonosGroup = null;
+let datosComerciosGlobales = [];
 
+// Inicialización controlada al cargar el árbol DOM
+document.addEventListener("DOMContentLoaded", () => {
+  inicializarArquitecturaEcosistema();
+});
+
+/**
  * 2. ENRUTADOR DE ENTORNO: Identifica la vista y configura Leaflet nativo
  */
 function inicializarArquitecturaEcosistema() {
@@ -72,83 +83,111 @@ function inicializarArquitecturaEcosistema() {
   ejecutarCargaPorCanal(modoEjecucion);
 }
 
+/**
+ * 3. ORQUESTADOR DE FLUJOS DINÁMICOS: Segmentación de descargas asíncronas
+ */
+function ejecutarCargaPorCanal(modo) {
+  if (modo === "INDEX_GENERAL") {
+    const parametrosUrl = new URLSearchParams(window.location.search);
+    let alcaldiaClave = parametrosUrl.get("alcaldia");
 
+    if (alcaldiaClave) {
+      alcaldiaClave = alcaldiaClave.trim().toLowerCase();
+    }
+
+    if (!alcaldiaClave || !CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave]) {
+      alcaldiaClave = "cdmx";
+    }
+
+    const recursosZona = CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave];
+    mapaNegosistema.setView(recursosZona.coordenadas, recursosZona.zoom);
+
+    Promise.all([
+      fetch(recursosZona.geojson).then(res => res.json()),
+      fetch(recursosZona.urlCsvEstatus).then(res => res.text())
+    ])
+    .then(([geoJsonData, csvTexto]) => {
+      renderizarPoligonosPiloto(geoJsonData, csvTexto);
+    })
+    .catch(err => console.error(`Error de conexión en la alcaldía ${recursosZona.nombre}:`, err));
+
+  } else if (modo === "SIMULACION") {
+    console.log("Negosistema: Desplegando simulación estratégica de 26 negocios.");
+    activarCompuertaSimulacionVentas();
+
+  } else if (modo === "INTERNO_CAMALEON") {
+    const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
+
+    Promise.all([
+      fetch(recursoIztapalapa.geojson).then(res => res.json()),
+      fetch(recursoIztapalapa.urlCsvSalidaMapa).then(res => res.text())
+    ])
+    .then(([geoJsonData, csvTexto]) => {
+      L.geoJSON(geoJsonData, {
+        coordsToLatLng: function (coords) { return new L.LatLng(coords[1], coords[0]); },
+        style: { color: "#34495e", weight: 2, opacity: 0.3, fillColor: "#34495e", fillOpacity: 0.02 }
+      }).addTo(capaPoligonosGroup);
+
+      procesarBaseDatosCsvNegocios(csvTexto);
+    })
+    .catch(err => console.error("Error al conectar con la pestaña Salida Mapa:", err));
+  }
+}
 /**
  * 4. RENDERIZADO CON SIMBIOSIS TRICOLOR INDEPENDIENTE: Cruza el GeoJSON de la CDMX
  * con el CSV para aplicar Verde, Blanco-Amarillento o Rojo según la fase de trabajo.
  */
 function renderizarPoligonosPiloto(geoJson, csvTexto) {
-  // Diccionario en memoria para asociar cada Alcaldía con su estatus real
   const estatusAlcaldiasCdmx = {};
-
-  // Parsear el CSV ligero de la CDMX línea por línea
   const lineas = csvTexto.split("\n");
   
   for (let i = 1; i < lineas.length; i++) {
     const linea = lineas[i].trim();
     if (!linea) continue;
 
-    // Separar las columnas (Alcaldía, Estatus)
-    const columnas = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
-    if (columnas.length < 2) continue;
+    const columns = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
+    if (columns.length < 2) continue;
 
-    // Estandarizar el texto para evitar que los acentos rompan la coincidencia
-    const nombreAlcaldiaCsv = columnas[0].replace(/^"|"$/g, '').trim().toLowerCase()
+    const nombreAlcaldiaCsv = columns[0].replace(/^"|"$/g, '').trim().toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     
-    const estatusCsv = columnas[1].replace(/^"|"$/g, '').trim().toUpperCase();
-
-    // Guardar el registro en el mapa de memoria
+    const estatusCsv = columns[1].replace(/^"|"$/g, '').trim().toUpperCase();
     estatusAlcaldiasCdmx[nombreAlcaldiaCsv] = estatusCsv;
   }
 
-  // Dibujar la división política en Leaflet con estilos independientes
   L.geoJSON(geoJson, {
-    // Invierte el orden [Longitud, Latitud] nativo del archivo GeoJSON de origen
     coordsToLatLng: function (coords) {
       return new L.LatLng(coords[1], coords[0]);
     },
 
-    // Aplicación estricta de la Escalera Cromática Tricolor Vecinal
     style: function(feature) {
-      // Extrae el nombre de la alcaldía desde las propiedades del mapa vectorial
       var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
-      
       var nombreLimpio = nombreVector.toLowerCase().trim()
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-      // Consultar el estatus guardado en el Sheets
       var estatus = estatusAlcaldiasCdmx[nombreLimpio] || "INACTIVO";
 
       if (estatus === "COMPLETADA") {
-        // TRICOLOR 1: Verde brillante para zonas listas y operativas al 100%
         return { color: "#27ae60", weight: 2, opacity: 0.8, fillColor: "#2ecc71", fillOpacity: 0.4 };
       } else if (estatus === "EXPLORANDO") {
-        // TRICOLOR 2: Blanco-Amarillento claro para levantamiento de datos en campo (Piloto)
         return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.55 };
       } else if (estatus === "PROXIMAMENTE") {
-        // TRICOLOR 3: Rojo suave/discreto para alertar de la siguiente zona de apertura
         return { color: "#c0392b", weight: 2, opacity: 0.7, fillColor: "#e74c3c", fillOpacity: 0.35 };
       } else {
-        // VACÍO: Si está inactiva o la celda está vacía, el polígono y sus líneas se vuelven invisibles
         return { color: "transparent", weight: 0, opacity: 0, fillColor: "transparent", fillOpacity: 0 };
       }
     },
 
-    // Habilitar los nombres flotantes y el brinco dinámico de URLs
     onEachFeature: function(feature, layer) {
       var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
-      
       var nombreLimpio = nombreVector.toLowerCase().trim()
         .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
       var estatus = estatusAlcaldiasCdmx[nombreLimpio] || "INACTIVO";
 
-      // Solo las zonas activas reciben interacción para no confundir al usuario
       if (estatus !== "INACTIVO") {
         var centroide = layer.getBounds().getCenter();
         
-        // Estampar el nombre de la alcaldía exactamente en su centro geométrico
         L.marker(centroide, {
           icon: L.divIcon({
             className: 'label-colonia-flotante',
@@ -156,12 +195,10 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
           })
         }).addTo(capaPoligonosGroup);
 
-        // Disparador dinámico para recargar la página index.html con el parámetro de la zona
         layer.on('click', function() {
           window.location.href = "./index.html?alcaldia=" + nombreLimpio;
         });
 
-        // Efectos táctiles de selección visual
         layer.on('mouseover', function() { layer.setStyle({ fillOpacity: 0.65 }); });
         layer.on('mouseout', function() { 
           var opacidadBase = (estatus === "EXPLORANDO") ? 0.55 : 0.4;
@@ -172,16 +209,9 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
     }
   }).addTo(capaPoligonosGroup);
 }
-
-/**
- * ==========================================================================
- * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * ARCHIVO: js/motor-mapas.js (PARTE 3 DE 3)
- * ==========================================================================
- */
-
 /**
  * 5. COMPUERTA DE SIMULACIÓN (ANÚNCIATE): Carga estática de 26 muestras
+ * Distribuye uniformemente comercios demo aplicando la escalera de valor.
  */
 function activarCompuertaSimulacionVentas() {
   datosComerciosGlobales = [];
@@ -223,9 +253,9 @@ function activarCompuertaSimulacionVentas() {
 
   renderizarPinesEnPantalla("todos", "todos", "todos");
 }
-
 /**
- * 6. PARSER CSV COMERCIAL REAL: Regla de Doble Presencia (Nivel 4 y 5 se duplican)
+ * 6. PARSER CSV COMERCIAL REAL: Regla de Doble Presencia por Capa Comercial
+ * Multiplica y clona físicamente en memoria JSON a los comercios Premium
  */
 function procesarBaseDatosCsvNegocios(csvTexto) {
   datosComerciosGlobales = [];
@@ -270,6 +300,7 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
     const catServ = comercio.capaServicios ? comercio.capaServicios.split(",") : [];
     const totalCapas = [...catProd, ...catServ];
 
+    // Regla de duplicación física para el cobro del 30% extra en multi-ramos
     if (totalCapas.length > 1 && (comercio.nivelServicio === 4 || comercio.nivelServicio === 5)) {
       totalCapas.forEach(capa => {
         const copiaComercio = { ...comercio, capaActivaMapeo: capa.trim().toLowerCase() };
@@ -284,7 +315,6 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
 
   ejecutarFiltroAutomaticoPaginaInterna();
 }
-
 /**
  * 7. PINTOR DE MARCADORES: Aplica Muro de Privacidad y Semáforo de Horarios
  */
@@ -304,7 +334,7 @@ function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todo
     var iconoPersonalizadoHtml = L.divIcon({
       className: "pin-negosistema " + claseNivelCss,
       html: '<div style="' + estiloInline + ' width:14px; height:14px; border-radius:50%;"></div>',
-      iconSize:[14, 14],
+      iconSize:,
       iconAnchor: [7, 7]
     });
 
@@ -356,14 +386,11 @@ function renderizarPinesEnPantalla(filtroColonia, filtroMapa, filtroCapa = "todo
     mapaNegosistema.fitBounds(boundsAjuste, { padding: 40, maxZoom: 16 });
   }
 }
-
 /**
  * 8. TAXONOMÍA CAMALEÓNICA: Paleta cromática oficial de 16 Capas
  */
 function obtenerColorHexagonalPorCapa(nombreCapa) {
-  // --- CIERRE DE LA FUNCIÓN DE CAPAS ---
   if (!nombreCapa) return "#7f8c8d";
-  
   var c = nombreCapa.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   
   if (c.includes("basica") || c.includes("abarrotes") || c.includes("carnic") || c.includes("recaud")) {
@@ -408,34 +435,33 @@ function obtenerColorHexagonalPorCapa(nombreCapa) {
   if (c.includes("urgencia") || c.includes("nocturna") || c.includes("grua")) {
     return "#111111";
   }
-  
-  return "#7f8c8d";
+  return "#7f8c8d"; 
 }
 
 /**
- * DETECTOR AUTOMÁTICO DE URL INTERNAS
+ * 9. DETECTOR AUTOMÁTICO DE URL INTERNAS
  */
 function ejecutarFiltroAutomaticoPaginaInterna() {
   var urlActual = window.location.pathname.toLowerCase();
   var zonaMapeo = "todos";
   var segmentoMapa = "todos";
-  
+
   if (urlActual.includes("xalpa")) zonaMapeo = "xalpa";
   if (urlActual.includes("ampli1") || urlActual.includes("santiago")) zonaMapeo = "santiago";
   if (urlActual.includes("productos")) segmentoMapa = "productos";
   if (urlActual.includes("servicios")) segmentoMapa = "servicios";
-  
+
   renderizarPinesEnPantalla(zonaMapeo, segmentoMapa, "todos");
 }
 
 /**
- * INTERFAZ PÚBLICA DE BOTONERAS FLOTANTES
+ * 10. INTERFAZ PÚBLICA DE BOTONERAS FLOTANTES
  */
 function aplicarFiltroCapaBotonera(nombreCapa) {
   var contenedorIndex = document.getElementById("mapa_general");
   var zonaMapeo = "todos";
   var segmentoMapa = "todos";
-  
+
   if (!contenedorIndex) {
     var urlActual = window.location.pathname.toLowerCase();
     if (urlActual.includes("xalpa")) zonaMapeo = "xalpa";
@@ -443,18 +469,16 @@ function aplicarFiltroCapaBotonera(nombreCapa) {
     if (urlActual.includes("productos")) segmentoMapa = "productos";
     if (urlActual.includes("servicios")) segmentoMapa = "servicios";
   }
-  
   renderizarPinesEnPantalla(zonaMapeo, segmentoMapa, nombreCapa);
 }
 
 /**
- * REGEX EXTRACTOR SEGURO DE IDENTIFICADORES YOUTUBE
+ * 11. REGEX EXTRACTOR SEGURO DE IDENTIFICADORES YOUTUBE
  */
 function extraerIdVideoPlataformas(urlVideo) {
   if (!urlVideo) return null;
-  
   var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   var match = urlVideo.match(regExp);
-  
-  return (match && match[2] && match[2].length === 11) ? match[2] : null;
+  return (match && match && match.length === 11) ? match : null;
 }
+
