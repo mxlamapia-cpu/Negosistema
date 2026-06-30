@@ -1,141 +1,124 @@
-/**
- * ==========================================================================
- * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * ARCHIVO: js/motor-mapas.js (PARTE 1 DE 3)
- * ==========================================================================
- */
-
-// --- 1. CONFIGURACIÓN MAESTRA Y ABSORCIÓN DE CANALES CSV (GOOGLE SHEETS) ---
+// --- 1. CONFIGURACIÓN MAESTRA CON SEGMENTACIÓN DE PESTAÑAS (GID) ---
 const CONFIG_NEGOSISTEMA = {
-  // CSV 1: Límites por Alcaldía y Estatus de Colonias (Fase Piloto)
-  urlCsvLimites: "https://google.com",
-  
-  // CSV 2: Directorio Oficial de Comercios Físicos Verificados
-  urlCsvDirectorio: "https://google.com",
-  
-  // CSV 4: Buzón de Ofertas Activas Temporales (Premium Niveles 4 y 5)
-  urlCsvOfertas: "https://google.com",
-
-  // Repositorios de Capas Vectoriales Estables GeoJSON
-  urlGeoJsonCdmxBase: "https://githubusercontent.com", 
-  urlGeoJsonColoniasIztapalapa: "https://githubusercontent.com",
-
-  // Parámetros de Enfoque de Cámara Cartográfica
-  coordenadasIztapalapa: [19.3455, -99.0130],
-  zoomIndexPrincipal: 12,
-  zoomSeccionInterna: 16
+  // Catálogo unificado de Alcaldías. Cada una apunta a su archivo GeoJSON 
+  // y a los GIDs específicos de sus pestañas "Estatus" y "Salida Mapa"
+  catalogoAlcaldias: {
+    "cdmx": {
+      nombre: "Ciudad de México (Macro)",
+      coordenadas: [19.4326, -99.1332],
+      zoom: 11,
+      geojson: "https://githubusercontent.com",
+      // CSV Macro para controlar cuáles de las 16 alcaldías están activas
+      urlCsvEstatus: "https://google.com"
+    },
+    "iztapalapa": {
+      nombre: "Iztapalapa (Piloto)",
+      coordenadas: [19.3455, -99.0130],
+      zoom: 13,
+      geojson: "https://githubusercontent.com",
+      
+      // [SIMBIOSIS] Pestaña 5: "Estatus" (Solo columnas Nombre y Estatus para iluminar el mapa)
+      urlCsvEstatus: "https://google.com",
+      
+      // [TABLERO COMERCIAL] Pestaña 4: "Salida Mapa" (Filtro maestro de negocios y niveles)
+      urlCsvSalidaMapa: "https://google.com"
+    }
+    // Cuando abras una nueva alcaldía (ej. Coyoacán), solo copias el bloque de iztapalapa
+    // aquí abajo y reemplazas los enlaces y GIDs de su propio Google Sheets.
+  }
 };
 
-// Variables globales de control del Lienzo
-let mapaNegosistema = null;
-let capaMarcadoresGroup = null;
-let capaPoligonosGroup = null;
-let datosComerciosGlobales = [];
-
-// Inicialización controlada al cargar el árbol DOM
-document.addEventListener("DOMContentLoaded", () => {
-  inicializarArquitecturaEcosistema();
-});
-
 /**
- * 2. ENRUTADOR DE ENTORNO: Identifica la vista y configura Leaflet nativo
- */
-function inicializarArquitecturaEcosistema() {
-  const contenedorIndex = document.getElementById("mapa_general");
-  const contenedorSeccion = document.getElementById("mapa_seccion");
-  const urlActual = window.location.pathname.toLowerCase();
-
-  let idContenedor = "";
-  let zoomInicial = CONFIG_NEGOSISTEMA.zoomIndexPrincipal;
-  let modoEjecucion = "";
-
-  if (contenedorIndex) {
-    idContenedor = "mapa_general";
-    modoEjecucion = urlActual.includes("anunciate") ? "SIMULACION" : "INDEX_GENERAL";
-  } else if (contenedorSeccion) {
-    idContenedor = "mapa_seccion";
-    modoEjecucion = "INTERNO_CAMALEON";
-    zoomInicial = CONFIG_NEGOSISTEMA.zoomSeccionInterna;
-  } else {
-    console.error("Negosistema: No se localizó un contenedor cartográfico válido.");
-    return;
-  }
-
-  // Instanciar Leaflet con optimizaciones táctiles para smartphones
-  mapaNegosistema = L.map(idContenedor, {
-    zoomControl: false,
-    dragging: true,
-    tap: true
-  }).setView(CONFIG_NEGOSISTEMA.coordenadasIztapalapa, zoomInicial);
-
-  // Servidor oficial de OpenStreetMap (Elimina fallas de renderizado en subcarpetas)
-  L.tileLayer('https://openstreetmap.org{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; Negosistema 2026'
-  }).addTo(mapaNegosistema);
-
-  L.control.zoom({ position: 'topright' }).addTo(mapaNegosistema);
-
-  // Declarar los grupos de capas independientes en memoria
-  capaPoligonosGroup = L.layerGroup().addTo(mapaNegosistema);
-  capaMarcadoresGroup = L.layerGroup().addTo(mapaNegosistema);
-
-  ejecutarCargaPorCanal(modoEjecucion);
-}
-/**
- * ==========================================================================
- * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
- * ARCHIVO: js/motor-mapas.js (PARTE 2 DE 3)
- * ==========================================================================
- */
-
-/**
- * 3. ORQUESTADOR DE FLUJOS: Segmentación de descargas asíncronas
+ * 2. ORQUESTADOR DE ENTORNO: Lee la URL, extrae la alcaldía activa 
+ * y descarga en paralelo el esqueleto GeoJSON y su pestaña correspondiente.
  */
 function ejecutarCargaPorCanal(modo) {
   if (modo === "INDEX_GENERAL") {
+    const parametrosUrl = new URLSearchParams(window.location.search);
+    let alcaldiaClave = parametrosUrl.get("alcaldia");
+
+    if (alcaldiaClave) {
+      alcaldiaClave = alcaldiaClave.trim().toLowerCase();
+    }
+
+    // Si no se define alcaldía en la URL, por defecto se muestra la CDMX completa
+    if (!alcaldiaClave || !CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave]) {
+      alcaldiaClave = "cdmx";
+    }
+
+    const recursosZona = CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave];
+    mapaNegosistema.setView(recursosZona.coordenadas, recursosZona.zoom);
+
+    // Descarga en paralelo del esqueleto cartográfico y la pestaña "Estatus"
     Promise.all([
-      fetch(CONFIG_NEGOSISTEMA.urlGeoJsonCdmxBase).then(res => res.json()),
-      fetch(CONFIG_NEGOSISTEMA.urlCsvLimites).then(res => res.text())
+      fetch(recursosZona.geojson).then(res => res.json()),
+      fetch(recursosZona.urlCsvEstatus).then(res => res.text())
     ])
     .then(([geoJsonData, csvTexto]) => {
+      // Envía los datos a la función de simbiosis que ya corregimos con coordsToLatLng
       renderizarPoligonosPiloto(geoJsonData, csvTexto);
     })
-    .catch(err => console.error("Falla en canal de inicialización Index:", err));
-
-  } else if (modo === "SIMULACION") {
-    console.log("Negosistema: Desplegando simulación estratégica de 26 negocios.");
-    activarCompuertaSimulacionVentas();
+    .catch(err => console.error(`Error de conexión en la alcaldía ${recursosZona.nombre}:`, err));
 
   } else if (modo === "INTERNO_CAMALEON") {
+    // Las páginas internas comerciales cargan los negocios reales desde la pestaña "Salida Mapa"
+    const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
+
     Promise.all([
-      fetch(CONFIG_NEGOSISTEMA.urlGeoJsonColoniasIztapalapa).then(res => res.json()),
-      fetch(CONFIG_NEGOSISTEMA.urlCsvDirectorio).then(res => res.text())
+      fetch(recursoIztapalapa.geojson).then(res => res.json()),
+      fetch(recursoIztapalapa.urlCsvSalidaMapa).then(res => res.text())
     ])
     .then(([geoJsonData, csvTexto]) => {
       L.geoJSON(geoJsonData, {
+        coordsToLatLng: function (coords) { return new L.LatLng(coords[1], coords[0]); },
         style: { color: "#34495e", weight: 2, opacity: 0.3, fillColor: "#34495e", fillOpacity: 0.02 }
       }).addTo(capaPoligonosGroup);
 
+      // Desglosa el directorio filtrado por el embudo de cobros de tu Sheets
       procesarBaseDatosCsvNegocios(csvTexto);
     })
-    .catch(err => console.error("Falla en canal interno comercial:", err));
+    .catch(err => console.error("Error al conectar con la pestaña Salida Mapa:", err));
   }
 }
 
+
 /**
- * 4. RENDERIZADO PILOTO (INDEX): Reglas de color por estatus y nombres al centro
+ * 4. RENDERIZADO CON SIMBIOSIS DINÁMICA: Cruza el GeoJSON vectorial
+ * con las 2 columnas ("nombre" y "estatus") de tu CSV ligero de alcaldía.
  */
 function renderizarPoligonosPiloto(geoJson, csvTexto) {
-  // Diccionario de control derivado del CSV 1 (Estatus de validación piloto)
-  const estatusColoniasPiloto = {
-    "santiago acahualtepec i": "EXPLORANDO",
-    "santiago acahualtepec ii": "EXPLORANDO",
-    "xalpa ii": "ACTIVO"
-  };
+  // Diccionario dinámico que se llenará con la simbiosis del CSV
+  const estatusColoniasPiloto = {};
 
+  // Parsear el CSV ligero de 2 columnas línea por línea
+  const lineas = csvTexto.split("\n");
+  
+  for (let i = 1; i < lineas.length; i++) {
+    const linea = lineas[i].trim();
+    if (!linea) continue;
+
+    // Separar las columnas (Nombre, Estatus) respetando comillas
+    const columnas = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
+    if (columnas.length < 2) continue;
+
+    // Limpiar comillas y espacios para asegurar una coincidencia exacta de texto
+    const nombreCsv = columnas[0].replace(/^"|"$/g, '').trim().toLowerCase();
+    const estatusCsv = columnas[1].replace(/^"|"$/g, '').trim().toUpperCase();
+
+    // Guardar en el mapa de memoria
+    estatusColoniasPiloto[nombreCsv] = estatusCsv;
+  }
+
+  // Pintar el GeoJSON aplicando el filtro dinámico del CSV
   L.geoJSON(geoJson, {
+    // Invierte el orden [Longitud, Latitud] nativo del archivo GeoJSON de origen
+    coordsToLatLng: function (coords) {
+      return new L.LatLng(coords[1], coords[0]);
+    },
+
+    // Aplica tus colores basados en la columna "estatus" del CSV
     style: function(feature) {
+      // Extrae el nombre desde las propiedades internas del mapa vectorial
       const nombreColonia = (feature.properties.Nombre || feature.properties.name || "").toLowerCase().trim();
       const estatus = estatusColoniasPiloto[nombreColonia] || "INACTIVO";
 
@@ -144,28 +127,31 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
       } else if (estatus === "EXPLORANDO") {
         return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.5 }; // Blanco-Amarillento Claro
       } else {
-        return { color: "transparent", weight: 0, opacity: 0, fillColor: "transparent", fillOpacity: 0 }; // Inactivas no se pintan
+        return { color: "transparent", weight: 0, opacity: 0, fillColor: "transparent", fillOpacity: 0 }; // Inactivas ocultas
       }
     },
+
+    // Inyección de comportamiento dinámico e interactividad a los polígonos válidos
     onEachFeature: function(feature, layer) {
       const nombreColonia = (feature.properties.Nombre || feature.properties.name || "");
       const nombreClean = nombreColonia.toLowerCase().trim();
       const estatus = estatusColoniasPiloto[nombreClean] || "INACTIVO";
 
       if (estatus !== "INACTIVO") {
-        // Calcular el centro geométrico del polígono
+        // Encontrar el centro del polígono para estampar el label
         const centroide = layer.getBounds().getCenter();
         
-        // Inyectar el label con el nombre estático flotante en el centro
+        // Crear label flotante con formato de texto plano seguro
         L.marker(centroide, {
           icon: L.divIcon({
             className: 'label-colonia-flotante',
             html: `<div style="font-family:-apple-system,sans-serif; font-weight:700; font-size:11px; color:#2c3e50; text-shadow:1px 1px 2px white; text-align:center; transform:translateX(-50%); white-space:nowrap;">${nombreColonia}</div>`,
-            iconSize: [0, 0]
+            iconSize:[100, 20],
+            iconAnchor: [50, 10]
           })
         }).addTo(capaPoligonosGroup);
 
-        // Enlace dinámico con transición directa al Tablero Geo-Comercial Camaleónico
+        // Enlace dinámico camaleónico al hacer clic
         layer.on('click', () => {
           let urlDestino = "./Iztapalapa/mapas-prod/xalpa2-Productos.html";
           if (nombreClean.includes("santiago") && nombreClean.includes("ii")) {
@@ -174,7 +160,6 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
             urlDestino = "./Iztapalapa/mapas-prod/2ampli1-productos.html";
           }
           
-          // Almacenar en LocalStorage para el bloque de historial del index.html
           localStorage.setItem('negosistema_ultima_visita', JSON.stringify({ nombre: nombreColonia, url: urlDestino }));
           window.location.href = urlDestino;
         });
@@ -187,6 +172,7 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
 
   mapaNegosistema.setView(CONFIG_NEGOSISTEMA.coordenadasIztapalapa, 13);
 }
+
 /**
  * ==========================================================================
  * NEGOSISTEMA (2026) - Motor de Mapas e Inteligencia Geográfica Hiperlocal
