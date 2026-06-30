@@ -482,3 +482,60 @@ function extraerIdVideoPlataformas(urlVideo) {
   var match = urlVideo.match(regExp);
   return (match && match && match.length === 11) ? match : null;
 }
+/**
+ * 12. CONMUTADOR DE VISTAS PILOTO (Pestañas del Index)
+ * Filtra las alcaldías activas/exploradas o muestra el mapa mudo de la CDMX
+ */
+function conmutarVistaIndex(tipoVista) {
+  // 1. Alternar la clase activa visual en los botones del HTML
+  const botones = document.querySelectorAll('.btn-pestana');
+  botones.forEach(btn => btn.classList.remove('activa'));
+  
+  // Buscar cuál botón fue presionado para encenderlo
+  const botonPresionado = event.currentTarget;
+  if (botonPresionado) {
+    botonPresionado.classList.add('activa');
+  }
+
+  // 2. Ejecutar la recarga dinámica del mapa aplicando la regla del piloto
+  if (!mapaNegosistema || !capaPoligonosGroup) return;
+
+  // Limpiar los polígonos viejos para repintar desde cero
+  capaPoligonosGroup.clearLayers();
+
+  const recursosCDMX = CONFIG_NEGOSISTEMA.catalogoAlcaldias["cdmx"];
+
+  // Descargar nuevamente el GeoJSON base de la CDMX
+  fetch(recursosCDMX.geojson)
+    .then(res => res.json())
+    .then(geoJsonData => {
+      // Si el usuario eligió ver solo "Zonas en Exploración", usamos el CSV ligero
+      if (tipoVista === 'explorando') {
+        fetch(recursosCDMX.urlCsvEstatus)
+          .then(res => res.text())
+          .then(csvTexto => {
+            renderizarPoligonosPiloto(geoJsonData, csvTexto);
+          });
+      } else {
+        // VISTA MAESTRA COMPLETA: Pinta todas las alcaldías en gris/transparente 
+        // sin importar el CSV, para que el vecino vea el mapa completo de la CDMX
+        L.geoJSON(geoJsonData, {
+          coordsToLatLng: function (coords) {
+            return new L.LatLng(coords[1], coords[0]);
+          },
+          style: {
+            color: "#bdc3c7",
+            weight: 1.5,
+            opacity: 0.6,
+            fillColor: "#ecf0f1",
+            fillOpacity: 0.2
+          },
+          onEachFeature: function(feature, layer) {
+            var nombre = feature.properties.NOMGEO || feature.properties.Nombre || "Alcaldía";
+            layer.bindPopup("<b style='font-family:sans-serif;'>" + nombre + "</b><br><span style='font-size:11px;color:#7f8c8d;'>Próxima apertura (Fase 2)</span>");
+          }
+        }).addTo(capaPoligonosGroup);
+      }
+    })
+    .catch(err => console.error("Error al conmutar la vista del mapa:", err));
+}
