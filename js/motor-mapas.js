@@ -21,11 +21,13 @@ const CONFIG_NEGOSISTEMA = {
       // pestaña 5: "Estatus"
       urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=383048417&single=true&output=csv",
       // pestaña 4: "Salida Mapa"
-      urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv"
-      urlCsvAnunciateSimulacion: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGcorxjHpvr9WkNUQd2cRuAf1wRFlI5Jr67WeT9aZnz74Y677ZZ9u3iAFpwCl5RcuVM8npRYOrJbJ_/pub?gid=956712165&single=true&output=csv"
+      urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv",
+      // pestaña 3: "Entrada" (Negocios Ficticios / Muestra Anúnciate)
+      urlCsvAnunciateSimulacion: "AQUÍ_VA_EL_ENLACE_DE_TU_CSV_PUESTAÑA_3"
     }
   }
 };
+
 
 // Variables globales para el control del lienzo cartográfico
 let mapaNegosistema = null;
