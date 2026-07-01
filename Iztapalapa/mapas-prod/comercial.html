@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Negosistema - Directorio Hiperlocal Camaleón</title>
+  
+  <!-- 1. Estilos Base Oficiales de Leaflet Core -->
+  <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  
+  <!-- 2. Tu Hoja de Estilos Centralizada Externa -->
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <!-- Menú de Navegación Superior Unificado -->
+  <nav class="navbar">
+    <a href="./index.html" class="logo">NEGOSISTEMA</a>
+    <div class="nav-links">
+      <a href="./anunciate.html" class="nav-item">Anúnciate</a>
+      <a href="./creditos.html" class="nav-item">Créditos</a>
+      <a href="./terminos.html" class="nav-item">Términos y Condiciones</a>
+    </div>
+  </nav>
+
+  <!-- Contenedor Principal Ajustado -->
+  <div class="contenedor-productos">
+    <main>
+      
+      <!-- ENCABEZADO MUTANTE: Los textos y emojis cambiarán con JavaScript -->
+      <header style="margin-bottom: 20px;" id="cabecera_camaleon">
+        <h1 class="section-title" id="titulo_colonia_dinamico">
+          Cargando Colonia...
+        </h1>
+        <p class="intro-text" id="descripcion_colonia_dinamica">
+          Localizando los puntos comerciales en la zona del piloto.
+        </p>
+      </header>
+
+      <!-- SECCIÓN: SLIDER DE OFERTAS ANIMADO UNIFICADO -->
+      <div class="info-container">
+        <h2 class="info-title" id="titulo_ofertas_dinamico">
+          Promociones en la Zona
+        </h2>
+        <p class="info-text">
+          Aproveche los descuentos activos de los comercios verificados.
+          <br><b>Haga clic en la tarjeta para ver detalles o contactar.</b>
+        </p>
+      </div>
+
+      <!-- Contenedor del Carrusel Físico de Ofertas -->
+      <div class="slider-viewport">
+        <div class="slider-track" id="contenedor_slider_track">
+          
+          <!-- GRUPO 1: Tarjetas Demo de Respaldo -->
+          <div class="slide-group">
+            <div class="feature-card-link">
+              <a href="#" class="feature-card">
+                <div class="card-image">
+                  <img src="./Imagenes/caballete.png" alt="Muestra">
+                </div>
+                <div class="card-content">
+                  <h3>Buscando Ofertas Activas...</h3>
+                  <p>Las promociones cambian según la colonia elegida.</p>
+                </div>
+              </a>
+              <a href="https://wa.me" class="btn-wa-float" target="_blank">
+                ¡PEDIR!
+              </a>
+            </div>
+          </div>
+
+        </div> <!-- Fin Slider Track -->
+      </div> <!-- Fin Slider Viewport -->
+           <!-- BOTÓN SWITCH INTERACTIVO: Cambia dinámicamente de sub-entorno -->
+      <div style="margin-bottom: 20px; text-align: center;">
+        <button id="btn_switch_entorno" class="btn-gps-xalpa" onclick="conmutarSubEntornoCamaleon()">
+          Cargando entorno...
+        </button>
+      </div>
+
+      <!-- CONTENEDOR OPTIMIZADO DEL MAPA -->
+      <div class="map-wrapper-xalpa">
+        <div id="mapa_seccion"></div>
+      </div>
+
+      <!-- GUÍA DE FILTROS E INTERRUPTORES TÁCTILES INFERIORES -->
+      <div class="guia-colores-contenedor">
+        <h3 class="guia-titulo" id="titulo_guia_capas">
+          Guía de Capas e Interruptores
+        </h3>
+        <p style="font-size: 12px; color: #7f8c8d; margin: -5px 0 15px 0; text-align: center;">
+          Toque el círculo o el nombre de una capa para encenderla o apagarla del mapa.
+        </p>
+        
+        <!-- Contenedor maestro donde JavaScript inyectará los botones con círculos -->
+        <div class="guia-grid" id="botonera_capas_camaleon"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Pie de Página Técnico Unificado -->
+  <footer class="pie-pagina" style="text-align: center; padding: 20px 10px; color: #666; margin-top: 30px;">
+    <p>&copy; 2026 <strong>Negosistema</strong>. Todos los derechos reservados.</p>
+    <a href="./terminos.html" style="color: #1a73e8; text-decoration: none; font-size: 13px;">Políticas de Uso y Deslinde Legal</a>
+  </footer>
+
+  <!-- 3. Librería JavaScript de PapaParse (Lectura de Google Sheets) -->
+  <script src="https://cloudflare.com" integrity="sha512-V9w6gYvPMp9fOsh3Qv7097Gg76as7Y6AnS7O9H36f6ZfO58L9vGv5X1d67g1Xm7n67G71l3o9C7B6g5O0g5O6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- 4. Librería JavaScript Oficial de Leaflet Core -->
+  <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- 5. Enlace Final a tu Lógica Centralizada -->
+  <script src="./motor-mapas.js"></script>
+</body>
+</html>
+   
