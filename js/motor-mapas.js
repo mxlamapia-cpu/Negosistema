@@ -23,6 +23,7 @@ const CONFIG_NEGOSISTEMA = {
       // pestaña 4: "Salida Mapa"
       urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv",
       // pestaña 3: "Entrada" (Negocios Ficticios / Muestra Anúnciate)
+    urlCsvAnunciateSimulacion:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSGcorxjHpvr9WkNUQd2cRuAf1wRFlI5Jr67WeT9aZnz74Y677ZZ9u3iAFpwCl5RcuVM8npRYOrJbJ_/pub?gid=956712165&single=true&output=csv"
     }
   }
 };
@@ -115,11 +116,35 @@ function ejecutarCargaPorCanal(modo) {
     .then(([geoJsonData, csvTexto]) => {
       renderizarPoligonosPiloto(geoJsonData, csvTexto);
     })
-    .catch(err => console.error(`Error de conexión en la alcaldía ${recursosZona.nombre}:`, err));
+    .catch(err => console.error("Error en index:", err));
 
   } else if (modo === "SIMULACION") {
-    console.log("Negosistema: Desplegando simulación estratégica de 26 negocios.");
-    activarCompuertaSimulacionVentas();
+    // ENLACE DIRECTO AL CSV 3: Descarga el GeoJSON y los datos de Anúnciate
+    const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
+    
+    Promise.all([
+      fetch(recursoIztapalapa.geojson).then(res => res.json()),
+      fetch(recursoIztapalapa.urlCsvAnunciateSimulacion).then(res => res.text())
+    ])
+    .then(([geoJsonData, csvTexto]) => {
+      // Pintamos el polígono base de la zona piloto
+      L.geoJSON(geoJsonData, {
+        coordsToLatLng: function (coords) { 
+          return new L.LatLng(coords[1], coords[0]); 
+        },
+        style: { 
+          color: "#e67e22", 
+          weight: 2, 
+          opacity: 0.4, 
+          fillColor: "#f1c40f", 
+          fillOpacity: 0.1 
+        }
+      }).addTo(capaPoligonosGroup);
+      
+      // Enviamos el texto de la pestaña 3 al procesador comercial
+      procesarBaseDatosCsvNegocios(csvTexto);
+    })
+    .catch(err => console.error("Error al conectar con la pestaña 3:", err));
 
   } else if (modo === "INTERNO_CAMALEON") {
     const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
@@ -129,7 +154,6 @@ function ejecutarCargaPorCanal(modo) {
       fetch(recursoIztapalapa.urlCsvSalidaMapa).then(res => res.text())
     ])
     .then(([geoJsonData, csvTexto]) => {
-      // CORRECCIÓN QUIRÚRGICA: Mapeo correcto de arreglos vectoriales para Leaflet
       L.geoJSON(geoJsonData, {
         coordsToLatLng: function (coords) { 
           return new L.LatLng(coords[1], coords[0]); 
@@ -145,7 +169,7 @@ function ejecutarCargaPorCanal(modo) {
       
       procesarBaseDatosCsvNegocios(csvTexto);
     })
-    .catch(err => console.error("Error al conectar con la pestaña Salida Mapa:", err));
+    .catch(err => console.error("Error en pestaña Salida Mapa:", err));
   }
 }
 // ==========================================================================
