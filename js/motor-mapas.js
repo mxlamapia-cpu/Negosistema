@@ -327,9 +327,14 @@ function generarBotoneraInterruptoresTactiles() {
     contenedorBotonera.appendChild(botonElemento);
   });
 }
+
 // ==========================================================================
 // NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
 // PARTE 4 DE 4: Control de Interruptores, Pintor de Marcadores y Parsers
+// ==========================================================================
+// ==========================================================================
+// NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
+// PARTE 4 DE 5: Control de Interruptores Táctiles y Pintor de Marcadores
 // ==========================================================================
 
 /**
@@ -414,7 +419,7 @@ function renderizarPinesEnPantallaCamaleon(filtroColonia, filtroMapa) {
     var iconoPersonalizadoHtml = L.divIcon({
       className: "pin-negosistema " + claseNivelCss,
       html: '<div style="' + estiloInline + ' width:14px; height:14px; border-radius:50%;"></div>',
-      iconSize:[14, 14],
+      iconSize:,
       iconAnchor: [7, 7]
     });
 
@@ -458,9 +463,13 @@ function renderizarPinesEnPantallaCamaleon(filtroColonia, filtroMapa) {
     mapaNegosistema.fitBounds(boundsAjuste, { padding: 40, maxZoom: 16 });
   }
 
-  // Ajuste anti-pantalla gris táctil inmediato
   setTimeout(() => { if (mapaNegosistema) mapaNegosistema.invalidateSize(); }, 100);
 }
+
+/// ==========================================================================
+// NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
+// PARTE 5 DE 5: Conmutador por URL, Semáforo de CDMX y Parsers Comerciales
+// ==========================================================================
 
 /**
  * 10. CONMUTADOR DE SUB-ENTORNOS: Altera dinámicamente los parámetros de la URL
@@ -480,7 +489,7 @@ function conmutarSubEntornoCamaleon() {
 }
 
 /**
- * 11. RENDERIZADO MACRO CDMX (Semáforo Tricolor)
+ * 11. RENDERIZADO MACRO CDMX (Semáforo Tricolor): Cruza el mapa con la pestaña 5
  */
 function renderizarPoligonosPiloto(geoJson, csvTexto) {
   const estatusAlcaldiasCdmx = {};
@@ -516,7 +525,7 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
         }).addTo(capaPoligonosGroup);
         
         layer.on('click', function() {
-          if (nombreLimpio === "iztapalapa") { window.location.href = "./comercial.html"; }
+          if (nombreLimpio === "iztapalapa") { window.location.href = "./comercial.html?colonia=xalpa2&entorno=productos"; }
           else { window.location.href = "./index.html?alcaldia=" + nombreLimpio; }
         });
         layer.on('mouseover', function() { layer.setStyle({ fillOpacity: 0.65 }); });
@@ -537,47 +546,38 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
   datosComerciosGlobales = [];
   const lineas = csvTexto.split("\n");
   if (lineas.length < 2) return;
-};/**
- * 12. PARSER CSV COMERCIAL REAL: Sincroniza la tabla de Google Sheets
- * Aplica las reglas del Muro de Privacidad y Doble Presencia (+30%)
- */
-function procesarBaseDatosCsvNegocios(csvTexto) {
-  datosComerciosGlobales = [];
-  const lineas = csvTexto.split("\n");
-  if (lineas.length < 2) return;
 
   for (let i = 1; i < lineas.length; i++) {
     const linea = lineas[i].trim();
     if (!linea) continue;
 
-    // Parser seguro para celdas con comillas y comas internas de Google Sheets
     const columnas = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
     const cleanCols = columnas.map(c => c.replace(/^"|"$/g, '').trim());
     if (cleanCols.length < 15) continue;
 
     const comercio = {
-      id: cleanCols[0],
-      coloniaOriginal: cleanCols[2],
-      mapaObjetivo: cleanCols[3] ? cleanCols[3].toLowerCase() : "",
-      capaProductos: cleanCols[4],
-      capaServicios: cleanCols[5],
-      nivelServicio: parseInt(cleanCols[6]) || 1,
-      nombre: cleanCols[7],
-      slogan: cleanCols[8],
-      productosServicios: cleanCols[9],
-      horarios: cleanCols[10],
-      redes: cleanCols[11],
-      enlaceVideo: cleanCols[12],
-      coorRaw: cleanCols[14],
-      clickGenerico: cleanCols[15],
-      clickPersonalizado: cleanCols[17],
-      linksWebPropia: cleanCols[18]
+      id: cleanCols,
+      coloniaOriginal: cleanCols,
+      mapaObjetivo: cleanCols ? cleanCols.toLowerCase() : "",
+      capaProductos: cleanCols,
+      capaServicios: cleanCols,
+      nivelServicio: parseInt(cleanCols) || 1,
+      nombre: cleanCols,
+      slogan: cleanCols,
+      productosServicios: cleanCols,
+      horarios: cleanCols,
+      redes: cleanCols,
+      enlaceVideo: cleanCols,
+      coorRaw: cleanCols,
+      clickGenerico: cleanCols,
+      clickPersonalizado: cleanCols,
+      linksWebPropia: cleanCols
     };
 
     if (!comercio.coorRaw || !comercio.coorRaw.includes(",")) continue;
     const partesCoords = comercio.coorRaw.split(",");
-    comercio.latitud = parseFloat(partesCoords[0]);
-    comercio.longitud = parseFloat(partesCoords[1]);
+    comercio.latitud = parseFloat(partesCoords);
+    comercio.longitud = parseFloat(partesCoords);
 
     if (isNaN(comercio.latitud) || isNaN(comercio.longitud)) continue;
 
@@ -585,7 +585,6 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
     const catServ = comercio.capaServicios ? comercio.capaServicios.split(",") : [];
     const totalCapas = [...catProd, ...catServ];
 
-    // Regla de duplicación física en memoria para cobro del 30% extra en multi-ramos
     if (totalCapas.length > 1 && (comercio.nivelServicio === 4 || comercio.nivelServicio === 5)) {
       totalCapas.forEach(capa => {
         const copiaComercio = { ...comercio, capaActivaMapeo: capa.trim().toLowerCase() };
@@ -598,7 +597,6 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
     }
   }
   ejecutarFiltroAutomaticoPaginaInterna();
-    // 2. AQUÍ COLOCAS LA NUEVA LÍNEA (Justo antes de cerrar la función maestra)
   inyectarAnunciosCarruselPremium();
 }
 
@@ -608,7 +606,6 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
 function obtenerColorHexagonalPorCapa(nombreCapa) {
   if (!nombreCapa) return "#7f8c8d";
   var c = nombreCapa.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  
   if (c.includes("basica") || c.includes("abarrotes") || c.includes("carnic") || c.includes("recaud")) return "#2e7d32";
   if (c.includes("preparada") || c.includes("taco") || c.includes("pizz") || c.includes("panader")) return "#ef6c00";
   if (c.includes("ferreter") || c.includes("tlapaler") || c.includes("construc")) return "#fbc02d";
@@ -626,13 +623,13 @@ function obtenerColorHexagonalPorCapa(nombreCapa) {
 }
 
 /**
- * 14. REGEX EXTRACTOR DE YOUTUBE: Limpia el enlace de video para cuentas Premium
+ * 14. REGEX EXTRACTOR DE YOUTUBE
  */
 function extraerIdVideoPlataformas(urlVideo) {
   if (!urlVideo) return null;
   var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   var match = urlVideo.match(regExp);
-  return (match && match[2] && match[2].length === 11) ? match[2] : null;
+  return (match && match && match.length === 11) ? match : null;
 }
 /**
  * 15. RENDERIZADOR DEL CARRUSEL: Consume directamente las filas del CSV
