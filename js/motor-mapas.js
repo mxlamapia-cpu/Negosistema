@@ -150,29 +150,40 @@ function ejecutarCargaPorCanal(modo) {
       alcaldiaClave = alcaldiaClave.trim().toLowerCase();
     }
     
-    // REDIRECCIÓN INTELIGENTE: Si detecta iztapalapa, salta directo al mapa camaleón
-    if (alcaldiaClave === "iztapalapa") {
-      window.location.href = "./comercial.html?colonia=xalpa2&entorno=productos";
-      return; 
+    // Si la URL está limpia, dibuja el mapa macro de las 16 alcaldías de la CDMX
+    if (!alcaldiaClave || alcaldiaClave === "cdmx") {
+      const recursosCDMX = CONFIG_NEGOSISTEMA.catalogoAlcaldias["cdmx"];
+      mapaNegosistema.setView(recursosCDMX.coordenadas, recursosCDMX.zoom);
+      
+      Promise.all([
+        fetch(recursosCDMX.geojson).then(res => res.json()),
+        fetch(recursosCDMX.urlCsvEstatus).then(res => res.text())
+      ])
+      .then(([geoJsonData, csvTexto]) => {
+        renderizarPoligonosPiloto(geoJsonData, csvTexto);
+      })
+      .catch(err => console.error("Error en mapa macro CDMX:", err));
+      
+    } else if (alcaldiaClave === "iztapalapa") {
+      // PASO 2: Si es Iztapalapa, hace zoom local y descarga su GeoJSON de colonias
+      const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
+      mapaNegosistema.setView(recursoIztapalapa.coordenadas, 13);
+      
+      Promise.all([
+        fetch(recursoIztapalapa.geojson).then(res => res.json()),
+        fetch(recursoIztapalapa.urlCsvEstatus).then(res => res.text())
+      ])
+      .then(([geoJsonData, csvTexto]) => {
+        // Llama a la función encargada de pintar y enlazar las colonias piloto
+        renderizarPoligonosColoniasPiloto(geoJsonData, csvTexto);
+      })
+      .catch(err => console.error("Error en mapa de colonias piloto:", err));
     }
-    
-    if (!alcaldiaClave || !CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave]) {
-      alcaldiaClave = "cdmx";
-    }
-    
-    const recursosZona = CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave];
-    mapaNegosistema.setView(recursosZona.coordenadas, recursosZona.zoom);
-    
-    Promise.all([
-      fetch(recursosZona.geojson).then(res => res.json()),
-      fetch(recursosZona.urlCsvEstatus).then(res => res.text())
-    ])
-    .then(([geoJsonData, csvTexto]) => {
-      renderizarPoligonosPiloto(geoJsonData, csvTexto);
-    })
-    .catch(err => console.error("Error en index:", err));
 
-  } else if (modo === "SIMULACION") {
+  }
+
+  
+  else if (modo === "SIMULACION") {
     // ENLACE DIRECTO AL CSV 3: Descarga los datos de Anúnciate
     const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
     
@@ -488,7 +499,90 @@ function conmutarSubEntornoCamaleon() {
   ejecutarFiltroAutomaticoPaginaInterna();
 }
 
-/**
+/**/**
+ * 11. RENDERIZADO INTERMEDIO DE COLONIAS PILOTO: Dibuja los polígonos 
+ * de las colonias activas dentro de la alcaldía seleccionada.
+ */
+function renderizarPoligonosColoniasPiloto(geoJson, csvTexto) {
+  const estatusColoniasIztapalapa = {};
+  
+  // Parseamos el CSV de estatus mediante la librería PapaParse
+  const filasParseadas = Papa.parse(csvTexto, { skipEmptyLines: true }).data;
+  
+  for (let i = 1; i < filasParseadas.length; i++) {
+    const columnas = filasParseadas[i];
+    if (!columnas || columnas.length < 5) continue;
+    
+    // Limpieza de cadenas para asociar los nombres de tu tabla Sheets
+    const nombreColoniaCsv = (columnas[columnas.length - 4] || "")
+      .replace(/^"|"$/g, '').trim().toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+    const estatusCsv = (columnas[columnas.length - 1] || "")
+      .replace(/^"|"$/g, '').trim().toUpperCase();
+      
+    if (nombreColoniaCsv) {
+      estatusColoniasIztapalapa[nombreColoniaCsv] = estatusCsv;
+    }
+  }
+
+  // Pintamos los vectores de las colonias sobre el mapa
+  L.geoJSON(geoJson, {
+    style: function(feature) {
+      // Extraemos la propiedad nativa del nombre desde tu GeoJSON de GitHub
+      var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
+      var nombreLimpio = nombreVector.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      var estatus = estatusColoniasIztapalapa[nombreLimpio] || "INACTIVO";
+      
+      // Si la colonia está en fase activa o de exploración, la viste de amarillo claro
+      if (estatus === "EXPLORANDO" || estatus === "COMPLETADA") {
+        return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.55 };
+      } else if (estatus === "PROXIMAMENTE") {
+        return { color: "#c0392b", weight: 2, opacity: 0.7, fillColor: "#e74c3c", fillOpacity: 0.35 };
+      } else {
+        // Oculta las zonas que no pertenecen a la exploración del piloto actual
+        return { color: "#bdc3c7", weight: 1, opacity: 0.3, fillColor: "#ecf0f1", fillOpacity: 0.1 };
+      }
+    },
+    onEachFeature: function(feature, layer) {
+      var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
+      var nombreLimpio = nombreVector.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      var estatus = estatusColoniasIztapalapa[nombreLimpio] || "INACTIVO";
+      
+      // Solo activa etiquetas e interacción si la colonia pertenece al piloto activo
+      if (estatus === "EXPLORANDO" || estatus === "COMPLETADA") {
+        var centroide = layer.getBounds().getCenter();
+        
+        // Inyectamos el letrero flotante con el nombre de la colonia (Xalpa II, etc.)
+        L.marker(centroide, {
+          icon: L.divIcon({ 
+            className: 'label-colonia-flotante', 
+            html: '<div>' + nombreVector + '</div>' 
+          })
+        }).addTo(capaPoligonosGroup);
+        
+        // EVENTO DE CLIC DEFINITIVO: Salta al dashboard comercial con herencia de URL
+        layer.on('click', function() {
+          window.location.href = `./comercial.html?colonia=${nombreLimpio}&entorno=productos`;
+        });
+        
+        layer.on('mouseover', function() { 
+          layer.setStyle({ fillOpacity: 0.75, weight: 3, color: "#e67e22" }); 
+        });
+        
+        layer.on('mouseout', function() { 
+          layer.setStyle({ fillOpacity: 0.55, weight: 2, color: "#f1c40f" }); 
+        });
+      } else {
+        // Comportamiento mudo de popup para colonias bloqueadas en Fase 1
+        layer.bindPopup(`<b>${nombreVector}</b><br><span style="font-size:11px;color:#7f8c8d;">Apertura en la siguiente fase</span>`);
+      }
+    }
+  }).addTo(capaPoligonosGroup);
+}
+
+/* ==========================================================================
+
  * 11. RENDERIZADO MACRO CDMX (Semáforo Tricolor): Cruza el mapa con la pestaña 5
  */
 function renderizarPoligonosPiloto(geoJson, csvTexto) {
