@@ -148,11 +148,12 @@ function ejecutarCargaPorCanal(modo) {
       alcaldiaClave = alcaldiaClave.trim().toLowerCase();
     }
     
-    // REDIRECCIÓN QUIRÚRGICA: Si detecta iztapalapa, salta directo a comercial.html
+      // REDIRECCIÓN INTELIGENTE: Pasa los parámetros de colonia y entorno en la URL
     if (alcaldiaClave === "iztapalapa") {
-      window.location.href = "./comercial.html";
+      window.location.href = "./comercial.html?colonia=xalpa2&entorno=productos";
       return; 
     }
+
     
     if (!alcaldiaClave || !CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave]) {
       alcaldiaClave = "cdmx";
