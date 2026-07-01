@@ -2,253 +2,171 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anúnciate - Negosistema Piloto 2026</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Anúnciate - Negosistema</title>
   
-  <!-- CDN Oficial de Estilos de Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <!-- 1. Hoja de Estilos Oficial de Leaflet Core (Obligatoria en el Head) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
   
-  <style>
-    /* Estilos de la Interfaz y Menús de Navegación Originales */
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f5f6fa;
-      color: #2c3e50;
-    }
-    
-    /* Barra de Navegación Superior */
-    .navbar-negosistema {
-      background-color: #ffffff;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-      position: sticky;
-      top: 0;
-      z-index: 10000;
-    }
-    .logo-marca {
-      font-size: 18px;
-      font-weight: bold;
-      color: #1a73e8;
-      text-decoration: none;
-    }
-    .menu-navegacion {
-      display: flex;
-      gap: 15px;
-    }
-    .enlace-nav {
-      text-decoration: none;
-      color: #5f6368;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 4px;
-    }
-    .enlace-nav:hover {
-      background-color: #f1f3f4;
-      color: #1a73e8;
-    }
-    .enlace-nav.activo {
-      background-color: #e8f0fe;
-      color: #1a73e8;
-    }
-
-    /* Contenedor Principal de Ventas */
-    .seccion-ventas-container {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    .bloque-introductorio {
-      background-color: #ffffff;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      margin-bottom: 25px;
-    }
-    .bloque-introductorio h1 {
-      margin: 0 0 10px 0;
-      color: #202124;
-      font-size: 24px;
-    }
-    .bloque-introductorio p {
-      margin: 0;
-      color: #5f6368;
-      line-height: 1.5;
-    }
-
-    /* Envoltura del Mapa - Blindaje del Lienzo de Leaflet */
-    .map-wrapper-anunciate {
-      width: 100%;
-      height: 500px;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      position: relative;
-      margin-bottom: 30px;
-    }
-    #mapa_general {
-      width: 100%;
-      height: 100%;
-      background-color: #e5e3df;
-    }
-
-    /* Beneficios y Escalera de Valor Comercial */
-    .grid-beneficios {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 25px;
-    }
-    .tarjeta-beneficio {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 6px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-      border-left: 4px solid #1a73e8;
-    }
-    .tarjeta-beneficio h3 {
-      margin: 0 0 8px 0;
-      color: #202124;
-    }
-    .tarjeta-beneficio p {
-      margin: 0;
-      font-size: 13px;
-      color: #5f6368;
-      line-height: 1.4;
-    }
-
-    /* Estilos del Muro de Privacidad dentro de los Popups */
-    .tarjeta-popup {
-      font-family: sans-serif;
-      padding: 4px;
-      max-width: 280px;
-    }
-    .tarjeta-popup h3 {
-      margin: 0 0 4px 0;
-      font-size: 15px;
-      color: #2c3e50;
-    }
-    .slogan {
-      font-style: italic;
-      color: #7f8c8d;
-      margin-bottom: 8px;
-      font-size: 12px;
-    }
-    .productos {
-      background: #f1f2f6;
-      padding: 6px;
-      border-radius: 4px;
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-    .btn-whatsapp-comercial {
-      display: block;
-      text-align: center;
-      background: #25d366;
-      color: #fff;
-      text-decoration: none;
-      padding: 8px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-    .btn-web-comercial {
-      display: block;
-      text-align: center;
-      background: #1a73e8;
-      color: #fff;
-      text-decoration: none;
-      padding: 8px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-    .bloque-bloqueado-upsell {
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeeba;
-      padding: 6px;
-      border-radius: 4px;
-      font-size: 11px;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    /* Clases de animación para Pines Camaleónicos */
-    .pin-negosistema { display: flex; align-items: center; justify-content: center; }
-    .pin-nivel1 div { border: 2px solid #7f8c8d; background: #95a5a6; }
-    .pin-nivel2 div { border: 2px solid #fff; background: #34495e; box-shadow: 0 0 4px rgba(0,0,0,0.3); }
-    .pin-nivel3 div { border: 2px solid #fff; box-shadow: 0 0 6px rgba(0,0,0,0.4); }
-    .pin-nivel4 div { border: 2px solid #fff; animation: pulsoPlata 2s infinite; }
-    .pin-nivel5 div { border: 2px solid #fff; animation: pulsoOro 1.5s infinite; scale: 1.2; }
-
-    @keyframes pulsoPlata {
-      0% { box-shadow: 0 0 0 0 rgba(189,195,199,0.7); }
-      70% { box-shadow: 0 0 0 8px rgba(189,195,199,0); }
-      100% { box-shadow: 0 0 0 0 rgba(189,195,199,0); }
-    }
-    @keyframes pulsoOro {
-      0% { box-shadow: 0 0 0 0 rgba(241,196,15,0.8); }
-      70% { box-shadow: 0 0 0 10px rgba(241,196,15,0); }
-      100% { box-shadow: 0 0 0 0 rgba(241,196,15,0); }
-    }
-  </style>
+  <!-- 2. Tu archivo central de estilos que controla toda la web -->
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
-  <!-- Menú Superior de Navegación de la Aplicación -->
-  <nav class="navbar-negosistema">
-    <a href="./index.html" class="logo-marca">Negosistema CDMX</a>
-    <div class="menu-navegacion">
-      <a href="./index.html" class="enlace-nav">Inicio</a>
-      <a href="./comercial.html" class="enlace-nav">Explorar Negocios</a>
-      <a href="./anunciate.html" class="enlace-nav activo">Anúnciate</a>
+  <!-- Menú de Navegación Superior Unificado del Negosistema -->
+  <nav class="navbar">
+    <a href="./index.html" class="logo"> NEGOSISTEMA</a>
+    <div class="nav-links">
+      <a href="./anunciate.html" class="nav-item">Anúnciate</a>
+      <a href="./creditos.html" class="nav-item">Créditos</a>
+      <a href="./terminos.html" class="nav-item">Términos y Condiciones</a>
     </div>
   </nav>
 
-  <!-- Contenido de la Sección de Ventas -->
-  <div class="seccion-ventas-container">
-    <div class="bloque-introductorio">
-      <h1>Multiplica tus ventas en tu colonia</h1>
-      <p>Forma parte del directorio geolocalizado más avanzado de la alcaldía. El mapa interactivo inferior simula el entorno real con los 26 comercios demo distribuidos bajo nuestro algoritmo matemático y las reglas comerciales del Muro de Privacidad.</p>
-    </div>
+  <!-- Contenedor Principal reutilizando tus clases de estilos -->
+  <div class="contenedor-servicios">
+    <main style="padding: 20px; max-width: 1100px; margin: 0 auto;">
+      
+      <header style="text-align: center; margin-bottom: 40px; margin-top: 20px;">
+        <h1 class="section-title">Impulsa tu Negocio en la Colonia</h1>
+        <p class="intro-text">
+          Deja de tirar dinero en volantes de papel que terminan en la basura. 
+          <br>Tu negocio disponible 24/7 en el celular de tus vecinos.
+        </p>
+      </header>
 
-    <!-- Contenedor Maestro del Mapa Interactivo -->
-    <div class="map-wrapper-anunciate">
-      <div id="mapa_general"></div>
-    </div>
+      <!-- Cuadrícula de Beneficios utilizando las tarjetas fijas para lectura limpia -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 50px;">
+        
+        <!-- Pilar 1 -->
+        <div class="feature-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 15px; background: white; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="card-content" style="padding: 20px;">
+            <h3 style="color: #0a2540; margin-top: 0;">📍 Visibilidad Exacta</h3>
+            <p style="color: #555; font-size: 0.95rem; line-height: 1.5;">Posicionamos tu establecimiento en el mapa digital con precisión milimétrica. Los vecinos sabrán exactamente cómo llegar a tus puertas sin perderse.</p>
+          </div>
+        </div>
 
-    <!-- Sección Informativa de los Planes y Beneficios -->
-    <div class="grid-beneficios">
-      <div class="tarjeta-beneficio">
-        <h3>Presencia Camaleónica</h3>
-        <p>Aparece con el color oficial de tu ramo comercial. Los usuarios te encontrarán de inmediato filtrando por categorías en su pantalla táctil.</p>
+        <!-- Pilar 2 -->
+        <div class="feature-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 15px; background: white; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="card-content" style="padding: 20px;">
+            <h3 style="color: #0a2540; margin-top: 0;">📊 Niveles a tu Medida</h3>
+            <p style="color: #555; font-size: 0.95rem; line-height: 1.5;">Desde un registro básico en la base del mapa pasando por la verificación hasta una Landing Page completa. Tú decides qué volumen de información entregar a tus clientes.</p>
+          </div>
+        </div>
+
+        <!-- Pilar 3 -->
+        <div class="feature-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 15px; background: white; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="card-content" style="padding: 20px;">
+            <h3 style="color: #0a2540; margin-top: 0;">🔄 Información en Tiempo Real</h3>
+            <p style="color: #555; font-size: 0.95rem; line-height: 1.5;">Reflejamos el estado actual de tu comercio. Si cambias de horario, agregas productos o cierras por vacaciones, la colonia lo sabrá de inmediato.</p>
+          </div>
+        </div>
+
+        <!-- Pilar 4 -->
+        <div class="feature-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 15px; background: white; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="card-content" style="padding: 20px;">
+            <h3 style="color: #0a2540; margin-top: 0;">📱 Presencia Digital Total</h3>
+            <p style="color: #555; font-size: 0.95rem; line-height: 1.5;">Grita al mundo que existes en tu zona de influencia. Atrae pedidos directos a tu WhatsApp con un solo clic desde nuestro visualizador.</p>
+          </div>
+        </div>
+
       </div>
-      <div class="tarjeta-beneficio">
-        <h3>Escalera de Valor (Planes)</h3>
-        <p>Desde presencia básica anónima hasta cuentas Premium con botones directos a tu WhatsApp, enlaces a tus redes y videos promocionales embebidos.</p>
-      </div>
-      <div class="tarjeta-beneficio" style="border-left-color: #27ae60;">
-        <h3>Doble Presencia (+30%)</h3>
-        <p>Si tu negocio abarca múltiples ramos (ej. tienda y papelería), duplicamos físicamente tu pin en la memoria local para multiplicar tu alcance de captación.</p>
-      </div>
-    </div>
-  </div>
 
-  <!-- Librería de Soporte PapaParse para Estructura de Tablas -->
-  <script src="https://cloudflare.com" integrity="sha512-V9w6gYvPMp9fOsh3Qv7097Gg76as7Y6AnS7O9H36f6ZfO58L9vGv5X1d67g1Xm7n67G71l3o9C7B6g5O0g5O6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <!-- Bloque de Precios y Niveles estructurado de forma profesional -->
+      <section style="margin-bottom: 50px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+        <h2 style="color: #0a2540; text-align: center; margin-top: 0; margin-bottom: 25px;">Planes de Publicidad Colectiva</h2>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+                        <thead> 
+              <tr style="background-color: #0a2540; color: white;"> 
+                <th style="padding: 12px; border-radius: 8px 0 0 0;">Nivel</th> 
+                <th style="padding: 12px;">Inversión</th> 
+                <th style="padding: 12px;">Lo que el Vecino ve</th> 
+                <th style="padding: 12px; border-radius: 0 8px 0 0;">Beneficio del Dueño</th> 
+              </tr> 
+            </thead> 
+            <tbody> 
+              <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;"> 
+                <td style="padding: 15px; font-weight: bold;">1. Incógnito</td> 
+                <td style="padding: 15px; color: #25d366; font-weight: bold;">Gratis ($0)</td> 
+                <td style="padding: 15px;">Punto gris anónimo (Sin datos)</td> 
+                <td style="padding: 15px;">Ubicación base en el mapa</td> 
+              </tr> 
+              <tr style="border-bottom: 1px solid #e2e8f0;"> 
+                <td style="padding: 15px; font-weight: bold;">2. Conocido</td> 
+                <td style="padding: 15px;">$600 / Trimestre <br><small style="color:#64748b;">($50 sem. equiv)</small></td> 
+                <td style="padding: 15px;">Color de ramo + Nombre + Logo</td> 
+                <td style="padding: 15px;">SEO Local básico (Aparece en búsquedas)</td> 
+              </tr> 
+              <tr style="border-bottom: 1px solid #e2e8f0; background: #fdfae6;"> 
+                <td style="padding: 15px; font-weight: bold; color: #b45309;">3. Información ⭐</td> 
+                <td style="padding: 15px; font-weight: bold; color: #b45309;">$1,600 / Mes <br><small>($400 sem)</small></td> 
+                <td style="padding: 15px;">Todo el nivel 2 + Horarios + Fotos + Menú</td> 
+                <td style="padding: 15px;">Confianza total. El vecino sabe qué vendes</td> 
+              </tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;"> 
+                <td style="padding: 15px; font-weight: bold;">4. Venta</td> 
+                <td style="padding: 15px;">$2,000 / Mes <br><small style="color:#64748b;">($500 sem)</small></td> 
+                <td style="padding: 15px;">Todo el nivel 3 + Botón WhatsApp + Redes + Video</td> 
+                <td style="padding: 15px;">Ventas Reales al contacto Inmediato. Sustituye al volanteo</td> 
+              </tr> 
+              <tr style="border-bottom: 1px solid #e2e8f0; background: #f0fdf4;"> 
+                <td style="padding: 15px; font-weight: bold; color: #15803d;">5. Confianza</td> 
+                <td style="padding: 15px; font-weight: bold; color: #15803d;">$4,000 / Mes <br><small>($1,000 sem)</small></td> 
+                <td style="padding: 15px;">Todo el nivel 4 + Enlace a Landing Page exclusiva</td> 
+                <td style="padding: 15px;">Autoridad Comercial. Tu propia Web oficial en Xalpa</td> 
+              </tr> 
+            </tbody> 
+          </table> 
+        </div> 
+      </section> 
 
-  <!-- Script Principal Core de Leaflet Mapas -->
-  <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+      <!-- SECCIÓN MULTIMEDIA: Presentación y Mapa Demostrativo de Niveles --> 
+      <section style="margin-bottom: 50px; text-align: center;"> 
+        <h2 style="color: #0a2540; font-size: 1.8rem; margin-top: 40px; margin-bottom: 5px;">Muestra de los Niveles de Servicio</h2> 
+        <p style="color: #64748b; font-size: 1rem; margin-bottom: 25px; max-width: 650px; margin-left: auto; margin-right: auto;"> 
+          Explore de forma interactiva lo que incluye la <strong>Publicidad Colectiva</strong> y cómo se distribuyen los comercios por capas dentro de la colonia. 
+        </p> 
+        
+        <!-- CONTENEDOR 1: Presentación Interactiva (Google Slides) --> 
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; background: #ffffff; margin-bottom: 30px;"> 
+          <iframe src="https://google.com" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 15px;"></iframe> 
+        </div> 
 
-  <!-- Vinculación del Motor de Control Cartográfico -->
-  <script src="./motor-mapas.js"></script>
+        <!-- CONTENEDOR 2: Mapa de Prueba Interactivo del Negosistema (Leaflet Unificado) --> 
+        <div class="map-wrapper-xalpa"> 
+          <!-- El motor-mapas.js inyectará aquí de forma automática tus 26 comercios muestra --> 
+          <div id="mapa_general"></div> 
+        </div> 
+      </section> 
 
-</body>
+      <!-- Sección de Cierre y Conversión Directa de Ventas --> 
+      <div style="background: linear-gradient(135deg, #0a2540 0%, #1e40af 100%); color: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 25px rgba(10,37,64,0.15);"> 
+        <h3 style="margin-top: 0; font-size: 1.6rem;">¿Quién quieres ser en el mapa de tu colonia?</h3> 
+        <p style="color: #93c5fd; max-width: 600px; margin: 10px auto 25px auto; font-size: 1.05rem;">Es hora de digitalizar tu esfuerzo. Elige el nivel ideal para tu comercio y empieza a recibir pedidos directamente de tus vecinos.</p> 
+        
+        <a href="https://wa.me" class="btn-gps-xalpa" target="_blank" style="background: #25d366; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 12px; box-shadow: 0 4px 15px rgba(37,211,102,0.3);"> 
+          Registrar Mi Comercio Ahora 
+        </a> 
+      </div> 
+    </main> 
+  </div> 
+
+  <!-- Pie de Página Técnico Unificado de tu Aplicación --> 
+  <footer class="pie-pagina" style="text-align: center; padding: 20px 10px; color: #666;"> 
+    <p>&copy; 2026 <strong>Negosistema</strong>. Todos los derechos reservados.</p> 
+    <p style="font-size: 0.8rem; opacity: 0.6; margin: 5px 0;">Impulsando la economía hiperlocal y de proximidad en Iztapalapa.</p> 
+    <a href="./terminos.html" style="color: #1a73e8; text-decoration: none; font-size: 0.85rem;">Políticas de Uso y Deslinde Legal</a> 
+  </footer> 
+
+  <!-- 3. Librería JavaScript de PapaParse (Lectura de Google Sheets) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- 4. Librería JavaScript Oficial de Leaflet Core --> 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- 5. Enlace Final a tu Lógica Externa del Motor de Mapas --> 
+  <script src="./js/motor-mapas.js"></script> 
+</body> 
 </html>
+
