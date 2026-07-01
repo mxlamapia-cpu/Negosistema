@@ -29,14 +29,68 @@ const CONFIG_NEGOSISTEMA = {
 };
 
 
-// Variables globales para el control del lienzo cartográfico
+
+
+// Diccionario Inteligente para mutar la interfaz según la Colonia y Entorno
+const DICCIONARIO_CAMALEON = {
+  colonias: {
+    "xalpa2": { nombre: "Xalpa II", emoji: "🍎" },
+    "santiago1": { nombre: "2da Ampliación Santiago I", emoji: "🍓" },
+    "santiago2": { nombre: "2da Ampliación Santiago II", emoji: "🍒" }
+  },
+  entornos: {
+    "productos": {
+      titulo: "Directorio de Productos y Canasta Básica",
+      desc: "Localice los puntos de venta, comida y mercancías tangibles de proximidad.",
+      emoji: "🛒",
+      capas: [
+        { id: "todos", name: "Todos los Ramos", emoji: "🌐", color: "#7f8c8d", clase: "color-directorio" },
+        { id: "canasta", name: "Canasta Básica", emoji: "🍏", color: "#2e7d32", clase: "color-canasta" },
+        { id: "comida", name: "Comida Preparada", emoji: "🍲", color: "#ef6c00", clase: "color-comida" },
+        { id: "hogar", name: "Ferretería y Hogar", emoji: "🏠", color: "#fbc02d", clase: "color-hogar" },
+        { id: "salud", name: "Salud y Farmacia", emoji: "🚨", color: "#c62828", clase: "color-salud" },
+        { id: "moda", name: "Variedades y Moda", emoji: "👗", color: "#e4007c", clase: "color-moda" },
+        { id: "mascotas", name: "Mascotas", emoji: "🐶", color: "#795548", clase: "color-mascotas" },
+        { id: "tecnologia", name: "Tecnología", emoji: "⚡", color: "#1565c0", clase: "color-tecnologia" }
+      ]
+    },
+    "servicios": {
+      titulo: "Directorio de Servicios, Expertos y Oficios",
+      desc: "Encuentre especialistas, profesionales técnicos y soluciones para el hogar.",
+      emoji: "🛠️",
+      capas: [
+        { id: "todos", name: "Todos los Servicios", emoji: "🌐", color: "#7f8c8d", clase: "color-directorio" },
+        { id: "consultas", name: "Salud y Consultas", emoji: "🩺", color: "#1565c0", clase: "color-salud" },
+        { id: "oficios", name: "Talleres y Oficios", emoji: "🔧", color: "#1565c0", clase: "color-talleres" },
+        { id: "bienestar", name: "Bienestar y Estilo", emoji: "💇", color: "#9b59b6", clase: "color-bienestar" },
+        { id: "asesoria", name: "Asesoría y Oficina", emoji: "📁", color: "#9e9e9e", clase: "color-asesoria" },
+        { id: "eventos", name: "Hogar y Eventos", emoji: "🧺", color: "#74001a", clase: "color-eventos" },
+        { id: "educacion", name: "Educación y Apoyo", emoji: "✏️", color: "#b2bec3", clase: "color-educacion" },
+        { id: "urgencias", name: "Urgencias 24/7", emoji: "⚠️", color: "#111111", clase: "color-urgencias" }
+      ]
+    }
+  }
+};
+// ==========================================================================
+// NEGOSISTEMA (2026) - VARIABLES GLOBALES Y CONTROL DE INICIALIZACIÓN
+// ==========================================================================
+
+// Variables globales para el control del lienzo cartográfico (Mantener intacto)
 let mapaNegosistema = null;
 let capaMarcadoresGroup = null;
 let capaPoligonosGroup = null;
 let datosComerciosGlobales = [];
 
+// NUEVAS: Variables del estado mutante (Añadir justo aquí abajo)
+let coloniaActivaUrl = "xalpa2";
+let entornoActivoUrl = "productos";
+let mapaCamaleonCapasActivas = {};
+
 // Inicialización controlada al cargar por completo el árbol DOM
 document.addEventListener("DOMContentLoaded", () => {
+  // Primero leemos los parámetros de la URL para mutar la interfaz
+  procesarParametrosUrlCamaleon();
+  // Levantamos la arquitectura base de Leaflet
   inicializarArquitecturaEcosistema();
 });
 
@@ -64,7 +118,6 @@ function inicializarArquitecturaEcosistema() {
     return;
   }
 
-  // Instanciar Leaflet con optimizaciones táctiles y controles móviles
   mapaNegosistema = L.map(idContenedor, {
     zoomControl: false,
     dragging: true,
@@ -78,22 +131,17 @@ function inicializarArquitecturaEcosistema() {
 
   L.control.zoom({ position: 'topright' }).addTo(mapaNegosistema);
 
-  // Declarar y vincular los grupos de capas independientes en memoria
   capaPoligonosGroup = L.layerGroup().addTo(mapaNegosistema);
   capaMarcadoresGroup = L.layerGroup().addTo(mapaNegosistema);
 
-  // Disparar la carga de datos correspondiente al canal detectado
   ejecutarCargaPorCanal(modoEjecucion);
 }
-// ==========================================================================
-// NEGOSISTEMA (2026) - Motor de Mapas Centralizado (motor-mapas.js)
-// PARTE 2 DE 4: Orquestador de Canales de Carga y Descargas Asíncronas
-// ==========================================================================
 
 /**
  * 3. ORQUESTADOR DE FLUJOS DINÁMICOS: Segmentación de descargas asíncronas
  */
-function ejecutarCargaPorCanal(modo) {  if (modo === "INDEX_GENERAL") {
+function ejecutarCargaPorCanal(modo) {  
+  if (modo === "INDEX_GENERAL") {
     const parametrosUrl = new URLSearchParams(window.location.search);
     let alcaldiaClave = parametrosUrl.get("alcaldia");
     
@@ -101,7 +149,6 @@ function ejecutarCargaPorCanal(modo) {  if (modo === "INDEX_GENERAL") {
       alcaldiaClave = alcaldiaClave.trim().toLowerCase();
     }
     
-    // REDIRECCIÓN QUIRÚRGICA: Si detecta iztapalapa, salta directo a comercial.html
     if (alcaldiaClave === "iztapalapa") {
       window.location.href = "./comercial.html";
       return; 
@@ -124,7 +171,6 @@ function ejecutarCargaPorCanal(modo) {  if (modo === "INDEX_GENERAL") {
     .catch(err => console.error("Error en index:", err));
 
   } else if (modo === "SIMULACION") {
-    // ENLACE DIRECTO AL CSV 3: Descarga el GeoJSON y los datos de Anúnciate
     const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
     
     Promise.all([
@@ -132,7 +178,6 @@ function ejecutarCargaPorCanal(modo) {  if (modo === "INDEX_GENERAL") {
       fetch(recursoIztapalapa.urlCsvAnunciateSimulacion).then(res => res.text())
     ])
     .then(([geoJsonData, csvTexto]) => {
-      // Pintamos el polígono base de la zona piloto
       L.geoJSON(geoJsonData, {
         coordsToLatLng: function (coords) { 
           return new L.LatLng(coords[1], coords[0]); 
@@ -146,7 +191,6 @@ function ejecutarCargaPorCanal(modo) {  if (modo === "INDEX_GENERAL") {
         }
       }).addTo(capaPoligonosGroup);
       
-      // Enviamos el texto de la pestaña 3 al procesador comercial
       procesarBaseDatosCsvNegocios(csvTexto);
     })
     .catch(err => console.error("Error al conectar con la pestaña 3:", err));
@@ -177,6 +221,7 @@ function ejecutarCargaPorCanal(modo) {  if (modo === "INDEX_GENERAL") {
     .catch(err => console.error("Error en pestaña Salida Mapa:", err));
   }
 }
+
 // ==========================================================================
 // NEGOSISTEMA (2026) - Motor de Mapas Centralizado (motor-mapas.js)
 // PARTE 3 DE 4: Parser del Semáforo de Alcaldías y Algoritmo de Simulación
