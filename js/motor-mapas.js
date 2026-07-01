@@ -12,7 +12,7 @@ const CONFIG_NEGOSISTEMA = {
       zoom: 11,
       geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/alcaldias.geojson",
       urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1670206752&single=true&output=csv"
-    },
+    },                
     "iztapalapa": {
       nombre: "Iztapalapa (Piloto)",
       coordenadas: [19.3455, -99.0130],
