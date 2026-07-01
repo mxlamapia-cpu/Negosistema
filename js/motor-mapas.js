@@ -82,13 +82,16 @@ let mapaCamaleonCapasActivas = {};
 // PARTE 2 DE 4: Inicialización del DOM, Instancia Leaflet y Flujos Fetch
 // ==========================================================================
 
-// Inicialización controlada al cargar por completo el árbol DOM
 document.addEventListener("DOMContentLoaded", () => {
-  // Primero leemos los parámetros de la URL para mutar la interfaz
-  procesarParametrosUrlCamaleon();
-  // Levantamos la arquitectura base de Leaflet
+  const urlActual = window.location.pathname.toLowerCase();
+  
+  if (urlActual.includes("comercial.html")) {
+    procesarParametrosUrlCamaleon();
+  }
+  
   inicializarArquitecturaEcosistema();
 });
+
 
 /**
  * 2. ENRUTADOR DE ENTORNO: Identifica la vista y configura Leaflet nativo
