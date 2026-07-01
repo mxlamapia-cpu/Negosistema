@@ -238,10 +238,18 @@ function renderizarPoligonosPiloto(geoJson, csvTexto) {
           })
         }).addTo(capaPoligonosGroup);
         
-        layer.on('click', function() {
-          window.location.href = "./index.html?alcaldia=" + nombreLimpio;
+                layer.on('click', function() {
+          if (nombreLimpio === "iztapalapa") {
+            window.location.href = "./comercial.html";
+          } else {
+            window.location.href = "./index.html?alcaldia=" + nombreLimpio;
+          }
         });
-        layer.on('mouseover', function() { layer.setStyle({ fillOpacity: 0.65 }); });
+        
+        layer.on('mouseover', function() { 
+          layer.setStyle({ fillOpacity: 0.65 }); 
+        });
+        
         layer.on('mouseout', function() { 
           var opacidadBase = (estatus === "EXPLORANDO") ? 0.55 : 0.4;
           if (estatus === "PROXIMAMENTE") opacidadBase = 0.35;
