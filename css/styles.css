@@ -616,3 +616,137 @@ body {
   text-align: center !important;
   white-space: nowrap !important;
 }
+/* ==========================================================================
+   NEGOSISTEMA 2026 - COMPONENTE: INTERRUPTORES TÁCTILES BAJO EL MAPA
+   ========================================================================== */
+
+/* Contenedor principal de la botonera inferior */
+.guia-colores-contenedor {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  margin-top: 20px;
+}
+
+.guia-titulo {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  text-align: center;
+  color: #202124;
+}
+
+/* Rejilla adaptativa para los botones de las capas */
+.guia-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+/* Botón Interruptor Táctil Estructura Base */
+.guia-item-btn {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.guia-item-btn:hover {
+  background: #f1f3f4;
+  border-color: #ccc;
+}
+
+/* Texto interno del ramo comercial */
+.guia-item-texto {
+  font-size: 13px;
+  color: #3c4043;
+  line-height: 1.4;
+  margin-left: 10px;
+}
+
+/* El círculo camaleónico indicador de estado */
+.punto-color-toggle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* ESTADO 1: CAPA APAGADA (Círculo vacío con borde de color) */
+.guia-item-btn.capa-apagada {
+  opacity: 0.5;
+  background: #ffffff;
+}
+
+.guia-item-btn.capa-apagada .punto-color-toggle {
+  background-color: transparent !important;
+  border-width: 3px;
+  border-style: solid;
+}
+
+/* ==========================================================================
+   NEGOSISTEMA 2026 - PALETA DE COLORES CROMÁTICA (PRODUCTOS Y SERVICIOS)
+   ========================================================================== */
+
+/* Colores de Borde para el Estado Apagado (Círculo Vacío) */
+.guia-item-btn.capa-apagada .color-canasta    { border-color: #2e7d32; }
+.guia-item-btn.capa-apagada .color-comida     { border-color: #ef6c00; }
+.guia-item-btn.capa-apagada .color-hogar      { border-color: #fbc02d; }
+.guia-item-btn.capa-apagada .color-salud      { border-color: #c62828; }
+.guia-item-btn.capa-apagada .color-moda       { border-color: #e4007c; }
+.guia-item-btn.capa-apagada .color-mascotas    { border-color: #795548; }
+.guia-item-btn.capa-apagada .color-tecnologia  { border-color: #1565c0; }
+.guia-item-btn.capa-apagada .color-talleres   { border-color: #1565c0; }
+.guia-item-btn.capa-apagada .color-bienestar  { border-color: #9b59b6; }
+.guia-item-btn.capa-apagada .color-asesoria   { border-color: #9e9e9e; }
+.guia-item-btn.capa-apagada .color-eventos    { border-color: #74001a; }
+.guia-item-btn.capa-apagada .color-educacion  { border-color: #b2bec3; }
+.guia-item-btn.capa-apagada .color-urgencias  { border-color: #111111; }
+.guia-item-btn.capa-apagada .color-directorio  { border-color: #9e9e9e; }
+
+/* Estilos de Botón e Indicador de Ofertas Flotante de WhatsApp */
+.btn-gps-xalpa {
+  display: inline-block;
+  background-color: #1a73e8;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-gps-xalpa:hover {
+  background-color: #1557b0;
+}
+
+.feature-card-link {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.btn-wa-float {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #25d366;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
