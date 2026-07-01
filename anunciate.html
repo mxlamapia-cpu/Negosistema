@@ -3,38 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Negosistema 2026 - Anúnciate</title>
+  <title>Anúnciate - Negosistema Piloto 2026</title>
   
-  <!-- 1. Hojas de Estilo Oficiales de Leaflet Core -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-
+  <!-- CDN Oficial de Estilos de Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  
   <style>
-    /* Estilos estructurales base para blindar el lienzo del mapa */
+    /* Estilos de la Interfaz y Menús de Navegación Originales */
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f8f9fa;
+      background-color: #f5f6fa;
       color: #2c3e50;
     }
-    .contenedor-ventas {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
+    
+    /* Barra de Navegación Superior */
+    .navbar-negosistema {
+      background-color: #ffffff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10000;
     }
-    .encabezado-demo {
-      text-align: center;
-      margin-bottom: 25px;
+    .logo-marca {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1a73e8;
+      text-decoration: none;
     }
-    .encabezado-demo h1 {
-      margin: 0 0 10px 0;
+    .menu-navegacion {
+      display: flex;
+      gap: 15px;
+    }
+    .enlace-nav {
+      text-decoration: none;
+      color: #5f6368;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+    .enlace-nav:hover {
+      background-color: #f1f3f4;
       color: #1a73e8;
     }
-    
-    /* Contenedor Maestro del Mapa - Evita pantallas grises */
+    .enlace-nav.activo {
+      background-color: #e8f0fe;
+      color: #1a73e8;
+    }
+
+    /* Contenedor Principal de Ventas */
+    .seccion-ventas-container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .bloque-introductorio {
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+    }
+    .bloque-introductorio h1 {
+      margin: 0 0 10px 0;
+      color: #202124;
+      font-size: 24px;
+    }
+    .bloque-introductorio p {
+      margin: 0;
+      color: #5f6368;
+      line-height: 1.5;
+    }
+
+    /* Envoltura del Mapa - Blindaje del Lienzo de Leaflet */
     .map-wrapper-anunciate {
       width: 100%;
       height: 500px;
-      border-radius: 12px;
+      border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       position: relative;
@@ -43,10 +93,35 @@
     #mapa_general {
       width: 100%;
       height: 100%;
-      background-color: #e5e3df; /* Color de respaldo */
+      background-color: #e5e3df;
     }
 
-    /* Estilos del Muro de Privacidad en Popups */
+    /* Beneficios y Escalera de Valor Comercial */
+    .grid-beneficios {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 25px;
+    }
+    .tarjeta-beneficio {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      border-left: 4px solid #1a73e8;
+    }
+    .tarjeta-beneficio h3 {
+      margin: 0 0 8px 0;
+      color: #202124;
+    }
+    .tarjeta-beneficio p {
+      margin: 0;
+      font-size: 13px;
+      color: #5f6368;
+      line-height: 1.4;
+    }
+
+    /* Estilos del Muro de Privacidad dentro de los Popups */
     .tarjeta-popup {
       font-family: sans-serif;
       padding: 4px;
@@ -54,14 +129,14 @@
     }
     .tarjeta-popup h3 {
       margin: 0 0 4px 0;
-      font-size: 16px;
+      font-size: 15px;
       color: #2c3e50;
     }
     .slogan {
       font-style: italic;
       color: #7f8c8d;
       margin-bottom: 8px;
-      font-size: 13px;
+      font-size: 12px;
     }
     .productos {
       background: #f1f2f6;
@@ -79,7 +154,7 @@
       padding: 8px;
       border-radius: 6px;
       font-weight: bold;
-      font-size: 13px;
+      font-size: 12px;
       margin-top: 5px;
     }
     .btn-web-comercial {
@@ -91,7 +166,7 @@
       padding: 8px;
       border-radius: 6px;
       font-weight: bold;
-      font-size: 13px;
+      font-size: 12px;
       margin-top: 5px;
     }
     .bloque-bloqueado-upsell {
@@ -105,49 +180,74 @@
       font-weight: 600;
     }
 
-    /* Pines camaleónicos base */
-    .pin-negosistema {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    /* Clases de animación para Pines Camaleónicos */
+    .pin-negosistema { display: flex; align-items: center; justify-content: center; }
     .pin-nivel1 div { border: 2px solid #7f8c8d; background: #95a5a6; }
-    .pin-nivel2 div { border: 2px solid #fff; background: #34495e; box-shadow: 0 0 4px rgba(0,0,0,0.4); }
-    .pin-nivel3 div { border: 2px solid #fff; box-shadow: 0 0 6px rgba(0,0,0,0.5); }
+    .pin-nivel2 div { border: 2px solid #fff; background: #34495e; box-shadow: 0 0 4px rgba(0,0,0,0.3); }
+    .pin-nivel3 div { border: 2px solid #fff; box-shadow: 0 0 6px rgba(0,0,0,0.4); }
     .pin-nivel4 div { border: 2px solid #fff; animation: pulsoPlata 2s infinite; }
     .pin-nivel5 div { border: 2px solid #fff; animation: pulsoOro 1.5s infinite; scale: 1.2; }
 
     @keyframes pulsoPlata {
-      0% { box-shadow: 0 0 0 0 rgba(189, 195, 199, 0.7); }
-      70% { box-shadow: 0 0 0 8px rgba(189, 195, 199, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(189, 195, 199, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(189,195,199,0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(189,195,199,0); }
+      100% { box-shadow: 0 0 0 0 rgba(189,195,199,0); }
     }
     @keyframes pulsoOro {
-      0% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0.8); }
-      70% { box-shadow: 0 0 0 10px rgba(241, 196, 15, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(241, 196, 15, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(241,196,15,0.8); }
+      70% { box-shadow: 0 0 0 10px rgba(241,196,15,0); }
+      100% { box-shadow: 0 0 0 0 rgba(241,196,15,0); }
     }
   </style>
 </head>
 <body>
 
-  <div class="contenedor-ventas">
-    <div class="encabezado-demo">
-      <h1>Súmate al Mapa Comercial Local</h1>
-      <p>Mira cómo se visualizan los 26 comercios de prueba en el entorno dinámico simulado.</p>
+  <!-- Menú Superior de Navegación de la Aplicación -->
+  <nav class="navbar-negosistema">
+    <a href="./index.html" class="logo-marca">Negosistema CDMX</a>
+    <div class="menu-navegacion">
+      <a href="./index.html" class="enlace-nav">Inicio</a>
+      <a href="./comercial.html" class="enlace-nav">Explorar Negocios</a>
+      <a href="./anunciate.html" class="enlace-nav activo">Anúnciate</a>
+    </div>
+  </nav>
+
+  <!-- Contenido de la Sección de Ventas -->
+  <div class="seccion-ventas-container">
+    <div class="bloque-introductorio">
+      <h1>Multiplica tus ventas en tu colonia</h1>
+      <p>Forma parte del directorio geolocalizado más avanzado de la alcaldía. El mapa interactivo inferior simula el entorno real con los 26 comercios demo distribuidos bajo nuestro algoritmo matemático y las reglas comerciales del Muro de Privacidad.</p>
     </div>
 
-    <!-- Contenedor donde Leaflet inyectará el mapa real -->
+    <!-- Contenedor Maestro del Mapa Interactivo -->
     <div class="map-wrapper-anunciate">
       <div id="mapa_general"></div>
     </div>
+
+    <!-- Sección Informativa de los Planes y Beneficios -->
+    <div class="grid-beneficios">
+      <div class="tarjeta-beneficio">
+        <h3>Presencia Camaleónica</h3>
+        <p>Aparece con el color oficial de tu ramo comercial. Los usuarios te encontrarán de inmediato filtrando por categorías en su pantalla táctil.</p>
+      </div>
+      <div class="tarjeta-beneficio">
+        <h3>Escalera de Valor (Planes)</h3>
+        <p>Desde presencia básica anónima hasta cuentas Premium con botones directos a tu WhatsApp, enlaces a tus redes y videos promocionales embebidos.</p>
+      </div>
+      <div class="tarjeta-beneficio" style="border-left-color: #27ae60;">
+        <h3>Doble Presencia (+30%)</h3>
+        <p>Si tu negocio abarca múltiples ramos (ej. tienda y papelería), duplicamos físicamente tu pin en la memoria local para multiplicar tu alcance de captación.</p>
+      </div>
+    </div>
   </div>
 
-  <!-- 2. Librería JavaScript de PapaParse (Lectura e interpretación de tablas) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha512-dfX5uYVXzyU8+KHqj8bjo7UkOdg18PaOtpa48djpNbZHwExddghZ+ZmzWT06R5v6NSk3ZUfsH6FNEDepLx9hPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <!-- 3. Librería JavaScript de Leaflet Core -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <!-- 4. Lógica de Negocio y Control Cartográfico Propio -->
+  <!-- Librería de Soporte PapaParse para Estructura de Tablas -->
+  <script src="https://cloudflare.com" integrity="sha512-V9w6gYvPMp9fOsh3Qv7097Gg76as7Y6AnS7O9H36f6ZfO58L9vGv5X1d67g1Xm7n67G71l3o9C7B6g5O0g5O6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Script Principal Core de Leaflet Mapas -->
+  <script src="https://unpkg.com" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Vinculación del Motor de Control Cartográfico -->
   <script src="./motor-mapas.js"></script>
 
 </body>
