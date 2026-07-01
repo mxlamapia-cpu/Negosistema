@@ -2,27 +2,26 @@
 // NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
 // PARTE 1 DE 4: Configuración Maestra, GIDs de Google Sheets y Taxonomías
 // ==========================================================================
-
 const CONFIG_NEGOSISTEMA = {
   catalogoAlcaldias: {
     "cdmx": {
       nombre: "Ciudad de México (Macro)",
       coordenadas: [19.4326, -99.1332],
       zoom: 11,
-      geojson: "https://githubusercontent.com",
-      urlCsvEstatus: "https://google.com"
+      geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/alcaldias.geojson",
+      urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1670206752&single=true&output=csv"
     },                
     "iztapalapa": {
       nombre: "Iztapalapa (Piloto)",
       coordenadas: [19.3455, -99.0130],
       zoom: 13,
-      geojson: "https://githubusercontent.com",
+      geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/iztapal/iztapalapa.geojson",
       // pestaña 5: "Estatus"
-      urlCsvEstatus: "https://google.com",
+      urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=383048417&single=true&output=csv",
       // pestaña 4: "Salida Mapa"
-      urlCsvSalidaMapa: "https://google.com",
+      urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv",
       // pestaña 3: "Entrada" (Negocios Ficticios / Muestra Anúnciate)
-      urlCsvAnunciateSimulacion: "https://google.com"
+    urlCsvAnunciateSimulacion:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSGcorxjHpvr9WkNUQd2cRuAf1wRFlI5Jr67WeT9aZnz74Y677ZZ9u3iAFpwCl5RcuVM8npRYOrJbJ_/pub?gid=956712165&single=true&output=csv"
     }
   }
 };
