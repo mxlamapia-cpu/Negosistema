@@ -93,13 +93,18 @@ function inicializarArquitecturaEcosistema() {
 /**
  * 3. ORQUESTADOR DE FLUJOS DINÁMICOS: Segmentación de descargas asíncronas
  */
-function ejecutarCargaPorCanal(modo) {
-  if (modo === "INDEX_GENERAL") {
+function ejecutarCargaPorCanal(modo) {  if (modo === "INDEX_GENERAL") {
     const parametrosUrl = new URLSearchParams(window.location.search);
     let alcaldiaClave = parametrosUrl.get("alcaldia");
     
     if (alcaldiaClave) {
       alcaldiaClave = alcaldiaClave.trim().toLowerCase();
+    }
+    
+    // REDIRECCIÓN QUIRÚRGICA: Si detecta iztapalapa, salta directo a comercial.html
+    if (alcaldiaClave === "iztapalapa") {
+      window.location.href = "./comercial.html";
+      return; 
     }
     
     if (!alcaldiaClave || !CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave]) {
