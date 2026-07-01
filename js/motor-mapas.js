@@ -221,6 +221,164 @@ function ejecutarCargaPorCanal(modo) {
     .catch(err => console.error("Error en pestaña Salida Mapa:", err));
   }
 }
+/**
+ * 5. INTERRUPTOR TÁCTIL DE CAPAS (TOGGLE): Enciende o apaga las capas del mapa.
+ * Al tocar un ramo, vacía o rellena el círculo e invoca la limpieza de pines.
+ */
+function alternarEstadoInterruptorCapa(idCapa) {
+  const botonHtml = document.getElementById(`btn_capa_${idCapa}`);
+  if (!botonHtml) return;
+
+  if (idCapa === "todos") {
+    // Si se presiona "Todos", validamos el estado maestro de la botonera
+    const estadoActualTodos = !mapaCamaleonCapasActivas["todos"];
+    const listaCapas = DICCIONARIO_CAMALEON.entornos[entornoActivoUrl].capas;
+    
+    listaCapas.forEach(capa => {
+      mapaCamaleonCapasActivas[capa.id] = estadoActualTodos;
+      const btnElemento = document.getElementById(`btn_capa_${capa.id}`);
+      if (btnElemento) {
+        if (estadoActualTodos) {
+          btnElemento.classList.remove("capa-apagada");
+        } else {
+          btnElemento.classList.add("capa-apagada");
+        }
+      }
+    });
+  } else {
+    // Comportamiento para interruptores individuales de ramo
+    mapaCamaleonCapasActivas[idCapa] = !mapaCamaleonCapasActivas[idCapa];
+    
+    if (mapaCamaleonCapasActivas[idCapa]) {
+      botonHtml.classList.remove("capa-apagada");
+    } else {
+      botonHtml.classList.add("capa-apagada");
+    }
+
+    // Regla de desvinculación: Si se apaga un ramo, el botón maestro de "Todos" se vacía
+    const btnTodos = document.getElementById("btn_capa_todos");
+    if (!mapaCamaleonCapasActivas[idCapa] && btnTodos) {
+      mapaCamaleonCapasActivas["todos"] = false;
+      btnTodos.classList.add("capa-apagada");
+    }
+  }
+
+  // Sincronizar el estado de los círculos directamente con los pines de Leaflet
+  ejecutarFiltroAutomaticoPaginaInterna();
+}
+
+/**
+ * 6. DETECTOR DE INTERFAZ CAMALEÓNICA: Cruza el estado de la memoria
+ * de los interruptores táctiles para limpiar o dibujar en pantalla.
+ */
+function ejecutarFiltroAutomaticoPaginaInterna() {
+  const urlActual = window.location.pathname.toLowerCase();
+  let segmentoMapa = "todos";
+
+  if (urlActual.includes("productos") || entornoActivoUrl === "productos") {
+    segmentoMapa = "productos";
+  } else if (urlActual.includes("servicios") || entornoActivoUrl === "servicios") {
+    segmentoMapa = "servicios";
+  }
+
+  // Filtrado optimizado: Redibuja aplicando el estado lógico de los botones
+  renderizarPinesEnPantallaCamaleon(coloniaActivaUrl, segmentoMapa);
+}
+
+/**
+ * 7. PINTOR DE MARCADORES CAMALEÓN: Versión adaptada que lee los estados
+ * individuales rellenos o vacíos del Menú de Capas Mutante.
+ */
+function renderizarPinesEnPantallaCamaleon(filtroColonia, filtroMapa) {
+  capaMarcadoresGroup.clearLayers();
+  let boundsAjuste = [];
+
+  datosComerciosGlobales.forEach(function(comercio) {
+    // 1. Filtro estricto de geolocalización por colonia elegida en URL
+    if (filtroColonia !== "todos" && !comercio.coloniaOriginal.toLowerCase().includes(filtroColonia.toLowerCase())) return;
+    
+    // 2. Filtro estricto por sub-entorno de mercado (Productos / Servicios)
+    if (filtroMapa !== "todos" && comercio.mapaObjetivo !== filtroMapa.toLowerCase()) return;
+    
+    // 3. CONTROL DE INTERRUPTORES TÁCTILES: Si la capa está apagada (false), frena el dibujo
+    const capaMapeada = comercio.capaActivaMapeo ? comercio.capaActivaMapeo.toLowerCase() : "";
+    if (mapaCamaleonCapasActivas[capaMapeada] === false) return;
+
+    var claseNivelCss = "pin-nivel" + comercio.nivelServicio;
+    var colorHexGiro = obtenerColorHexagonalPorCapa(capaMapeada);
+    var estiloInline = (comercio.nivelServicio === 1) ? '' : "background-color:" + colorHexGiro + ";";
+
+    var iconoPersonalizadoHtml = L.divIcon({
+      className: "pin-negosistema " + claseNivelCss,
+      html: '<div style="' + estiloInline + ' width:14px; height:14px; border-radius:50%;"></div>',
+      iconSize:,
+      iconAnchor:
+    });
+
+    // Inyección de la plantilla popup protegida por el Muro de Privacidad
+    var popupContenidoHtml = '<div class="tarjeta-popup">';
+    popupContenidoHtml += '<h3>' + (comercio.nivelServicio >= 2 ? comercio.nombre : 'Comercio Registrado') + '</h3>';
+    popupContenidoHtml += '<p style="font-size:11px; margin: 0 0 6px 0; color:#95a5a6;">ID Ref: ' + comercio.id + '</p>';
+
+    if (comercio.nivelServicio >= 3) {
+      if (comercio.slogan) popupContenidoHtml += '<div class="slogan">"' + comercio.slogan + '"</div>';
+      if (comercio.productosServicios) popupContenidoHtml += '<div class="productos"><strong>Ofrece:</strong> ' + comercio.productosServicios + '</div>';
+      if (comercio.horarios) popupContenidoHtml += '<div class="semaforo-horario horario-abierto">Abierto: ' + comercio.horarios + '</div>';
+    }
+
+    if (comercio.nivelServicio >= 4) {
+      var urlWhatsAppActiva = comercio.clickPersonalizado || comercio.clickGenerico;
+      if (urlWhatsAppActiva) popupContenidoHtml += '<a href="' + urlWhatsAppActiva + '" target="_blank" class="btn-whatsapp-comercial">Contactar por WhatsApp</a>';
+      if (comercio.redes) popupContenidoHtml += '<p style="margin: 8px 0 4px 0; font-size:12px; text-align:center;"><a href="' + comercio.redes + '" target="_blank" style="color:#1a73e8; font-weight:600;">Ver Redes Sociales</a></p>';
+    }
+
+    if (comercio.nivelServicio === 5) {
+      if (comercio.enlaceVideo) {
+        var idVideoLimpio = extraerIdVideoPlataformas(comercio.enlaceVideo);
+        if (idVideoLimpio) {
+          popupContenidoHtml += '<div class="contenedor-video" style="margin-top:8px; position:relative; padding-bottom:56.25%; height:0; overflow:hidden;"><iframe src="https://youtube.com' + idVideoLimpio + '" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius:8px;"></iframe></div>';
+        }
+      }
+      if (comercio.linksWebPropia) popupContenidoHtml += '<a href="' + comercio.linksWebPropia + '" target="_blank" class="btn-web-comercial">Visitar Página Web Oficial</a>';
+    }
+
+    if (comercio.nivelServicio <= 3) {
+      popupContenidoHtml += '<div class="bloque-bloqueado-upsell" style="margin-top:6px;">Canales de contacto exclusivos para cuentas Premium 🔒</div>';
+    }
+    popupContenidoHtml += '</div>';
+
+    var marcadorFinal = L.marker([comercio.latitud, comercio.longitud], { icon: iconoPersonalizadoHtml }).bindPopup(popupContenidoHtml, { maxWidth: 290 });
+    capaMarcadoresGroup.addLayer(marcadorFinal);
+    boundsAjuste.push([comercio.latitud, comercio.longitud]);
+  });
+
+  // Ajuste automático de encuadre de pantalla táctil
+  if (boundsAjuste.length > 0 && filtroColonia !== "todos") {
+    mapaNegosistema.fitBounds(boundsAjuste, { padding: 40, maxZoom: 16 });
+  }
+}
+
+/**
+ * 8. CONMUTADOR DE SUB-ENTORNOS: Altera dinámicamente los parámetros de la URL
+ * para alternar entre el mapa de Productos y Servicios en la misma pantalla.
+ */
+function conmutarSubEntornoCamaleon() {
+  const nuevoEntorno = (entornoActivoUrl === "productos") ? "servicios" : "productos";
+  
+  // Modificamos la URL en la barra de navegación del celular sin recargar el archivo HTML
+  const nuevaUrl = `${window.location.pathname}?colonia=${coloniaActivaUrl}&entorno=${nuevoEntorno}`;
+  window.history.pushState({ path: nuevaUrl }, '', nuevaUrl);
+  
+  // Reconfiguramos las variables lógicas y repintamos la botonera inferior
+  entornoActivoUrl = nuevoEntorno;
+  mapaCamaleonCapasActivas = {}; // Limpia memoria de estados anteriores
+  
+  inyectarTextosCabeceraCamaleon();
+  generarBotoneraInterruptoresTactiles();
+  
+  // Volvemos a disparar la recarga de pines con el nuevo filtro activo
+  ejecutarFiltroAutomaticoPaginaInterna();
+}
 
 // ==========================================================================
 // NEGOSISTEMA (2026) - Motor de Mapas Centralizado (motor-mapas.js)
