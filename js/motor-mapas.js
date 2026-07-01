@@ -430,7 +430,7 @@ function renderizarPinesEnPantallaCamaleon(filtroColonia, filtroMapa) {
     var iconoPersonalizadoHtml = L.divIcon({
       className: "pin-negosistema " + claseNivelCss,
       html: '<div style="' + estiloInline + ' width:14px; height:14px; border-radius:50%;"></div>',
-      iconSize:,
+      iconSize:[14, 14],
       iconAnchor: [7, 7]
     });
 
@@ -499,10 +499,7 @@ function conmutarSubEntornoCamaleon() {
   ejecutarFiltroAutomaticoPaginaInterna();
 }
 
-/**/**
- * 11. RENDERIZADO INTERMEDIO DE COLONIAS PILOTO: Dibuja los polígonos 
- * de las colonias activas dentro de la alcaldía seleccionada.
- */
+
 function renderizarPoligonosColoniasPiloto(geoJson, csvTexto) {
   const estatusColoniasIztapalapa = {};
   
