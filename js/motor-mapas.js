@@ -595,6 +595,8 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
     }
   }
   ejecutarFiltroAutomaticoPaginaInterna();
+    // 2. AQUÍ COLOCAS LA NUEVA LÍNEA (Justo antes de cerrar la función maestra)
+  inyectarAnunciosCarruselPremium();
 }
 
 /**
@@ -628,4 +630,166 @@ function extraerIdVideoPlataformas(urlVideo) {
   var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   var match = urlVideo.match(regExp);
   return (match && match[2] && match[2].length === 11) ? match[2] : null;
+}
+/**
+ * 15. RENDERIZADOR DEL CARRUSEL: Consume directamente las filas del CSV
+ * e inyecta las imágenes, títulos y botones de WhatsApp en la cabecera.
+ */
+function inyectarAnunciosCarruselPremium() {
+  const track = document.getElementById("contenedor_slider_track");
+  if (!track) return;
+
+  // Si la tabla de Google Sheets viene vacía, dejamos la tarjeta de respaldo
+  if (datosComerciosGlobales.length === 0) {
+    track.innerHTML = `
+      <div class="slide-group">
+        <div class="feature-card-link">
+          <div class="feature-card">
+            <div class="card-image">
+              <img src="./Imagenes/caballete.png" alt="Muestra">
+            </div>
+            <div class="card-content">
+              <h3>Buscando Ofertas...</h3>
+              <p>Espere las promociones de esta colonia.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // Limpiamos el carrusel estático para meter los datos de tu Sheets
+  track.innerHTML = "";
+
+  // Agrupamos tus comercios de 2 en 2 para mantener la maquetación CSS
+  for (let i = 0; i < datosComerciosGlobales.length; i += 2) {
+    const grupoDiv = document.createElement("div");
+    grupoDiv.className = "slide-group";
+
+    // Insertamos el primer negocio disponible en la fila
+    const c1 = datosComerciosGlobales[i];
+    const urlWa1 = c1.clickPersonalizado || c1.clickGenerico || "https://wa.me";
+    const img1 = c1.slogan ? "./Imagenes/caballete.png" : "./Imagenes/caballete.png";
+    
+    grupoDiv.innerHTML += `
+      <div class="feature-card-link">
+        <div class="feature-card">
+          <div class="card-image">
+            <img src="${img1}" alt="${c1.nombre}">
+          </div>
+          <div class="card-content">
+            <h3>${c1.nombre}</h3>
+            <p>${c1.slogan || 'Promoción disponible en sucursal'}</p>
+          </div>
+        </div>
+        <a href="${urlWa1}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
+      </div>
+    `;
+
+    // Si la tabla tiene un segundo negocio consecutivo, lo mete al mismo bloque
+    if (datosComerciosGlobales[i + 1]) {
+      const c2 = datosComerciosGlobales[i + 1];
+      const urlWa2 = c2.clickPersonalizado || c2.clickGenerico || "https://wa.me";
+      const img2 = c2.slogan ? "./Imagenes/caballete.png" : "./Imagenes/caballete.png";
+      
+      grupoDiv.innerHTML += `
+        <div class="feature-card-link">
+          <div class="feature-card">
+            <div class="card-image">
+              <img src="${img2}" alt="${c2.nombre}">
+          </div>
+            <div class="card-content">
+              <h3>${c2.nombre}</h3>
+              <p>${c2.slogan || 'Promoción disponible en sucursal'}</p>
+            </div>
+          </div>
+          <a href="${urlWa2}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
+        </div>
+      `;
+    }
+
+    track.appendChild(grupoDiv);
+  }
+}
+/**
+ * 15. RENDERIZADOR DEL CARRUSEL: Consume directamente las filas del CSV
+ * e inyecta las imágenes, títulos y botones de WhatsApp en la cabecera.
+ */
+function inyectarAnunciosCarruselPremium() {
+  const track = document.getElementById("contenedor_slider_track");
+  if (!track) return;
+
+  // Si la tabla de Google Sheets viene vacía, dejamos la tarjeta de respaldo
+  if (datosComerciosGlobales.length === 0) {
+    track.innerHTML = `
+      <div class="slide-group">
+        <div class="feature-card-link">
+          <div class="feature-card">
+            <div class="card-image">
+              <img src="./Imagenes/caballete.png" alt="Muestra">
+            </div>
+            <div class="card-content">
+              <h3>Buscando Ofertas...</h3>
+              <p>Espere las promociones de esta colonia.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // Limpiamos el carrusel estático para meter los datos de tu Sheets
+  track.innerHTML = "";
+
+  // Agrupamos tus comercios de 2 en 2 para mantener la maquetación CSS
+  for (let i = 0; i < datosComerciosGlobales.length; i += 2) {
+    const grupoDiv = document.createElement("div");
+    grupoDiv.className = "slide-group";
+
+    // Insertamos el primer negocio disponible en la fila
+    const c1 = datosComerciosGlobales[i];
+    const urlWa1 = c1.clickPersonalizado || c1.clickGenerico || "https://wa.me";
+    const img1 = c1.slogan ? "./Imagenes/caballete.png" : "./Imagenes/caballete.png";
+    
+    grupoDiv.innerHTML += `
+      <div class="feature-card-link">
+        <div class="feature-card">
+          <div class="card-image">
+            <img src="${img1}" alt="${c1.nombre}">
+          </div>
+          <div class="card-content">
+            <h3>${c1.nombre}</h3>
+            <p>${c1.slogan || 'Promoción disponible en sucursal'}</p>
+          </div>
+        </div>
+        <a href="${urlWa1}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
+      </div>
+    `;
+
+    // Si la tabla tiene un segundo negocio consecutivo, lo mete al mismo bloque
+    if (datosComerciosGlobales[i + 1]) {
+      const c2 = datosComerciosGlobales[i + 1];
+      const urlWa2 = c2.clickPersonalizado || c2.clickGenerico || "https://wa.me";
+      const img2 = c2.slogan ? "./Imagenes/caballete.png" : "./Imagenes/caballete.png";
+      
+      grupoDiv.innerHTML += `
+        <div class="feature-card-link">
+          <div class="feature-card">
+            <div class="card-image">
+              <img src="${img2}" alt="${c2.nombre}">
+          </div>
+            <div class="card-content">
+              <h3>${c2.nombre}</h3>
+              <p>${c2.slogan || 'Promoción disponible en sucursal'}</p>
+            </div>
+          </div>
+          <a href="${urlWa2}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
+        </div>
+      `;
+    }
+
+    track.appendChild(grupoDiv);
+  }
 }
