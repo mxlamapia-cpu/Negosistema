@@ -307,8 +307,8 @@ function renderizarPinesEnPantallaCamaleon(filtroColonia, filtroMapa) {
     var iconoPersonalizadoHtml = L.divIcon({
       className: "pin-negosistema " + claseNivelCss,
       html: '<div style="' + estiloInline + ' width:14px; height:14px; border-radius:50%;"></div>',
-      iconSize:[14,14],
-      iconAnchor:[7,7],
+      iconSize:[14, 14],
+      iconAnchor:[7, 7]
     });
 
     // Inyección de la plantilla popup protegida por el Muro de Privacidad
