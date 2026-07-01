@@ -27,10 +27,6 @@ const CONFIG_NEGOSISTEMA = {
     }
   }
 };
-
-
-
-
 // Diccionario Inteligente para mutar la interfaz según la Colonia y Entorno
 const DICCIONARIO_CAMALEON = {
   colonias: {
