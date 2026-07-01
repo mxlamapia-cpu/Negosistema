@@ -150,12 +150,11 @@ function ejecutarCargaPorCanal(modo) {
       alcaldiaClave = alcaldiaClave.trim().toLowerCase();
     }
     
-      // REDIRECCIÓN INTELIGENTE: Pasa los parámetros de colonia y entorno en la URL
+    // REDIRECCIÓN INTELIGENTE: Si detecta iztapalapa, salta directo al mapa camaleón
     if (alcaldiaClave === "iztapalapa") {
       window.location.href = "./comercial.html?colonia=xalpa2&entorno=productos";
       return; 
     }
-
     
     if (!alcaldiaClave || !CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaClave]) {
       alcaldiaClave = "cdmx";
@@ -174,7 +173,7 @@ function ejecutarCargaPorCanal(modo) {
     .catch(err => console.error("Error en index:", err));
 
   } else if (modo === "SIMULACION") {
-    // ENLACE DIRECTO AL CSV 3: Descarga los datos reales de Anúnciate
+    // ENLACE DIRECTO AL CSV 3: Descarga los datos de Anúnciate
     const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
     
     Promise.all([
@@ -184,7 +183,7 @@ function ejecutarCargaPorCanal(modo) {
     .then(([geoJsonData, csvTexto]) => {
       L.geoJSON(geoJsonData, {
         coordsToLatLng: function (coords) { 
-          return new L.LatLng(coords[1], coords[0]); 
+          return new L.LatLng(coords, coords); 
         },
         style: { 
           color: "#e67e22", 
@@ -209,7 +208,7 @@ function ejecutarCargaPorCanal(modo) {
     .then(([geoJsonData, csvTexto]) => {
       L.geoJSON(geoJsonData, {
         coordsToLatLng: function (coords) { 
-          return new L.LatLng(coords[1], coords[0]); 
+          return new L.LatLng(coords, coords); 
         },
         style: { 
           color: "#34495e", 
@@ -225,6 +224,7 @@ function ejecutarCargaPorCanal(modo) {
     .catch(err => console.error("Error en pestaña Salida Mapa:", err));
   }
 }
+
 // ==========================================================================
 // NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
 // PARTE 3 DE 4: Lector Quirúrgico de URL, Mutador de Textos e Inyector Táctil
