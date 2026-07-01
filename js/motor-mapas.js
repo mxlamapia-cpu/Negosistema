@@ -23,7 +23,6 @@ const CONFIG_NEGOSISTEMA = {
       // pestaña 4: "Salida Mapa"
       urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv",
       // pestaña 3: "Entrada" (Negocios Ficticios / Muestra Anúnciate)
-      urlCsvAnunciateSimulacion: "AQUÍ_VA_EL_ENLACE_DE_TU_CSV_PUESTAÑA_3"
     }
   }
 };
