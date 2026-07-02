@@ -578,60 +578,90 @@ function renderizarPoligonosColoniasPiloto(geoJson, csvTexto) {
   }).addTo(capaPoligonosGroup);
 }
 
-/* ==========================================================================
-
- * 11. RENDERIZADO MACRO CDMX (Semáforo Tricolor): Cruza el mapa con la pestaña 5
+/**
+ * 11. RENDERIZADO INTERMEDIO DE COLONIAS PILOTO: Dibuja los polígonos 
+ * de las colonias activas leyendo índices de columnas fijos (0 a 3).
  */
-function renderizarPoligonosPiloto(geoJson, csvTexto) {
-  const estatusAlcaldiasCdmx = {};
+function renderizarPoligonosColoniasPiloto(geoJson, csvTexto) {
+  const estatusColoniasIztapalapa = {};
   const filasParseadas = Papa.parse(csvTexto, { skipEmptyLines: true }).data;
   
   for (let i = 1; i < filasParseadas.length; i++) {
     const columnas = filasParseadas[i];
-    if (!columnas || columnas.length < 5) continue;
-    const nombreAlcaldiaCsv = (columnas[columnas.length - 4] || "").replace(/^"|"$/g, '').trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const estatusCsv = (columnas[columnas.length - 1] || "").replace(/^"|"$/g, '').trim().toUpperCase();
-    if (nombreAlcaldiaCsv) estatusAlcaldiasCdmx[nombreAlcaldiaCsv] = estatusCsv;
+    // Valida que la fila tenga las 4 columnas de tu Sheets real
+    if (!columnas || columnas.length < 4) continue;
+    
+    // CORRECCIÓN DE ÍNDICES: Columna [1] es Nombre, Columna [3] es Fase
+    const nombreColoniaCsv = (columnas[1] || "")
+      .replace(/^"|"$/g, '').trim().toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+    const estatusCsv = (columnas[3] || "")
+      .replace(/^"|"$/g, '').trim().toUpperCase();
+      
+    if (nombreColoniaCsv) {
+      estatusColoniasIztapalapa[nombreColoniaCsv] = estatusCsv;
+    }
   }
 
   L.geoJSON(geoJson, {
     style: function(feature) {
       var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
       var nombreLimpio = nombreVector.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      var estatus = estatusAlcaldiasCdmx[nombreLimpio] || "INACTIVO";
-      if (estatus === "COMPLETADA") return { color: "#27ae60", weight: 2, opacity: 0.8, fillColor: "#2ecc71", fillOpacity: 0.4 };
-      if (estatus === "EXPLORANDO") return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.55 };
-      if (estatus === "PROXIMAMENTE") return { color: "#c0392b", weight: 2, opacity: 0.7, fillColor: "#e74c3c", fillOpacity: 0.35 };
-      return { color: "transparent", weight: 0, opacity: 0, fillColor: "transparent", fillOpacity: 0 };
+      var estatus = estatusColoniasIztapalapa[nombreLimpio] || "INACTIVO";
+      
+      if (estatus === "EXPLORANDO" || estatus === "COMPLETADA") {
+        return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.55 };
+      } else if (estatus === "PROXIMAMENTE") {
+        return { color: "#c0392b", weight: 2, opacity: 0.7, fillColor: "#e74c3c", fillOpacity: 0.35 };
+      } else {
+        return { color: "#bdc3c7", weight: 1, opacity: 0.3, fillColor: "#ecf0f1", fillOpacity: 0.1 };
+      }
     },
     onEachFeature: function(feature, layer) {
       var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
       var nombreLimpio = nombreVector.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      var estatus = estatusAlcaldiasCdmx[nombreLimpio] || "INACTIVO";
+      var estatus = estatusColoniasIztapalapa[nombreLimpio] || "INACTIVO";
       
-      if (estatus !== "INACTIVO") {
+      if (estatus === "EXPLORANDO" || estatus === "COMPLETADA") {
         var centroide = layer.getBounds().getCenter();
+        
         L.marker(centroide, {
-          icon: L.divIcon({ className: 'label-colonia-flotante', html: '<div>' + nombreVector + '</div>' })
+          icon: L.divIcon({ 
+            className: 'label-colonia-flotante', 
+            html: '<div>' + nombreVector + '</div>' 
+          })
         }).addTo(capaPoligonosGroup);
         
+        // EVENTO DE CLIC CORREGIDO: Abre el mapa intermedio de colonias
         layer.on('click', function() {
-          if (nombreLimpio === "iztapalapa") { window.location.href = "./comercial.html?colonia=xalpa2&entorno=productos"; }
-          else { window.location.href = "./index.html?alcaldia=" + nombreLimpio; }
+          if (nombreLimpio === "iztapalapa") { 
+            window.location.href = "./index.html?alcaldia=iztapalapa"; 
+          } else { 
+            window.location.href = "./index.html?alcaldia=" + nombreLimpio; 
+          }
         });
-        layer.on('mouseover', function() { layer.setStyle({ fillOpacity: 0.65 }); });
+        
+        layer.on('mouseover', function() { 
+          layer.setStyle({ fillOpacity: 0.65 }); 
+        });
+        
         layer.on('mouseout', function() { 
           var opacidadBase = (estatus === "EXPLORANDO") ? 0.55 : 0.4;
           if (estatus === "PROXIMAMENTE") opacidadBase = 0.35;
           layer.setStyle({ fillOpacity: opacidadBase }); 
         });
+      } else {
+        layer.bindPopup(`<b>${nombreVector}</b><br><span style="font-size:11px;color:#7f8c8d;">Apertura en la siguiente fase</span>`);
       }
     }
   }).addTo(capaPoligonosGroup);
 }
 
+
 /**
- * 12. PARSER CSV COMERCIAL REAL (Google Sheets de 19 columnas)
+ * 13. PARSER CSV COMERCIAL REAL (Google Sheets de 19 columnas fijas)
+ * Sincroniza datos, Muro de Privacidad y Doble Presencia (+30%)
  */
 function procesarBaseDatosCsvNegocios(csvTexto) {
   datosComerciosGlobales = [];
@@ -642,40 +672,47 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
     const linea = lineas[i].trim();
     if (!linea) continue;
 
+    // Lector seguro para celdas con comillas y comas internas
     const columnas = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
     const cleanCols = columnas.map(c => c.replace(/^"|"$/g, '').trim());
+    
+    // Valida que la fila tenga la estructura mínima obligatoria
     if (cleanCols.length < 15) continue;
 
+    // MAPEADO CON ÍNDICES FIJOS REALES DE TU HOJA DE CÁLCULO (0 a 18)
     const comercio = {
-      id: cleanCols,
-      coloniaOriginal: cleanCols,
-      mapaObjetivo: cleanCols ? cleanCols.toLowerCase() : "",
-      capaProductos: cleanCols,
-      capaServicios: cleanCols,
-      nivelServicio: parseInt(cleanCols) || 1,
-      nombre: cleanCols,
-      slogan: cleanCols,
-      productosServicios: cleanCols,
-      horarios: cleanCols,
-      redes: cleanCols,
-      enlaceVideo: cleanCols,
-      coorRaw: cleanCols,
-      clickGenerico: cleanCols,
-      clickPersonalizado: cleanCols,
-      linksWebPropia: cleanCols
+      id: cleanCols[0],
+      coloniaOriginal: cleanCols[2],
+      mapaObjetivo: cleanCols[3] ? cleanCols[3].toLowerCase() : "",
+      capaProductos: cleanCols[4],
+      capaServicios: cleanCols[5],
+      nivelServicio: parseInt(cleanCols[6]) || 1,
+      nombre: cleanCols[7],
+      slogan: cleanCols[8],
+      productosServicios: cleanCols[9],
+      horarios: cleanCols[10],
+      redes: cleanCols[11],
+      enlaceVideo: cleanCols[12],
+      coorRaw: cleanCols[14],
+      clickGenerico: cleanCols[15],
+      clickPersonalizado: cleanCols[17],
+      linksWebPropia: cleanCols[18]
     };
 
+    // Validación y desglose matemático de coordenadas geográficas
     if (!comercio.coorRaw || !comercio.coorRaw.includes(",")) continue;
     const partesCoords = comercio.coorRaw.split(",");
-    comercio.latitud = parseFloat(partesCoords);
-    comercio.longitud = parseFloat(partesCoords);
+    comercio.latitud = parseFloat(partesCoords[0]);
+    comercio.longitud = parseFloat(partesCoords[1]);
 
     if (isNaN(comercio.latitud) || isNaN(comercio.longitud)) continue;
 
+    // Procesamiento de categorías múltiples por Doble Presencia
     const catProd = comercio.capaProductos ? comercio.capaProductos.split(",") : [];
     const catServ = comercio.capaServicios ? comercio.capaServicios.split(",") : [];
     const totalCapas = [...catProd, ...catServ];
 
+    // Regla de duplicación física de pines en memoria para planes Premium
     if (totalCapas.length > 1 && (comercio.nivelServicio === 4 || comercio.nivelServicio === 5)) {
       totalCapas.forEach(capa => {
         const copiaComercio = { ...comercio, capaActivaMapeo: capa.trim().toLowerCase() };
@@ -687,9 +724,12 @@ function procesarBaseDatosCsvNegocios(csvTexto) {
       datosComerciosGlobales.push(comercio);
     }
   }
+  
+  // Sincroniza la botonera e inyecta las ofertas en la marquesina superior
   ejecutarFiltroAutomaticoPaginaInterna();
   inyectarAnunciosCarruselPremium();
 }
+
 
 /**
  * 13. TAXONOMÍA CROMÁTICA OFICIAL (16 Capas de Negocios y Servicios)
