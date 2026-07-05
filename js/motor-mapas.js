@@ -1,778 +1,907 @@
 // ==========================================================================
-// NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
-// PARTE 1 DE 4: Configuración Maestra, GIDs de Google Sheets y Taxonomías
+// MOTOR-MAPAS.JS (2026) - PARTE 1: DICCIONARIO GLOBAL DE EXPANSION
 // ==========================================================================
+
 const CONFIG_NEGOSISTEMA = {
   catalogoAlcaldias: {
     "cdmx": {
       nombre: "Ciudad de México (Macro)",
       coordenadas: [19.4326, -99.1332],
       zoom: 11,
-      geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/alcaldias.geojson",
-      urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1670206752&single=true&output=csv"
+      geojson: "https://githubusercontent.com",
+      urlCsvEstatus: "https://google.com"
     },                
     "iztapalapa": {
-      nombre: "Iztapalapa (Piloto)",
-      coordenadas: [19.3455, -99.0130],
+     nombre: "Iztapalapa (Piloto)",
+     coordenadas: [19.3455, -99.0130],
+     zoom: 13,
+     geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/iztapal/iztapalapa.geojson",
+     urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=383048417&single=true&output=csv",
+     urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv"
+},
+    "coyoacan": {
+      nombre: "Coyoacán (Expansión)",
+      coordenadas: [19.3497, -99.1623],
       zoom: 13,
-      geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/iztapal/iztapalapa.geojson",
-      // pestaña 5: "Estatus"
-      urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=383048417&single=true&output=csv",
-      // pestaña 4: "Salida Mapa"
-      urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv",
-      // pestaña 3: "Entrada" (Negocios Ficticios / Muestra Anúnciate)
-    urlCsvAnunciateSimulacion:"https://docs.google.com/spreadsheets/d/e/2PACX-1vSGcorxjHpvr9WkNUQd2cRuAf1wRFlI5Jr67WeT9aZnz74Y677ZZ9u3iAFpwCl5RcuVM8npRYOrJbJ_/pub?gid=956712165&single=true&output=csv"
+      geojson: "https://githubusercontent.com",
+      urlCsvEstatus: "https://google.com",
+      urlCsvSalidaMapa: "https://google.com"
     }
   }
 };
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 2: VARIABLES GLOBALES Y PARÁMETROS URL
+// ==========================================================================
 
-const DICCIONARIO_CAMALEON = {
-  colonias: {
-    "xalpa2": { nombre: "Xalpa II", emoji: "🍎" },
-    "santiago1": { nombre: "2da Ampliación Santiago I", emoji: "🍓" },
-    "santiago2": { nombre: "2da Ampliación Santiago II", emoji: "🍒" }
-  },
-  entornos: {
-    "productos": {
-      titulo: "Directorio de Productos y Canasta Básica",
-      desc: "Localice los puntos de venta, comida y mercancías tangibles de proximidad.",
-      emoji: "🛒",
-      capas: [
-        { id: "todos", name: "Todos los Ramos", emoji: "🌐", color: "#7f8c8d", clase: "color-directorio" },
-        { id: "canasta", name: "Canasta Básica", emoji: "🍏", color: "#2e7d32", clase: "color-canasta" },
-        { id: "comida", name: "Comida Preparada", emoji: "🍲", color: "#ef6c00", clase: "color-comida" },
-        { id: "hogar", name: "Ferretería y Hogar", emoji: "🏠", color: "#fbc02d", clase: "color-hogar" },
-        { id: "salud", name: "Salud y Farmacia", emoji: "🚨", color: "#c62828", clase: "color-salud" },
-        { id: "moda", name: "Variedades y Moda", emoji: "👗", color: "#e4007c", clase: "color-moda" },
-        { id: "mascotas", name: "Mascotas", emoji: "🐶", color: "#795548", clase: "color-mascotas" },
-        { id: "tecnologia", name: "Tecnología", emoji: "⚡", color: "#1565c0", clase: "color-tecnologia" }
-      ]
-    },
-    "servicios": {
-      titulo: "Directorio de Servicios, Expertos y Oficios",
-      desc: "Encuentre especialistas, profesionales técnicos y soluciones para el hogar.",
-      emoji: "🛠️",
-      capas: [
-        { id: "todos", name: "Todos los Servicios", emoji: "🌐", color: "#7f8c8d", clase: "color-directorio" },
-        { id: "consultas", name: "Salud y Consultas", emoji: "🩺", color: "#1565c0", clase: "color-salud" },
-        { id: "oficios", name: "Talleres y Oficios", emoji: "🔧", color: "#1565c0", clase: "color-talleres" },
-        { id: "bienestar", name: "Bienestar y Estilo", emoji: "💇", color: "#9b59b6", clase: "color-bienestar" },
-        { id: "asesoria", name: "Asesoría y Oficina", emoji: "📁", color: "#9e9e9e", clase: "color-asesoria" },
-        { id: "eventos", name: "Hogar y Eventos", emoji: "🧺", color: "#74001a", clase: "color-eventos" },
-        { id: "educacion", name: "Educación y Apoyo", emoji: "✏️", color: "#b2bec3", clase: "color-educacion" },
-        { id: "urgencias", name: "Urgencias 24/7", emoji: "⚠️", color: "#111111", clase: "color-urgencias" }
-      ]
-    }
-  }
-};
-
-// Variables globales del control de mapas
 let mapaNegosistema = null;
-let capaMarcadoresGroup = null;
-let capaPoligonosGroup = null;
-let datosComerciosGlobales = [];
+let capaBasePoligonos = null;
+let grupoMarcadoresComerciales = null;
 
-// Variables globales del estado mutante
-let coloniaActivaUrl = "xalpa2";
-let entornoActivoUrl = "productos";
-let mapaCamaleonCapasActivas = {};
+// Control de encendido/apagado de las 16 capas oficiales
+const capasVisiblesEstado = {
+  "canasta": true, "comercial": true, "hogar": true, "salud": true,
+  "moda": true, "mascotas": true, "tecnologia": true, "talleres": true,
+  "bienestar": true, "asesoria": true, "eventos": true, "educacion": true,
+  "urgencias": true, "directorio": true
+};
+
+// Extracción de parámetros de la URL limpia sin importar el archivo HTML
+const urlParametrosNegosistema = new URLSearchParams(window.location.search);
+const alcaldiaActivaUrl = urlParametrosNegosistema.get("alcaldia") ? urlParametrosNegosistema.get("alcaldia").toLowerCase() : null;
+const coloniaActivaUrl = urlParametrosNegosistema.get("colonia") ? urlParametrosNegosistema.get("colonia").toLowerCase() : null;
+const entornoActivoUrl = urlParametrosNegosistema.get("entorno") ? urlParametrosNegosistema.get("entorno").toLowerCase() : "productos";
+
+// Almacenamiento plano en memoria para el filtrado predictivo y doble presencia
+let baseDatosNegociosMemoria = [];
+let baseDatosOfertasMemoria = [];
 // ==========================================================================
-// NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
-// PARTE 2 DE 4: Inicialización del DOM, Instancia Leaflet y Flujos Fetch
+// MOTOR-MAPAS.JS (2026) - PARTE 3: ENRUTADOR DE ENTORNO (ROUTER)
 // ==========================================================================
 
-document.addEventListener("DOMContentLoaded", () => {
-  const urlActual = window.location.pathname.toLowerCase();
+document.addEventListener("DOMContentLoaded", function() {
+  const rutaActualPath = window.location.pathname.toLowerCase();
   
-  if (urlActual.includes("comercial.html")) {
-    procesarParametrosUrlCamaleon();
+  if (rutaActualPath.includes("index.html") || rutaActualPath === "/" || rutaActualPath.endsWith("/")) {
+    inicializarEntornoIndex();
+  } 
+  else if (rutaActualPath.includes("comercial.html")) {
+    inicializarEntornoComercial();
+  } 
+  else if (rutaActualPath.includes("anunciate.html")) {
+    inicializarEntornoAnunciate();
   }
-  
-  inicializarArquitecturaEcosistema();
 });
 
-
-/**
- * 2. ENRUTADOR DE ENTORNO: Identifica la vista y configura Leaflet nativo
- */
-function inicializarArquitecturaEcosistema() {
-  const contenedorIndex = document.getElementById("mapa_general");
-  const contenedorSeccion = document.getElementById("mapa_seccion");
-  const urlActual = window.location.pathname.toLowerCase();
+function inicializarEntornoIndex() {
+  const contenedorMapa = document.getElementById("mapa_general");
+  if (!contenedorMapa) return;
   
-  let idContenedor = "";
-  let zoomInicial = CONFIG_NEGOSISTEMA.catalogoAlcaldias.cdmx.zoom;
-  let modoEjecucion = "";
+  mapaNegosistema = L.map("mapa_general").setView([19.4326, -99.1332], 11);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; Negosistema 2026"
+  }).addTo(mapaNegosistema);
+  
+  grupoMarcadoresComerciales = L.featureGroup().addTo(mapaNegosistema);
+  capaBasePoligonos = L.geoJSON().addTo(mapaNegosistema);
+  
+  ejecutarFlujoDatosIndex();
+}
 
-  if (contenedorIndex) {
-    idContenedor = "mapa_general";
-    modoEjecucion = urlActual.includes("anunciate") ? "SIMULACION" : "INDEX_GENERAL";
-  } else if (contenedorSeccion) {
-    idContenedor = "mapa_seccion";
-    modoEjecucion = "INTERNO_CAMALEON";
-    zoomInicial = CONFIG_NEGOSISTEMA.catalogoAlcaldias.iztapalapa.zoom;
-  } else {
-    console.error("Negosistema: No se localizó un contenedor cartográfico válido.");
+function inicializarEntornoComercial() {
+  const contenedorMapa = document.getElementById("mapa_seccion");
+  if (!contenedorMapa) return;
+  
+  if (!coloniaActivaUrl) {
+    window.location.href = "./index.html";
     return;
   }
-
-  // Instanciar Leaflet con optimizaciones táctiles y controles móviles
-  mapaNegosistema = L.map(idContenedor, {
-    zoomControl: false,
-    dragging: true,
-    tap: true
-  }).setView(CONFIG_NEGOSISTEMA.catalogoAlcaldias.cdmx.coordenadas, zoomInicial);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  
+  mapaNegosistema = L.map("mapa_seccion");
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
-    attribution: '&copy; Negosistema 2026'
+    attribution: "&copy; Negosistema 2026"
   }).addTo(mapaNegosistema);
-
-  L.control.zoom({ position: 'topright' }).addTo(mapaNegosistema);
-
-  // Declarar y vincular los grupos de capas independientes en memoria
-  capaPoligonosGroup = L.layerGroup().addTo(mapaNegosistema);
-  capaMarcadoresGroup = L.layerGroup().addTo(mapaNegosistema);
-
-  // Disparar la carga de datos correspondiente al canal detectado
-  ejecutarCargaPorCanal(modoEjecucion);
-}
-
-/**
- * 3. ORQUESTADOR DE FLUJOS DINÁMICOS: Segmentación de descargas asíncronas
- */
-function ejecutarCargaPorCanal(modo) {  
-  if (modo === "INDEX_GENERAL") {
-    const parametrosUrl = new URLSearchParams(window.location.search);
-    let alcaldiaClave = parametrosUrl.get("alcaldia");
-    
-    if (alcaldiaClave) {
-      alcaldiaClave = alcaldiaClave.trim().toLowerCase();
-    }
-    
-    // Si la URL está limpia, dibuja el mapa macro de las 16 alcaldías de la CDMX
-    if (!alcaldiaClave || alcaldiaClave === "cdmx") {
-      const recursosCDMX = CONFIG_NEGOSISTEMA.catalogoAlcaldias["cdmx"];
-      mapaNegosistema.setView(recursosCDMX.coordenadas, recursosCDMX.zoom);
-      
-      Promise.all([
-        fetch(recursosCDMX.geojson).then(res => res.json()),
-        fetch(recursosCDMX.urlCsvEstatus).then(res => res.text())
-      ])
-      .then(([geoJsonData, csvTexto]) => {
-        renderizarPoligonosPiloto(geoJsonData, csvTexto);
-      })
-      .catch(err => console.error("Error en mapa macro CDMX:", err));
-      
-    } else if (alcaldiaClave === "iztapalapa") {
-      // PASO 2: Si es Iztapalapa, hace zoom local y descarga su GeoJSON de colonias
-      const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
-      mapaNegosistema.setView(recursoIztapalapa.coordenadas, 13);
-      
-      Promise.all([
-        fetch(recursoIztapalapa.geojson).then(res => res.json()),
-        fetch(recursoIztapalapa.urlCsvEstatus).then(res => res.text())
-      ])
-      .then(([geoJsonData, csvTexto]) => {
-        // Llama a la función encargada de pintar y enlazar las colonias piloto
-        renderizarPoligonosColoniasPiloto(geoJsonData, csvTexto);
-      })
-      .catch(err => console.error("Error en mapa de colonias piloto:", err));
-    }
-
-  }
-
   
-  else if (modo === "SIMULACION") {
-    // ENLACE DIRECTO AL CSV 3: Descarga los datos de Anúnciate
-    const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
-    
-    Promise.all([
-      fetch(recursoIztapalapa.geojson).then(res => res.json()),
-      fetch(recursoIztapalapa.urlCsvAnunciateSimulacion).then(res => res.text())
-    ])
-    .then(([geoJsonData, csvTexto]) => {
-      L.geoJSON(geoJsonData, {
-        coordsToLatLng: function (coords) { 
-          return new L.LatLng(coords, coords); 
-        },
-        style: { 
-          color: "#e67e22", 
-          weight: 2, 
-          opacity: 0.4, 
-          fillColor: "#f1c40f", 
-          fillOpacity: 0.1 
-        }
-      }).addTo(capaPoligonosGroup);
-      
-      procesarBaseDatosCsvNegocios(csvTexto);
-    })
-    .catch(err => console.error("Error al conectar con la pestaña 3:", err));
-
-  } else if (modo === "INTERNO_CAMALEON") {
-    const recursoIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
-    
-    Promise.all([
-      fetch(recursoIztapalapa.geojson).then(res => res.json()),
-      fetch(recursoIztapalapa.urlCsvSalidaMapa).then(res => res.text())
-    ])
-    .then(([geoJsonData, csvTexto]) => {
-      L.geoJSON(geoJsonData, {
-        coordsToLatLng: function (coords) { 
-          return new L.LatLng(coords, coords); 
-        },
-        style: { 
-          color: "#34495e", 
-          weight: 2, 
-          opacity: 0.3, 
-          fillColor: "#34495e", 
-          fillOpacity: 0.02 
-        }
-      }).addTo(capaPoligonosGroup);
-      
-      procesarBaseDatosCsvNegocios(csvTexto);
-    })
-    .catch(err => console.error("Error en pestaña Salida Mapa:", err));
-  }
+  grupoMarcadoresComerciales = L.featureGroup().addTo(mapaNegosistema);
+  
+  ejecutarFlujoDatosComercial();
 }
 
+function inicializarEntornoAnunciate() {
+  const contenedorMapa = document.getElementById("mapa_general");
+  if (!contenedorMapa) return;
+  
+  mapaNegosistema = L.map("mapa_general").setView([19.3415, -99.0110], 15);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; Negosistema 2026"
+  }).addTo(mapaNegosistema);
+  
+  grupoMarcadoresComerciales = L.featureGroup().addTo(mapaNegosistema);
+  
+  ejecutarFlujoDatosAnunciate();
+}
 // ==========================================================================
-// NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
-// PARTE 3 DE 4: Lector Quirúrgico de URL, Mutador de Textos e Inyector Táctil
+// MOTOR-MAPAS.JS (2026) - PARTE 4: MÓDULO DE CONEXIÓN Y DESCARGA PARALELA
 // ==========================================================================
 
-/**
- * 4. LECTOR DE URL Y MUTADOR DE INTERFAZ: Extrae los parámetros 
- * de la dirección web para transformar la cabecera y botonera.
- */
-function procesarParametrosUrlCamaleon() {
-  const parametros = new URLSearchParams(window.location.search);
-  
-  // Extraemos la colonia (si no existe, usa "xalpa2" por defecto)
-  let col = parametros.get("colonia");
-  if (col) coloniaActivaUrl = col.trim().toLowerCase();
-  if (!DICCIONARIO_CAMALEON.colonias[coloniaActivaUrl]) {
-    coloniaActivaUrl = "xalpa2";
-  }
-
-  // Extraemos el sub-entorno (si no existe, usa "productos" por defecto)
-  let ent = parametros.get("entorno");
-  if (ent) entornoActivoUrl = ent.trim().toLowerCase();
-  if (!DICCIONARIO_CAMALEON.entornos[entornoActivoUrl]) {
-    entornoActivoUrl = "productos";
-  }
-
-  // Ejecutamos la mutación visual de los textos en la pantalla
-  inyectarTextosCabeceraCamaleon();
-  generarBotoneraInterruptoresTactiles();
+function descargarCsvPromesa(urlCsvDestino) {
+  return new Promise((resolverPromesa, rechazarPromesa) => {
+    if (!urlCsvDestino || urlCsvDestino === "https://google.com" || urlCsvDestino.includes("google.com/spreadsheets/d/e/")) {
+      resolverPromesa([]);
+      return;
+    }
+    Papa.parse(urlCsvDestino, {
+      download: true,
+      header: false, // Forzado a false para gobernar estrictamente por índices fijos
+      skipEmptyLines: true,
+      complete: (resultadosCsv) => {
+        resolverPromesa(resultadosCsv.data);
+      },
+      error: (errorCsv) => {
+        console.error("Fallo de descarga en Negosistema:", errorCsv);
+        resolverPromesa([]); // Contingencia para no congelar Promise.all
+      }
+    });
+  });
 }
 
-/**
- * 5. INYECTOR DE TEXTOS: Altera las etiquetas de los títulos HTML
- */
-function inyectarTextosCabeceraCamaleon() {
-  const infoColonia = DICCIONARIO_CAMALEON.colonias[coloniaActivaUrl];
-  const infoEntorno = DICCIONARIO_CAMALEON.entornos[entornoActivoUrl];
+function ejecutarFlujoDatosIndex() {
+  // Apunta estrictamente a CONFIG_NEGOSISTEMA.catalogoAlcaldias
+  const llaveAlcaldia = alcaldiaActivaUrl && CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaActivaUrl] 
+    ? alcaldiaActivaUrl 
+    : "cdmx";
+  
+  const configuracionDestino = CONFIG_NEGOSISTEMA.catalogoAlcaldias[llaveAlcaldia];
+  
+  Promise.all([
+    fetch(configuracionDestino.geojson).then(respuestaGeo => respuestaGeo.json()).catch(() => null),
+    descargarCsvPromesa(configuracionDestino.urlCsvEstatus)
+  ]).then(([datosGeoJson, matrizEstatus]) => {
+    procesarDatosEntornoIndex(datosGeoJson, matrizEstatus);
+  });
+}
 
-  const tColonia = document.getElementById("titulo_colonia_dinamico");
-  const dColonia = document.getElementById("descripcion_colonia_dinamica");
-  const bSwitch = document.getElementById("btn_switch_entorno");
-  const tGuia = document.getElementById("titulo_guia_capas");
 
-  // Mutación del título principal: Nombre + Emojis oficiales combinados
-  if (tColonia) {
-    tColonia.innerHTML = `${infoColonia.nombre} ${infoColonia.emoji} : ${infoEntorno.titulo} ${infoEntorno.emoji}`;
+function ejecutarFlujoDatosComercial() {
+  // Se busca la alcaldía contenedora de la colonia piloto actual
+  let llaveAlcaldiaEncontrada = "iztapalapa";
+  
+  // URL de contingencia o master compartida para ofertas cronológicas
+  const urlOfertasGlobal = "https://google.com";
+  const configuracionDestino = NEGOSISTEMA_CONFIG[llaveAlcaldiaEncontrada];
+
+  Promise.all([
+    descargarCsvPromesa(configuracionDestino.urlCsvSalidaMapa),
+    descargarCsvPromesa(urlOfertasGlobal)
+  ]).then(([matrizComercios, matrizOfertas]) => {
+    baseDatosNegociosMemoria = matrizComercios.slice(1); // Remueve fila de encabezado
+    baseDatosOfertasMemoria = matrizOfertas.slice(1);
+    procesarDatosEntornoComercial();
+  });
+}
+
+function ejecutarFlujoDatosAnunciate() {
+  // Carga el set de datos ficticios sandbox directo de una URL demo estática
+  const urlCsvSandboxFicticio = "https://google.com";
+  
+  descargarCsvPromesa(urlCsvSandboxFicticio).then((matrizSandbox) => {
+    baseDatosNegociosMemoria = matrizSandbox.slice(1);
+    baseDatosOfertasMemoria = [];
+    procesarDatosEntornoAnunciate();
+  });
+}
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 5: FUNCIÓN DE LIMPIEZA DE CONTENEDORES
+// ==========================================================================
+
+function limpiarLienzoYContenedoresAvanzado(modoEntornoCompleto) {
+  // 1. Limpieza absoluta de marcadores y vectores en Leaflet
+  if (grupoMarcadoresComerciales) {
+    grupoMarcadoresComerciales.clearLayers();
   }
-  if (dColonia) {
-    dColonia.innerText = infoEntorno.desc;
-  }
-  if (tGuia) {
-    tGuia.innerText = `Guía de Colores e Interruptores: Mapa de ${entornoActivoUrl === 'productos' ? 'Productos' : 'Servicios'}`;
+  
+  if (capaBasePoligonos) {
+    capaBasePoligonos.clearLayers();
   }
 
-  // Modificación del botón Switch que alterna los sub-entornos
-  if (bSwitch) {
-    if (entornoActivoUrl === "productos") {
-      bSwitch.innerText = "🛠️ Cambiar a Mapa de Servicios (Oficios y Expertos)";
-    } else {
-      bSwitch.innerText = "🍎 Cambiar a Mapa de Productos (Comercio y Abasto)";
+  // 2. Limpieza de elementos del DOM según la pantalla activa
+  if (modoEntornoCompleto === "index") {
+    const contenedorGridColonias = document.querySelector(".grid-eleccion-principal");
+    if (contenedorGridColonias) {
+      contenedorGridColonias.innerHTML = "";
+    }
+  } 
+  
+  else if (modoEntornoCompleto === "comercial") {
+    const contenedorBotoneraCapas = document.getElementById("botonera_capas_camaleon");
+    if (contenedorBotoneraCapas) {
+      contenedorBotoneraCapas.innerHTML = "";
+    }
+    
+    const contenedorSliderTrack = document.getElementById("contenedor_slider_track");
+    if (contenedorSliderTrack) {
+      contenedorSliderTrack.innerHTML = "";
+    }
+  }
+  
+  else if (modoEntornoCompleto === "anunciate") {
+    const contenedorBotoneraCapas = document.getElementById("botonera_capas_camaleon");
+    if (contenedorBotoneraCapas) {
+      contenedorBotoneraCapas.innerHTML = "";
     }
   }
 }
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 6: LÓGICA EVALUADORA DEL SEMÁFORO TRICOLOR
+// ==========================================================================
 
-/**
- * 6. PINTOR DE BOTONERA INFERIOR: Crea los interruptores de los círculos.
- * Inicializa todas las capas en estado "Encendido" (true) por defecto.
- */
-function generarBotoneraInterruptoresTactiles() {
+function evaluarEstatusSemaforoTricolor(textoEstatusRaw) {
+  if (!textoEstatusRaw) {
+    return {
+      nombreClase: "capa-sin-color",
+      codigoHex: "transparent",
+      bordeHex: "transparent",
+      visible: false
+    };
+  }
+
+  const estatusLimpio = textoEstatusRaw.trim().toLowerCase();
+
+  if (estatusLimpio === "activo") {
+    return {
+      nombreClase: "semaforo-activo",
+      codigoHex: "#27ae60",
+      bordeHex: "#1e7e34",
+      visible: true
+    };
+  } 
+  
+  if (estatusLimpio === "explorando") {
+    return {
+      nombreClase: "semaforo-explorando",
+      codigoHex: "#fbc02d",
+      bordeHex: "#f57f17",
+      visible: true
+    };
+  }
+
+  // Cualquier otra cadena ("Mantenimiento", "Inactivo", etc.) cae en neutralidad
+  return {
+    nombreClase: "capa-sin-color",
+    codigoHex: "#bdc3c7",
+    bordeHex: "#7f8c8d",
+    visible: false
+  };
+}
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 7: CONSTRUCTOR DINÁMICO DE BOTONES (INDEX)
+// ==========================================================================
+
+function procesarDatosEntornoIndex(datosGeoJson, matrizEstatus) {
+  limpiarLienzoYContenedoresAvanzado("index");
+  
+  const contenedorGridColonias = document.querySelector(".grid-eleccion-principal");
+  if (!contenedorGridColonias) return;
+
+  // Mapa llave-valor para buscar rápido el estatus de cada colonia desde el CSV
+  // Supongamos que en el CSV de Estatus: Columna 0 = Nombre Colonia, Columna 1 = Estatus
+  const mapaEstatusColonias = {};
+  matrizEstatus.forEach(fila => {
+    if (fila[0] && fila[1]) {
+      mapaEstatusColonias[fila[0].trim().toLowerCase()] = fila[1].trim();
+    }
+  });
+
+  // Iteramos sobre las colonias registradas en el diccionario o extraídas del flujo piloto
+  // Para la fase piloto, creamos las tarjetas dinámicas de accesibilidad física
+  const alcaldiaActual = alcaldiaActivaUrl && NEGOSISTEMA_CONFIG[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "iztapalapa";
+  
+  // Muestra de simulación de filas de colonias piloto para autoconstrucción (Xalpa2, Santiago 1, 2)
+  const nombresColoniasPiloto = ["2ampli_santiago_1", "2ampli_santiago_2", "xalpa2"];
+
+  nombresColoniasPiloto.forEach(idColonia => {
+    const estatusTexto = mapaEstatusColonias[idColonia.toLowerCase()] || "";
+    const configuracionVisual = evaluarEstatusSemaforoTricolor(estatusTexto);
+    
+    // Si la colonia no tiene datos o está inactiva, se omite de la botonera de accesibilidad
+    if (!configuracionVisual.visible && estatusTexto.toLowerCase() !== "explorando" && estatusTexto.toLowerCase() !== "activo") {
+      return;
+    }
+
+    // Construcción del nodo físico de la tarjeta de la colonia
+    const tarjetaEnlace = document.createElement("a");
+    tarjetaEnlace.href = `./comercial.html?alcaldia=${alcaldiaActual}&colonia=${idColonia}&entorno=productos`;
+    tarjetaEnlace.className = "tarjeta-eleccion tarjeta-productos";
+    
+    // Inyección de borde de color izquierdo según semáforo tricolor si está explorando o activo
+    if (estatusTexto.toLowerCase() === "explorando") {
+      tarjetaEnlace.style.borderLeft = "5px solid #ff9800";
+    } else if (estatusTexto.toLowerCase() === "activo") {
+      tarjetaEnlace.style.borderLeft = "5px solid #27ae60";
+    }
+
+    tarjetaEnlace.innerHTML = `
+      <div class="icono-tarjeta">🏠</div>
+      <h2>${idColonia.replace(/_/g, " ").toUpperCase()}</h2>
+      <p>Accede al directorio comercial, tiendas, talleres y servicios de esta zona en estatus: <b>${estatusTexto || "Sin Datos"}</b>.</p>
+      <span class="btn-accion-tarjeta">Abrir Mapa →</span>
+    `;
+
+    contenedorGridColonias.appendChild(tarjetaEnlace);
+  });
+
+  // Pasa el testigo al constructor de polígonos cartográficos vectoriales
+  dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusColonias);
+}
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 8: INICIALIZADOR CARTOGRÁFICO Y AUTO-ZOOM
+// ==========================================================================
+
+function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusColonias) {
+  if (!datosGeoJson || !mapaNegosistema || !capaBasePoligonos) return;
+
+  capaBasePoligonos.addData(datosGeoJson);
+
+  capaBasePoligonos.eachLayer((capaPoligono) => {
+    // Lectura de propiedad nativa del GeoJSON (ajustar según tu propiedad exacta)
+    const nombreColoniaGeo = (capaPoligono.feature.properties.nombre || "").trim().toLowerCase();
+    const estatusTexto = mapaEstatusColonias[nombreColoniaGeo] || "";
+    const semaforo = evaluarEstatusSemaforoTricolor(estatusTexto);
+
+    // Configuración visual del polígono vectorial en Leaflet
+    capaPoligono.setStyle({
+      fillColor: semaforo.codigoHex,
+      fillOpacity: estatusTexto ? 0.35 : 0.05,
+      color: semaforo.bordeHex,
+      weight: estatusTexto ? 2 : 1,
+      dashArray: estatusTexto.toLowerCase() === "explorando" ? "5, 5" : null
+    });
+
+    // Inyección de la etiqueta de texto flotante (Label)
+    if (capaPoligono.getBounds().isValid()) {
+      const centroide = capaPoligono.getBounds().getCenter();
+      L.marker(centroide, {
+        icon: L.divIcon({
+          className: "label-colonia-flotante",
+          html: `<div>${nombreColoniaGeo.replace(/_/g, " ").toUpperCase()}</div>`,
+          iconSize:[100, 40],
+          iconAnchor: [50, 20]
+        }),
+        interactive: false
+      }).addTo(capaBasePoligonos);
+    }
+
+    // Eventos interactivos táctiles y de clic para navegar entre niveles
+    capaPoligono.on("click", function() {
+      const alcaldiaActual = alcaldiaActivaUrl && NEGOSISTEMA_CONFIG[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "iztapalapa";
+      if (estatusTexto.toLowerCase() === "activo" || estatusTexto.toLowerCase() === "explorando") {
+        window.location.href = `./comercial.html?alcaldia=${alcaldiaActual}&colonia=${nombreColoniaGeo}&entorno=productos`;
+      }
+    });
+  });
+
+  // Ajuste milimétrico y auto-zoom suave del contenedor de la vista de Leaflet
+  const limitesVectoriales = capaBasePoligonos.getBounds();
+  if (limitesVectoriales.isValid()) {
+    mapaNegosistema.fitBounds(limitesVectoriales, {
+      padding:"10px",
+      maxZoom: 14,
+      animate: true,
+      duration: 0.8
+    });
+  }
+}
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 9: GENERADOR DE INTERRUPTORES TACTILES INFERIORES
+// ==========================================================================
+
+const RELACION_RAMOS_ESTILOS = {
+  "canasta": { texto: "Canasta Básica", color: "color-canasta", hex: "#2e7d32" },
+  "comercial": { texto: "Comida Preparada", color: "color-comida", hex: "#ef6c00" },
+  "hogar": { texto: "Ferretería y Hogar", color: "color-hogar", hex: "#fbc02d" },
+  "salud": { texto: "Salud y Farmacia", color: "color-salud", hex: "#c62828" },
+  "moda": { texto: "Variedades y Moda", color: "color-moda", hex: "#e4007c" },
+  "mascotas": { texto: "Mascotas", color: "color-mascotas", hex: "#795548" },
+  "tecnologia": { texto: "Tecnología", color: "color-tecnologia", hex: "#1565c0" },
+  "talleres": { texto: "Talleres y Oficios", color: "color-talleres", hex: "#1565c0" },
+  "bienestar": { texto: "Bienestar y Estilo", color: "color-bienestar", hex: "#9b59b6" },
+  "asesoria": { texto: "Asesoría y Oficina", color: "color-asesoria", hex: "#9e9e9e" },
+  "eventos": { texto: "Hogar y Eventos", color: "color-eventos", hex: "#74001a" },
+  "educacion": { texto: "Educación y Apoyo", color: "color-educacion", hex: "#b2bec3" },
+  "urgencias": { texto: "Urgencias 24/7", color: "color-urgencias", hex: "#111111" },
+  "directorio": { texto: "Directorio Base", color: "color-directorio", hex: "#9e9e9e" }
+};
+
+function inyectarBotoneraInterruptoresCamaleon() {
   const contenedorBotonera = document.getElementById("botonera_capas_camaleon");
   if (!contenedorBotonera) return;
 
   contenedorBotonera.innerHTML = "";
-  const listaCapas = DICCIONARIO_CAMALEON.entornos[entornoActivoUrl].capas;
 
-  listaCapas.forEach(capa => {
-    // Registramos en memoria la capa como ACTIVA (true) la primera vez
-    if (mapaCamaleonCapasActivas[capa.id] === undefined) {
-      mapaCamaleonCapasActivas[capa.id] = true;
-    }
+  Object.keys(RELACION_RAMOS_ESTILOS).forEach(idRamo => {
+    const configuracionRamo = RELACION_RAMOS_ESTILOS[idRamo];
+    const estaActivoActualmente = capasVisiblesEstado[idRamo];
 
-    const estaActiva = mapaCamaleonCapasActivas[capa.id];
+    const botonInterruptor = document.createElement("button");
+    botonInterruptor.type = "button";
+    botonInterruptor.className = `guia-item-btn ${estaActivoActualmente ? "" : "capa-apagada"}`;
+    botonInterruptor.setAttribute("data-ramo", idRamo);
 
-    // Construimos el botón estructurado con clases CSS
-    const botonElemento = document.createElement("button");
-    botonElemento.className = `guia-item-btn ${estaActiva ? '' : 'capa-apagada'}`;
-    botonElemento.id = `btn_capa_${capa.id}`;
-    
-    // Vinculamos el evento táctil de encendido y apagado
-    botonElemento.onclick = () => alternarEstadoInterruptorCapa(capa.id);
-
-    // Inyectamos el círculo cromático representativo y el texto con emoji
-    botonElemento.innerHTML = `
-      <span class="punto-color-toggle ${capa.clase}" style="background-color: ${capa.color};"></span>
+    botonInterruptor.innerHTML = `
+      <div class="punto-color-toggle ${configuracionRamo.color}" style="background-color: ${estaActivoActualmente ? configuracionRamo.hex : "transparent"};"></div>
       <div class="guia-item-texto">
-        <strong>${capa.emoji} ${capa.name}</strong>
+        <strong>${configuracionRamo.texto}</strong>
       </div>
     `;
 
-    contenedorBotonera.appendChild(botonElemento);
+    botonInterruptor.addEventListener("click", () => {
+      conmutarEstadoCapaEspecifica(idRamo, botonInterruptor);
+    });
+
+    contenedorBotonera.appendChild(botonInterruptor);
   });
 }
 
-// ==========================================================================
-// NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
-// PARTE 4 DE 4: Control de Interruptores, Pintor de Marcadores y Parsers
-// ==========================================================================
-// ==========================================================================
-// NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
-// PARTE 4 DE 5: Control de Interruptores Táctiles y Pintor de Marcadores
-// ==========================================================================
+function conmutarEstadoCapaEspecifica(idRamo, elementoBotonHtml) {
+  // Invierte el estado booleano en memoria
+  capasVisiblesEstado[idRamo] = !capasVisiblesEstado[idRamo];
+  const nuevoEstadoActivo = capasVisiblesEstado[idRamo];
+  const configuracionRamo = RELACION_RAMOS_ESTILOS[idRamo];
+  const indicadorPuntoColor = elementoBotonHtml.querySelector(".punto-color-toggle");
 
-/**
- * 7. INTERRUPTOR TÁCTIL DE CAPAS (TOGGLE): Enciende o apaga las capas del mapa.
- * Al tocar un ramo, vacía o rellena el círculo e invoca la limpieza de pines.
- */
-function alternarEstadoInterruptorCapa(idCapa) {
-  const botonHtml = document.getElementById(`btn_capa_${idCapa}`);
-  if (!botonHtml) return;
-
-  if (idCapa === "todos") {
-    const estadoActualTodos = !mapaCamaleonCapasActivas["todos"];
-    const listaCapas = DICCIONARIO_CAMALEON.entornos[entornoActivoUrl].capas;
-    
-    listaCapas.forEach(capa => {
-      mapaCamaleonCapasActivas[capa.id] = estadoActualTodos;
-      const btnElemento = document.getElementById(`btn_capa_${capa.id}`);
-      if (btnElemento) {
-        if (estadoActualTodos) {
-          btnElemento.classList.remove("capa-apagada");
-        } else {
-          btnElemento.classList.add("capa-apagada");
-        }
-      }
-    });
+  if (nuevoEstadoActivo) {
+    elementoBotonHtml.classList.remove("capa-apagada");
+    if (indicadorPuntoColor) indicadorPuntoColor.style.backgroundColor = configuracionRamo.hex;
   } else {
-    mapaCamaleonCapasActivas[idCapa] = !mapaCamaleonCapasActivas[idCapa];
-    
-    if (mapaCamaleonCapasActivas[idCapa]) {
-      botonHtml.classList.remove("capa-apagada");
-    } else {
-      botonHtml.classList.add("capa-apagada");
-    }
-
-    const btnTodos = document.getElementById("btn_capa_todos");
-    if (!mapaCamaleonCapasActivas[idCapa] && btnTodos) {
-      mapaCamaleonCapasActivas["todos"] = false;
-      btnTodos.classList.add("capa-apagada");
-    }
+    elementoBotonHtml.classList.add("capa-apagada");
+    if (indicadorPuntoColor) indicadorPuntoColor.style.backgroundColor = "transparent";
   }
 
-  ejecutarFiltroAutomaticoPaginaInterna();
-}
-
-/**
- * 8. DETECTOR DE INTERFAZ CAMALEÓNICA: Cruza el estado de la memoria
- * de los interruptores táctiles para limpiar o dibujar en pantalla.
- */
-function ejecutarFiltroAutomaticoPaginaInterna() {
-  const urlActual = window.location.pathname.toLowerCase();
-  let segmentoMapa = "todos";
-
-  if (urlActual.includes("productos") || entornoActivoUrl === "productos") {
-    segmentoMapa = "productos";
-  } else if (urlActual.includes("servicios") || entornoActivoUrl === "servicios") {
-    segmentoMapa = "servicios";
+  // Ejecuta el rediseño dinámico de pines comerciales sin recargar la estructura
+  if (typeof actualizarPinesComercialesEnMapa === "function") {
+    actualizarPinesComercialesEnMapa();
   }
-
-  renderizarPinesEnPantallaCamaleon(coloniaActivaUrl, segmentoMapa);
 }
-
-/**
- * 9. PINTOR DE MARCADORES CAMALEÓN: Versión adaptada que lee los estados
- * individuales rellenos o vacíos del Menú de Capas Mutante.
- */
-function renderizarPinesEnPantallaCamaleon(filtroColonia, filtroMapa) {
-  capaMarcadoresGroup.clearLayers();
-  let boundsAjuste = [];
-
-  datosComerciosGlobales.forEach(function(comercio) {
-    if (filtroColonia !== "todos" && !comercio.coloniaOriginal.toLowerCase().includes(filtroColonia.toLowerCase())) return;
-    if (filtroMapa !== "todos" && comercio.mapaObjetivo !== filtroMapa.toLowerCase()) return;
-    
-    const capaMapeada = comercio.capaActivaMapeo ? comercio.capaActivaMapeo.toLowerCase() : "";
-    if (mapaCamaleonCapasActivas[capaMapeada] === false) return;
-
-    var claseNivelCss = "pin-nivel" + comercio.nivelServicio;
-    var colorHexGiro = obtenerColorHexagonalPorCapa(capaMapeada);
-    var estiloInline = (comercio.nivelServicio === 1) ? '' : "background-color:" + colorHexGiro + ";";
-
-    // DESGLOSE COMPLETO CORREGIDO CON COMAS Y CORCHETES IMPECABLES
-    var iconoPersonalizadoHtml = L.divIcon({
-      className: "pin-negosistema " + claseNivelCss,
-      html: '<div style="' + estiloInline + ' width:14px; height:14px; border-radius:50%;"></div>',
-      iconSize:[14, 14],
-      iconAnchor: [7, 7]
-    });
-
-    var popupContenidoHtml = '<div class="tarjeta-popup">';
-    popupContenidoHtml += '<h3>' + (comercio.nivelServicio >= 2 ? comercio.nombre : 'Comercio Registrado') + '</h3>';
-    popupContenidoHtml += '<p style="font-size:11px; margin: 0 0 6px 0; color:#95a5a6;">ID Ref: ' + comercio.id + '</p>';
-
-    if (comercio.nivelServicio >= 3) {
-      if (comercio.slogan) popupContenidoHtml += '<div class="slogan">"' + comercio.slogan + '"</div>';
-      if (comercio.productosServicios) popupContenidoHtml += '<div class="productos"><strong>Ofrece:</strong> ' + comercio.productosServicios + '</div>';
-      if (comercio.horarios) popupContenidoHtml += '<div class="semaforo-horario horario-abierto">Abierto: ' + comercio.horarios + '</div>';
-    }
-
-    if (comercio.nivelServicio >= 4) {
-      var urlWhatsAppActiva = comercio.clickPersonalizado || comercio.clickGenerico;
-      if (urlWhatsAppActiva) popupContenidoHtml += '<a href="' + urlWhatsAppActiva + '" target="_blank" class="btn-whatsapp-comercial">Contactar por WhatsApp</a>';
-      if (comercio.redes) popupContenidoHtml += '<p style="margin: 8px 0 4px 0; font-size:12px; text-align:center;"><a href="' + comercio.redes + '" target="_blank" style="color:#1a73e8; font-weight:600;">Ver Redes Sociales</a></p>';
-    }
-
-    if (comercio.nivelServicio === 5) {
-      if (comercio.enlaceVideo) {
-        var idVideoLimpio = extraerIdVideoPlataformas(comercio.enlaceVideo);
-        if (idVideoLimpio) {
-          popupContenidoHtml += '<div class="contenedor-video"><iframe src="https://youtube.com' + idVideoLimpio + '" allowfullscreen style="border:0;"></iframe></div>';
-        }
-      }
-      if (comercio.linksWebPropia) popupContenidoHtml += '<a href="' + comercio.linksWebPropia + '" target="_blank" class="btn-web-comercial">Visitar Página Web Oficial</a>';
-    }
-
-    if (comercio.nivelServicio <= 3) {
-      popupContenidoHtml += '<div class="bloque-bloqueado-upsell" style="margin-top:6px;">Canales de contacto exclusivos para cuentas Premium 🔒</div>';
-    }
-    popupContenidoHtml += '</div>';
-
-    var marcadorFinal = L.marker([comercio.latitud, comercio.longitud], { icon: iconoPersonalizadoHtml }).bindPopup(popupContenidoHtml, { maxWidth: 290 });
-    capaMarcadoresGroup.addLayer(marcadorFinal);
-    boundsAjuste.push([comercio.latitud, comercio.longitud]);
-  });
-
-  if (boundsAjuste.length > 0 && filtroColonia !== "todos") {
-    mapaNegosistema.fitBounds(boundsAjuste, { padding: 40, maxZoom: 16 });
-  }
-
-  setTimeout(() => { if (mapaNegosistema) mapaNegosistema.invalidateSize(); }, 100);
-}
-
-/// ==========================================================================
-// NEGOSISTEMA (2026) - MOTOR DE MAPAS CAMALEÓNICO CENTRALIZADO
-// PARTE 5 DE 5: Conmutador por URL, Semáforo de CDMX y Parsers Comerciales
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 10: AGRUPADOR Y PINTOR DE PINES COMERCIALES
 // ==========================================================================
 
-/**
- * 10. CONMUTADOR DE SUB-ENTORNOS: Altera dinámicamente los parámetros de la URL
- * para alternar entre el mapa de Productos y Servicios en la misma pantalla.
- */
+function procesarDatosEntornoComercial() {
+  limpiarLienzoYContenedoresAvanzado("comercial");
+  inyectarBotoneraInterruptoresCamaleon();
+  actualizarEncabezadosYTextosCamaleon();
+  actualizarPinesComercialesEnMapa();
+  construirSliderOfertasCronologicas();
+}
+
+function actualizarPinesComercialesEnMapa() {
+  if (!mapaNegosistema || !grupoMarcadoresComerciales) return;
+
+  grupoMarcadoresComerciales.clearLayers();
+
+  // El parser de índices fijos lee de izquierda a derecha la matriz de memoria
+  baseDatosNegociosMemoria.forEach(filaNegocio => {
+    if (!filaNegocio || filaNegocio.length < 19) return;
+
+    // --- FILTRADO DE PRIMERA LÍNEA (Índices Fijos) ---
+    // Columna C (Índice 2): Colonia del Negocio
+    // Columna D (Índice 3): Entorno Principal (productos / servicios)
+    const coloniaNegocio = filaNegocio[2].trim().toLowerCase();
+    const entornoNegocio = filaNegocio[3].trim().toLowerCase();
+
+    if (coloniaNegocio !== coloniaActivaUrl) return;
+    if (entornoNegocio !== entornoActivoUrl) return;
+
+    // Columna E (Índice 4): Capa o Ramo Comercial Principal
+    const ramoPrincipal = filaNegocio[4].trim().toLowerCase();
+
+    // Verificación de interruptor de capa encendido/apagado
+    if (capasVisiblesEstado[ramoPrincipal] === false) return;
+
+    // Columna P (Índice 15): Coordenada Latitud GPS
+    // Columna Q (Índice 16): Coordenada Longitud GPS
+    const latitudGps = parseFloat(filaNegocio[15]);
+    const longitudGps = parseFloat(filaNegocio[16]);
+
+    if (isNaN(latitudGps) || isNaN(longitudGps)) return;
+
+    // Columna A (Índice 0): ID Único de Suscripción
+    // Columna B (Índice 1): Nombre Comercial
+    const idSuscripcion = parseInt(filaNegocio[0]) || 1;
+    const nombreNegocio = filaNegocio[1].trim();
+
+    // Obtención del color hexadecimal asignado al ramo
+    const configuracionEstilo = RELACION_RAMOS_ESTILOS[ramoPrincipal] || RELACION_RAMOS_ESTILOS["directorio"];
+    const colorPinHex = configuracionEstilo.hex;
+
+    // Construcción del elemento contenedor del marcador físico personalizado
+    const claseAnimacionNivel = obtenerClaseAnimacionPorNivel(idSuscripcion);
+    
+    const marcadorPersonalizado = L.marker([latitudGps, longitudGps], {
+      icon: L.divIcon({
+        className: `pin-negosistema pin-nivel${idSuscripcion} ${claseAnimacionNivel}`,
+        html: `<div style="background-color: ${colorPinHex}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ffffff;"></div>`,
+        iconSize:[24, 24],
+        iconAnchor: [12, 12]
+      })
+    });
+
+    // Vinculación del evento de apertura del popup camaleónico
+    marcadorPersonalizado.bindPopup(() => {
+      return generarPopupMuroPrivacidad(filaNegocio);
+    }, {
+      maxWidth: 280,
+      className: "popup-negosistema-contenedor"
+    });
+
+    grupoMarcadoresComerciales.addLayer(marcadorPersonalizado);
+  });
+
+  // Reajuste automático del zoom del mapa para englobar solo los pines activos filtrados
+  if (grupoMarcadoresComerciales.getLayers().length > 0) {
+    const limitesPines = grupoMarcadoresComerciales.getBounds();
+    mapaNegosistema.fitBounds(limitesPines, { padding:"20px", maxZoom: 16 });
+  } else {
+    // Si no hay pines, centra el mapa en las coordenadas base configuradas para la alcaldía
+    mapaNegosistema.setView([19.3455, -99.0130], 13);
+  }
+}
+
+function actualizarEncabezadosYTextosCamaleon() {
+  const elementoTitulo = document.getElementById("titulo_colonia_dinamico");
+  const elementoDescripcion = document.getElementById("descripcion_colonia_dinamica");
+  const elementoBotonSwitch = document.getElementById("btn_switch_entorno");
+
+  const nombreFormateado = coloniaActivaUrl.replace(/_/g, " ").toUpperCase();
+  const emojiEntorno = entornoActivoUrl === "productos" ? "🛍️" : "🛠️";
+
+  if (elementoTitulo) {
+    elementoTitulo.textContent = `${emojiEntorno} ${nombreFormateado}`;
+  }
+  if (elementoDescripcion) {
+    elementoDescripcion.innerHTML = `Explorando el entorno de <b>${entornoActivoUrl.toUpperCase()}</b> de tu comunidad. Usa los filtros inferiores para limpiar el mapa.`;
+  }
+  if (elementoBotonSwitch) {
+    elementoBotonSwitch.textContent = entornoActivoUrl === "productos" ? "🔄 Cambiar a Servicios (Resuelve)" : "🔄 Cambiar a Productos (Compra)";
+  }
+}
+
 function conmutarSubEntornoCamaleon() {
-  const nuevoEntorno = (entornoActivoUrl === "productos") ? "servicios" : "productos";
-  const nuevaUrl = `${window.location.pathname}?colonia=${coloniaActivaUrl}&entorno=${nuevoEntorno}`;
-  window.history.pushState({ path: nuevaUrl }, '', nuevaUrl);
-  
-  entornoActivoUrl = nuevoEntorno;
-  mapaCamaleonCapasActivas = {};
-  
-  inyectarTextosCabeceraCamaleon();
-  generarBotoneraInterruptoresTactiles();
-  ejecutarFiltroAutomaticoPaginaInterna();
+  const nuevoEntorno = entornoActivoUrl === "productos" ? "servicios" : "productos";
+  const urlActual = new URL(window.location.href);
+  urlActual.searchParams.set("entorno", nuevoEntorno);
+  window.location.href = urlActual.toString();
+}
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 11: VALIDADOR DE VACÍOS E INYECTOR DE PULSOS
+// ==========================================================================
+
+function validarCeldaVaciaNegosistema(cadenaTextoRaw) {
+  if (!cadenaTextoRaw || cadenaTextoRaw.toString().trim() === "") {
+    return "Dato no disponible";
+  }
+  return cadenaTextoRaw.toString().trim();
 }
 
+function obtenerClaseAnimacionPorNivel(idNivelSuscripcion) {
+  const nivelNumerico = parseInt(idNivelSuscripcion);
+  
+  switch(nivelNumerico) {
+    case 5:
+      // Nivel Confianza Premium: Animación de parpadeo Oro Fusión en CSS
+      return "animacion-parpadeo-oro";
+      
+    case 4:
+      // Nivel Venta Premium: Animación de pulso Plata Fusión en CSS
+      return "animacion-pulso-plata";
+      
+    case 3:
+      // Nivel Información Destacado: Sombra estática bronce sin pulso activo
+      return "borde-bronce-estatico";
+      
+    case 2:
+      // Nivel Conocido: Pin básico limpio con color de ramo sin efectos extras
+      return "pin-estilo-limpio";
+      
+    case 1:
+    default:
+      // Nivel Incógnito / Directorio Base: Gris neutro sin interactividad extra
+      return "pin-incognito-gris";
+  }
+}
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 12: MOTOR DE POPUPS (MURO DE PRIVACIDAD)
+// ==========================================================================
 
-function renderizarPoligonosColoniasPiloto(geoJson, csvTexto) {
-  const estatusColoniasIztapalapa = {};
-  
-  // Parseamos el CSV de estatus mediante la librería PapaParse
-  const filasParseadas = Papa.parse(csvTexto, { skipEmptyLines: true }).data;
-  
-  for (let i = 1; i < filasParseadas.length; i++) {
-    const columnas = filasParseadas[i];
-    if (!columnas || columnas.length < 5) continue;
-    
-    // Limpieza de cadenas para asociar los nombres de tu tabla Sheets
-    const nombreColoniaCsv = (columnas[columnas.length - 4] || "")
-      .replace(/^"|"$/g, '').trim().toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      
-    const estatusCsv = (columnas[columnas.length - 1] || "")
-      .replace(/^"|"$/g, '').trim().toUpperCase();
-      
-    if (nombreColoniaCsv) {
-      estatusColoniasIztapalapa[nombreColoniaCsv] = estatusCsv;
+function generarPopupMuroPrivacidad(filaNegocio) {
+  // --- EXTRACCIÓN DE ÍNDICES FIJOS (Columnas 0 a 18) ---
+  const nivelSuscripcion = parseInt(filaNegocio[0]) || 1;
+  const nombreComercial  = validarCeldaVaciaNegosistema(filaNegocio[1]);
+  const idNegocio        = validarCeldaVaciaNegosistema(filaNegocio[6]); // Columna G
+  const sloganComercial  = validarCeldaVaciaNegosistema(filaNegocio[7]); // Columna H
+  const listaProductos   = validarCeldaVaciaNegosistema(filaNegocio[8]); // Columna I
+  const horariosAtencion = validarCeldaVaciaNegosistema(filaNegocio[9]); // Columna J
+  const telefonoWhatsApp = validarCeldaVaciaNegosistema(filaNegocio[10]); // Columna K
+  const urlFacebook      = validarCeldaVaciaNegosistema(filaNegocio[11]); // Columna L
+  const urlInstagram     = validarCeldaVaciaNegosistema(filaNegocio[12]); // Columna M
+  const idVideoYouTube   = validarCeldaVaciaNegosistema(filaNegocio[13]); // Columna N
+  const nombreFotoSlide  = validarCeldaVaciaNegosistema(filaNegocio[14]); // Columna O
+
+  // Contenedor base del popup HTML
+  let htmlPopup = `<div class="tarjeta-popup">`;
+
+  // --- REGLA BLOQUE A: Nivel 1 en adelante (Básico Obligatorio) ---
+  htmlPopup += `<h3>${nombreComercial}</h3>`;
+  htmlPopup += `<p style="font-size: 11px; color:#7f8c8d; margin-bottom: 5px;">ID: ${idNegocio}</p>`;
+
+  // --- PRIVACIDAD CAPA 1: Upsell directo si es Nivel 1 (Incógnito) ---
+  if (nivelSuscripcion === 1) {
+    htmlPopup += `
+      <div class="bloque-bloqueado-upsell">
+        🔒 Información protegida por el comercio. ¿Eres el dueño? Activa tu nivel Conocido.
+      </div>
+      <a href="./como-llegar.html?id=${idNegocio}" class="btn-web-comercial" style="background:#7f8c8d;">¿Cómo llegar?</a>
+    </div>`;
+    return htmlPopup;
+  }
+
+  // --- REGLA BLOQUE B: Nivel 2 en adelante ---
+  // El nivel 2 solo ve Nombre, ID y enlace básico de navegación
+  if (nivelSuscripcion === 2) {
+    htmlPopup += `
+      <a href="./como-llegar.html?id=${idNegocio}" class="btn-web-comercial">¿Cómo llegar?</a>
+    </div>`;
+    return htmlPopup;
+  }
+
+  // --- REGLA BLOQUE C: Nivel 3 en adelante (Destacado de Información) ---
+  if (nivelSuscripcion >= 3) {
+    if (sloganComercial !== "Dato no disponible") {
+      htmlPopup += `<p class="slogan">"${sloganComercial}"</p>`;
+    }
+    if (listaProductos !== "Dato no disponible") {
+      htmlPopup += `<div class="productos"><strong>Ofrece:</strong> ${listaProductos}</div>`;
+    }
+    if (horariosAtencion !== "Dato no disponible") {
+      htmlPopup += `<p style="font-size: 12px; margin-bottom:8px;">🕒 ${horariosAtencion}</p>`;
     }
   }
 
-  // Pintamos los vectores de las colonias sobre el mapa
-  L.geoJSON(geoJson, {
-    style: function(feature) {
-      // Extraemos la propiedad nativa del nombre desde tu GeoJSON de GitHub
-      var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
-      var nombreLimpio = nombreVector.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      var estatus = estatusColoniasIztapalapa[nombreLimpio] || "INACTIVO";
-      
-      // Si la colonia está en fase activa o de exploración, la viste de amarillo claro
-      if (estatus === "EXPLORANDO" || estatus === "COMPLETADA") {
-        return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.55 };
-      } else if (estatus === "PROXIMAMENTE") {
-        return { color: "#c0392b", weight: 2, opacity: 0.7, fillColor: "#e74c3c", fillOpacity: 0.35 };
-      } else {
-        // Oculta las zonas que no pertenecen a la exploración del piloto actual
-        return { color: "#bdc3c7", weight: 1, opacity: 0.3, fillColor: "#ecf0f1", fillOpacity: 0.1 };
+  // --- PRIVACIDAD CAPA 2: Upsell si se queda en Nivel 3 y quiere interactividad ---
+  if (nivelSuscripcion === 3) {
+    htmlPopup += `
+      <div class="bloque-bloqueado-upsell" style="margin-top:5px;">
+        💡 Contacto directo, fotos y redes sociales disponibles en Nivel Venta.
+      </div>
+      <a href="./como-llegar.html?id=${idNegocio}" class="btn-web-comercial">¿Cómo llegar?</a>
+    </div>`;
+    return htmlPopup;
+  }
+
+  // --- REGLA BLOQUE D: Nivel 4 y 5 (Premium Interactivos) ---
+  // Inyección multimedia de video de YouTube si está disponible
+  if (idVideoYouTube !== "Dato no disponible") {
+    htmlPopup += `
+      <div class="contenedor-video" style="margin-top: 8px;">
+        <iframe src="https://youtube.com{idVideoYouTube}" allowfullscreen></iframe>
+      </div>`;
+  }
+
+  // Enlaces a Redes Sociales del comercio
+  let linksRedes = "";
+  if (urlFacebook !== "Dato no disponible") linksRedes += `<a href="${urlFacebook}" target="_blank" style="margin-right: 10px; text-decoration:none;">🔵 Facebook</a>`;
+  if (urlInstagram !== "Dato no disponible") linksRedes += `<a href="${urlInstagram}" target="_blank" style="text-decoration:none;">🟣 Instagram</a>`;
+  if (linksRedes !== "") {
+    htmlPopup += `<p style="font-size: 12px; margin: 8px 0;">🌐 ${linksRedes}</p>`;
+  }
+
+  // Botón directo de Conversión de Ventas a WhatsApp
+  if (telefonoWhatsApp !== "Dato no disponible") {
+    const textoMensajeWa = encodeURIComponent(`Hola, vi tu negocio "${nombreComercial}" en el mapa del Negosistema y me interesa pedir informes.`);
+    htmlPopup += `
+      <a href="https://wa.me{telefonoWhatsApp}?text=${textoMensajeWa}" class="btn-whatsapp-comercial" target="_blank">
+        💬 Pedir por WhatsApp
+      </a>`;
+  }
+
+  // --- REGLA BLOQUE E: Nivel 5 Exclusivo (Landing Page de Confianza) ---
+  if (nivelSuscripcion === 5) {
+    htmlPopup += `
+      <a href="./sitio.html?id=${idNegocio}" class="btn-web-comercial" style="background:#15803d; margin-top:8px;">
+        ⭐ Visitar Web Oficial
+      </a>`;
+  }
+
+  htmlPopup += `</div>`;
+  return htmlPopup;
+}
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 13: REGLA DE NEGOCIO EN MEMORIA (DOBLE PRESENCIA)
+// ==========================================================================
+
+function duplicarRegistrosDoblePresenciaEnMemoria(matrizNegociosOriginal) {
+  const matrizProcesadaConDuplicados = [];
+
+  matrizNegociosOriginal.forEach(filaNegocio => {
+    if (!filaNegocio || filaNegocio.length < 19) return;
+
+    // Se inyecta el registro original intacto de primera instancia
+    matrizProcesadaConDuplicados.push(filaNegocio);
+
+    // --- REGLA DE NEGOCIO DE MÁXIMA PRIORIDAD PARA PREMIUM (+30%) ---
+    // Columna A (Índice 0): ID Único de Suscripción (Nivel de Servicio)
+    const idSuscripcion = parseInt(filaNegocio[0]) || 1;
+
+    // Solo los niveles 4 (Venta) y 5 (Confianza) tienen derecho a Doble Presencia en el mapa
+    if (idSuscripcion >= 4) {
+      // Columna F (Índice 5): Capa Extra o Sub-Ramo Comercial Separado por Coma
+      const celdaCapaExtra = filaNegocio[5];
+
+      if (celdaCapaExtra && celdaCapaExtra.toString().includes(",")) {
+        const segmentosCapas = celdaCapaExtra.toString().split(",");
+        const ramoSecundarioLimpio = segmentosCapas[1].trim().toLowerCase();
+
+        // Validamos que el sub-ramo exista dentro de la paleta oficial de 16 colores
+        if (RELACION_RAMOS_ESTILOS[ramoSecundarioLimpio]) {
+          // Clonación profunda del arreglo de la fila para no alterar el puntero original
+          const filaClonadaDuplicada = [...filaNegocio];
+
+          // Sobrescribimos físicamente el Ramo Principal (Columna E / Índice 4) en la copia de memoria
+          filaClonadaDuplicada[4] = ramoSecundarioLimpio;
+
+          // Se inserta el duplicado físico en la base de datos temporal del navegador
+          matrizProcesadaConDuplicados.push(filaClonadaDuplicada);
+        }
       }
-    },
-    onEachFeature: function(feature, layer) {
-      var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
-      var nombreLimpio = nombreVector.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      var estatus = estatusColoniasIztapalapa[nombreLimpio] || "INACTIVO";
-      
-      // Solo activa etiquetas e interacción si la colonia pertenece al piloto activo
-      if (estatus === "EXPLORANDO" || estatus === "COMPLETADA") {
-        var centroide = layer.getBounds().getCenter();
-        
-        // Inyectamos el letrero flotante con el nombre de la colonia (Xalpa II, etc.)
-        L.marker(centroide, {
-          icon: L.divIcon({ 
-            className: 'label-colonia-flotante', 
-            html: '<div>' + nombreVector + '</div>' 
+    }
+  });
+
+  return matrizProcesadaConDuplicados;
+}
+
+// Adaptación del punto de entrada del flujo comercial para procesar la regla de negocio
+function procesarDatosEntornoComercial() {
+  limpiarLienzoYContenedoresAvanzado("comercial");
+  
+  // Duplicamos los negocios Premium que operan en dos categorías simultáneamente antes de renderizar
+  baseDatosNegociosMemoria = duplicarRegistrosDoblePresenciaEnMemoria(baseDatosNegociosMemoria);
+  
+  inyectarBotoneraInterruptoresCamaleon();
+  actualizarEncabezadosYTextosCamaleon();
+  actualizarPinesComercialesEnMapa();
+  construirSliderOfertasCronologicas();
+}
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - PARTE 14: BÚSQUEDA PREDICTIVA Y SLIDER DE OFERTAS
+// ==========================================================================
+
+function configurarBuscadorPredictivoCamaleon() {
+  const inputBuscador = document.getElementById("input_busqueda_negosistema");
+  if (!inputBuscador) return;
+
+  inputBuscador.addEventListener("input", function(eventoInput) {
+    const terminoBusqueda = eventoInput.target.value.trim().toLowerCase();
+
+    if (terminoBusqueda === "") {
+      actualizarPinesComercialesEnMapa();
+      return;
+    }
+
+    if (!mapaNegosistema || !grupoMarcadoresComerciales) return;
+    grupoMarcadoresComerciales.clearLayers();
+
+    baseDatosNegociosMemoria.forEach(filaNegocio => {
+      if (!filaNegocio || filaNegocio.length < 19) return;
+
+      const coloniaNegocio = filaNegocio[2].trim().toLowerCase();
+      const entornoNegocio = filaNegocio[3].trim().toLowerCase();
+
+      if (coloniaNegocio !== coloniaActivaUrl) return;
+      if (entornoNegocio !== entornoActivoUrl) return;
+
+      const ramoPrincipal = filaNegocio[4].trim().toLowerCase();
+      if (capasVisiblesEstado[ramoPrincipal] === false) return;
+
+      // --- CRITERIOS DE COINCIDENCIA PREDICTIVA (Índices Fijos) ---
+      // Columna B (Índice 1): Nombre Comercial
+      // Columna E (Índice 4): Ramo o Giro Comercial
+      // Columna I (Índice 8): Lista de Productos / Palabras Clave
+      const nombreComercial = filaNegocio[1].trim().toLowerCase();
+      const palabrasProductos = filaNegocio[8].trim().toLowerCase();
+
+      if (
+        nombreComercial.includes(terminoBusqueda) || 
+        ramoPrincipal.includes(terminoBusqueda) || 
+        palabrasProductos.includes(terminoBusqueda)
+      ) {
+        const latitudGps = parseFloat(filaNegocio[15]);
+        const longitudGps = parseFloat(filaNegocio[16]);
+
+        if (isNaN(latitudGps) || isNaN(longitudGps)) return;
+
+        const idSuscripcion = parseInt(filaNegocio[0]) || 1;
+        const colorPinHex = RELACION_RAMOS_ESTILOS[ramoPrincipal]?.hex || "#9e9e9e";
+        const claseAnimacionNivel = obtenerClaseAnimacionPorNivel(idSuscripcion);
+
+        const marcadorFiltrado = L.marker([latitudGps, longitudGps], {
+          icon: L.divIcon({
+            className: `pin-negosistema pin-nivel${idSuscripcion} ${claseAnimacionNivel}`,
+            html: `<div style="background-color: ${colorPinHex}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ffffff;"></div>`,
+            iconSize:[14, 14],
+            iconAnchor: [12, 12]
           })
-        }).addTo(capaPoligonosGroup);
-        
-        // EVENTO DE CLIC DEFINITIVO: Salta al dashboard comercial con herencia de URL
-        layer.on('click', function() {
-          window.location.href = `./comercial.html?colonia=${nombreLimpio}&entorno=productos`;
         });
-        
-        layer.on('mouseover', function() { 
-          layer.setStyle({ fillOpacity: 0.75, weight: 3, color: "#e67e22" }); 
+
+        marcadorFiltrado.bindPopup(() => generarPopupMuroPrivacidad(filaNegocio), {
+          maxWidth: 280,
+          className: "popup-negosistema-contenedor"
         });
-        
-        layer.on('mouseout', function() { 
-          layer.setStyle({ fillOpacity: 0.55, weight: 2, color: "#f1c40f" }); 
-        });
-      } else {
-        // Comportamiento mudo de popup para colonias bloqueadas en Fase 1
-        layer.bindPopup(`<b>${nombreVector}</b><br><span style="font-size:11px;color:#7f8c8d;">Apertura en la siguiente fase</span>`);
+
+        grupoMarcadoresComerciales.addLayer(marcadorFiltrado);
       }
+    });
+
+    if (grupoMarcadoresComerciales.getLayers().length > 0) {
+      mapaNegosistema.fitBounds(grupoMarcadoresComerciales.getBounds(), { padding: [30, 30] });
     }
-  }).addTo(capaPoligonosGroup);
+  });
 }
 
-/**
- * 11. RENDERIZADO INTERMEDIO DE COLONIAS PILOTO: Dibuja los polígonos 
- * de las colonias activas leyendo índices de columnas fijos (0 a 3).
- */
-function renderizarPoligonosColoniasPiloto(geoJson, csvTexto) {
-  const estatusColoniasIztapalapa = {};
-  const filasParseadas = Papa.parse(csvTexto, { skipEmptyLines: true }).data;
+function construirSliderOfertasCronologicas() {
+  const contenedorSliderTrack = document.getElementById("contenedor_slider_track");
+  if (!contenedorSliderTrack) return;
+
+  contenedorSliderTrack.innerHTML = "";
   
-  for (let i = 1; i < filasParseadas.length; i++) {
-    const columnas = filasParseadas[i];
-    // Valida que la fila tenga las 4 columnas de tu Sheets real
-    if (!columnas || columnas.length < 4) continue;
-    
-    // CORRECCIÓN DE ÍNDICES: Columna [1] es Nombre, Columna [3] es Fase
-    const nombreColoniaCsv = (columnas[1] || "")
-      .replace(/^"|"$/g, '').trim().toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      
-    const estatusCsv = (columnas[3] || "")
-      .replace(/^"|"$/g, '').trim().toUpperCase();
-      
-    if (nombreColoniaCsv) {
-      estatusColoniasIztapalapa[nombreColoniaCsv] = estatusCsv;
-    }
-  }
+  // Filtrado de promociones vigentes cruzando ID_NEGOCIO
+  // CSV Ofertas: Columna 0 = ID_NEGOCIO, Columna 1 = Titulo, Columna 2 = Descuento, Columna 3 = Caducidad (YYYY-MM-DD)
+  const fechaHoySistema = new Date();
+  let ofertasContadasInyectadas = 0;
 
-  L.geoJSON(geoJson, {
-    style: function(feature) {
-      var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
-      var nombreLimpio = nombreVector.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      var estatus = estatusColoniasIztapalapa[nombreLimpio] || "INACTIVO";
-      
-      if (estatus === "EXPLORANDO" || estatus === "COMPLETADA") {
-        return { color: "#f1c40f", weight: 2, opacity: 0.8, fillColor: "#fef9e7", fillOpacity: 0.55 };
-      } else if (estatus === "PROXIMAMENTE") {
-        return { color: "#c0392b", weight: 2, opacity: 0.7, fillColor: "#e74c3c", fillOpacity: 0.35 };
-      } else {
-        return { color: "#bdc3c7", weight: 1, opacity: 0.3, fillColor: "#ecf0f1", fillOpacity: 0.1 };
-      }
-    },
-    onEachFeature: function(feature, layer) {
-      var nombreVector = (feature.properties.NOMGEO || feature.properties.Nombre || feature.properties.name || "");
-      var nombreLimpio = nombreVector.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      var estatus = estatusColoniasIztapalapa[nombreLimpio] || "INACTIVO";
-      
-      if (estatus === "EXPLORANDO" || estatus === "COMPLETADA") {
-        var centroide = layer.getBounds().getCenter();
-        
-        L.marker(centroide, {
-          icon: L.divIcon({ 
-            className: 'label-colonia-flotante', 
-            html: '<div>' + nombreVector + '</div>' 
-          })
-        }).addTo(capaPoligonosGroup);
-        
-        // EVENTO DE CLIC CORREGIDO: Abre el mapa intermedio de colonias
-        layer.on('click', function() {
-          if (nombreLimpio === "iztapalapa") { 
-            window.location.href = "./index.html?alcaldia=iztapalapa"; 
-          } else { 
-            window.location.href = "./index.html?alcaldia=" + nombreLimpio; 
-          }
-        });
-        
-        layer.on('mouseover', function() { 
-          layer.setStyle({ fillOpacity: 0.65 }); 
-        });
-        
-        layer.on('mouseout', function() { 
-          var opacidadBase = (estatus === "EXPLORANDO") ? 0.55 : 0.4;
-          if (estatus === "PROXIMAMENTE") opacidadBase = 0.35;
-          layer.setStyle({ fillOpacity: opacidadBase }); 
-        });
-      } else {
-        layer.bindPopup(`<b>${nombreVector}</b><br><span style="font-size:11px;color:#7f8c8d;">Apertura en la siguiente fase</span>`);
-      }
-    }
-  }).addTo(capaPoligonosGroup);
-}
+  baseDatosOfertasMemoria.forEach(filaOferta => {
+    if (!filaOferta || filaOferta.length < 4) return;
 
+    const idNegocioOferta = filaOferta[0].trim();
+    const tituloPromocion = filaOferta[1].trim();
+    const textoDescuento  = filaOferta[2].trim();
+    const fechaCaducidad  = new Date(filaOferta[3].trim());
 
-/**
- * 13. PARSER CSV COMERCIAL REAL (Google Sheets de 19 columnas fijas)
- * Sincroniza datos, Muro de Privacidad y Doble Presencia (+30%)
- */
-function procesarBaseDatosCsvNegocios(csvTexto) {
-  datosComerciosGlobales = [];
-  const lineas = csvTexto.split("\n");
-  if (lineas.length < 2) return;
+    // Validación cronológica estricta: omitir si ya expiró
+    if (fechaCaducidad < fechaHoySistema) return;
 
-  for (let i = 1; i < lineas.length; i++) {
-    const linea = lineas[i].trim();
-    if (!linea) continue;
+    // Buscamos si el negocio pertenece a la colonia activa actual para segmentar el carrusel
+    const negocioAsociado = baseDatosNegociosMemoria.find(n => n[6].trim() === idNegocioOferta);
+    if (!negocioAsociado || negocioAsociado[2].trim().toLowerCase() !== coloniaActivaUrl) return;
 
-    // Lector seguro para celdas con comillas y comas internas
-    const columnas = linea.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linea.split(",");
-    const cleanCols = columnas.map(c => c.replace(/^"|"$/g, '').trim());
-    
-    // Valida que la fila tenga la estructura mínima obligatoria
-    if (cleanCols.length < 15) continue;
+    ofertasContadasInyectadas++;
 
-    // MAPEADO CON ÍNDICES FIJOS REALES DE TU HOJA DE CÁLCULO (0 a 18)
-    const comercio = {
-      id: cleanCols[0],
-      coloniaOriginal: cleanCols[2],
-      mapaObjetivo: cleanCols[3] ? cleanCols[3].toLowerCase() : "",
-      capaProductos: cleanCols[4],
-      capaServicios: cleanCols[5],
-      nivelServicio: parseInt(cleanCols[6]) || 1,
-      nombre: cleanCols[7],
-      slogan: cleanCols[8],
-      productosServicios: cleanCols[9],
-      horarios: cleanCols[10],
-      redes: cleanCols[11],
-      enlaceVideo: cleanCols[12],
-      coorRaw: cleanCols[14],
-      clickGenerico: cleanCols[15],
-      clickPersonalizado: cleanCols[17],
-      linksWebPropia: cleanCols[18]
-    };
+    const slideGrupoElemento = document.createElement("div");
+    slideGrupoElemento.className = "slide-group";
 
-    // Validación y desglose matemático de coordenadas geográficas
-    if (!comercio.coorRaw || !comercio.coorRaw.includes(",")) continue;
-    const partesCoords = comercio.coorRaw.split(",");
-    comercio.latitud = parseFloat(partesCoords[0]);
-    comercio.longitud = parseFloat(partesCoords[1]);
+    slideGrupoElemento.innerHTML = `
+      <div class="feature-card-link">
+        <div class="feature-card">
+          <div class="card-image">
+            <img src="./ofertas/default.png" alt="${tituloPromocion}">
+          </div>
+          <div class="card-content">
+            <h3>${tituloPromocion}</h3>
+            <p>${textoDescuento}</p>
+            <small style="color: #c62828; font-weight: bold; display: block; margin-top: 5px;">Vence: ${filaOferta[3]}</small>
+          </div>
+        </div>
+        <a href="https://wa.me{negocioAsociado[10]}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
+      </div>
+    `;
 
-    if (isNaN(comercio.latitud) || isNaN(comercio.longitud)) continue;
+    contenedorSliderTrack.appendChild(slideGrupoElemento);
+  });
 
-    // Procesamiento de categorías múltiples por Doble Presencia
-    const catProd = comercio.capaProductos ? comercio.capaProductos.split(",") : [];
-    const catServ = comercio.capaServicios ? comercio.capaServicios.split(",") : [];
-    const totalCapas = [...catProd, ...catServ];
-
-    // Regla de duplicación física de pines en memoria para planes Premium
-    if (totalCapas.length > 1 && (comercio.nivelServicio === 4 || comercio.nivelServicio === 5)) {
-      totalCapas.forEach(capa => {
-        const copiaComercio = { ...comercio, capaActivaMapeo: capa.trim().toLowerCase() };
-        datosComerciosGlobales.push(copiaComercio);
-      });
-    } else {
-      let capaDefecto = (comercio.mapaObjetivo === "productos" ? comercio.capaProductos : comercio.capaServicios);
-      comercio.capaActivaMapeo = capaDefecto ? capaDefecto.toString().trim().toLowerCase() : "";
-      datosComerciosGlobales.push(comercio);
-    }
-  }
-  
-  // Sincroniza la botonera e inyecta las ofertas en la marquesina superior
-  ejecutarFiltroAutomaticoPaginaInterna();
-  inyectarAnunciosCarruselPremium();
-}
-
-
-/**
- * 13. TAXONOMÍA CROMÁTICA OFICIAL (16 Capas de Negocios y Servicios)
- */
-function obtenerColorHexagonalPorCapa(nombreCapa) {
-  if (!nombreCapa) return "#7f8c8d";
-  var c = nombreCapa.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  if (c.includes("basica") || c.includes("abarrotes") || c.includes("carnic") || c.includes("recaud")) return "#2e7d32";
-  if (c.includes("preparada") || c.includes("taco") || c.includes("pizz") || c.includes("panader")) return "#ef6c00";
-  if (c.includes("ferreter") || c.includes("tlapaler") || c.includes("construc")) return "#fbc02d";
-  if (c.includes("farmacia") || c.includes("dentista") || c.includes("laboratorio") || c.includes("consultas")) return "#c62828";
-  if (c.includes("variedades") || c.includes("moda") || c.includes("papeler")) return "#e4007c";
-  if (c.includes("mascota") || c.includes("acuario") || c.includes("canina")) return "#795548";
-  if (c.includes("tecnolog") || c.includes("celular") || c.includes("computa")) return "#1565c0";
-  if (c.includes("taller") || c.includes("oficio") || c.includes("mecanic")) return "#1565c0";
-  if (c.includes("bienestar") || c.includes("estilo") || c.includes("barber")) return "#9b59b6";
-  if (c.includes("asesoria") || c.includes("oficina") || c.includes("contador")) return "#9e9e9e";
-  if (c.includes("evento") || c.includes("lavander") || c.includes("cerrajer")) return "#74001a";
-  if (c.includes("educacion") || c.includes("apoyo") || c.includes("tarea")) return "#b2bec3";
-  if (c.includes("urgencia") || c.includes("nocturna") || c.includes("grua") || c.includes("urgencias")) return "#111111";
-  return "#7f8c8d";
-}
-
-/**
- * 14. REGEX EXTRACTOR DE YOUTUBE
- */
-function extraerIdVideoPlataformas(urlVideo) {
-  if (!urlVideo) return null;
-  var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  var match = urlVideo.match(regExp);
-  return (match && match && match.length === 11) ? match : null;
-}
-/**
- * 15. RENDERIZADOR DEL CARRUSEL: Consume directamente las filas del CSV
- * e inyecta las imágenes, títulos y botones de WhatsApp en la cabecera.
- */
-function inyectarAnunciosCarruselPremium() {
-  const track = document.getElementById("contenedor_slider_track");
-  if (!track) return;
-
-  // Si la tabla de Google Sheets viene vacía, dejamos la tarjeta de respaldo
-  if (datosComerciosGlobales.length === 0) {
-    track.innerHTML = `
+  // Si no hay ofertas activas en la colonia, inyecta la tarjeta demo de respaldo sin romper el viewport
+  if (ofertasContadasInyectadas === 0) {
+    contenedorSliderTrack.innerHTML = `
       <div class="slide-group">
         <div class="feature-card-link">
           <div class="feature-card">
@@ -780,147 +909,34 @@ function inyectarAnunciosCarruselPremium() {
               <img src="./Imagenes/caballete.png" alt="Muestra">
             </div>
             <div class="card-content">
-              <h3>Buscando Ofertas...</h3>
-              <p>Espere las promociones de esta colonia.</p>
+              <h3>Buscando Ofertas Activas...</h3>
+              <p>Las promociones cambian según la colonia elegida.</p>
             </div>
           </div>
         </div>
       </div>
     `;
-    return;
-  }
-
-  // Limpiamos el carrusel estático para meter los datos de tu Sheets
-  track.innerHTML = "";
-
-  // Agrupamos tus comercios de 2 en 2 para mantener la maquetación CSS
-  for (let i = 0; i < datosComerciosGlobales.length; i += 2) {
-    const grupoDiv = document.createElement("div");
-    grupoDiv.className = "slide-group";
-
-    // Insertamos el primer negocio disponible en la fila
-    const c1 = datosComerciosGlobales[i];
-    const urlWa1 = c1.clickPersonalizado || c1.clickGenerico || "https://wa.me";
-    const img1 = c1.slogan ? "./Imagenes/caballete.png" : "./Imagenes/caballete.png";
-    
-    grupoDiv.innerHTML += `
-      <div class="feature-card-link">
-        <div class="feature-card">
-          <div class="card-image">
-            <img src="${img1}" alt="${c1.nombre}">
-          </div>
-          <div class="card-content">
-            <h3>${c1.nombre}</h3>
-            <p>${c1.slogan || 'Promoción disponible en sucursal'}</p>
-          </div>
-        </div>
-        <a href="${urlWa1}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
-      </div>
-    `;
-
-    // Si la tabla tiene un segundo negocio consecutivo, lo mete al mismo bloque
-    if (datosComerciosGlobales[i + 1]) {
-      const c2 = datosComerciosGlobales[i + 1];
-      const urlWa2 = c2.clickPersonalizado || c2.clickGenerico || "https://wa.me";
-      const img2 = c2.slogan ? "./Imagenes/caballete.png" : "./Imagenes/caballete.png";
-      
-      grupoDiv.innerHTML += `
-        <div class="feature-card-link">
-          <div class="feature-card">
-            <div class="card-image">
-              <img src="${img2}" alt="${c2.nombre}">
-          </div>
-            <div class="card-content">
-              <h3>${c2.nombre}</h3>
-              <p>${c2.slogan || 'Promoción disponible en sucursal'}</p>
-            </div>
-          </div>
-          <a href="${urlWa2}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
-        </div>
-      `;
-    }
-
-    track.appendChild(grupoDiv);
   }
 }
-/**
- * 15. RENDERIZADOR DEL CARRUSEL: Consume directamente las filas del CSV
- * e inyecta las imágenes, títulos y botones de WhatsApp en la cabecera.
- */
-function inyectarAnunciosCarruselPremium() {
-  const track = document.getElementById("contenedor_slider_track");
-  if (!track) return;
 
-  // Si la tabla de Google Sheets viene vacía, dejamos la tarjeta de respaldo
-  if (datosComerciosGlobales.length === 0) {
-    track.innerHTML = `
-      <div class="slide-group">
-        <div class="feature-card-link">
-          <div class="feature-card">
-            <div class="card-image">
-              <img src="./Imagenes/caballete.png" alt="Muestra">
-            </div>
-            <div class="card-content">
-              <h3>Buscando Ofertas...</h3>
-              <p>Espere las promociones de esta colonia.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
+// Vinculación final de la inicialización de eventos para el buscador predictivo
+function inicializarEntornoComercial() {
+  const contenedorMapa = document.getElementById("mapa_seccion");
+  if (!contenedorMapa) return;
+  
+  if (!coloniaActivaUrl) {
+    window.location.href = "./index.html";
     return;
   }
-
-  // Limpiamos el carrusel estático para meter los datos de tu Sheets
-  track.innerHTML = "";
-
-  // Agrupamos tus comercios de 2 en 2 para mantener la maquetación CSS
-  for (let i = 0; i < datosComerciosGlobales.length; i += 2) {
-    const grupoDiv = document.createElement("div");
-    grupoDiv.className = "slide-group";
-
-    // Insertamos el primer negocio disponible en la fila
-    const c1 = datosComerciosGlobales[i];
-    const urlWa1 = c1.clickPersonalizado || c1.clickGenerico || "https://wa.me";
-    const img1 = c1.slogan ? "./Imagenes/caballete.png" : "./Imagenes/caballete.png";
-    
-    grupoDiv.innerHTML += `
-      <div class="feature-card-link">
-        <div class="feature-card">
-          <div class="card-image">
-            <img src="${img1}" alt="${c1.nombre}">
-          </div>
-          <div class="card-content">
-            <h3>${c1.nombre}</h3>
-            <p>${c1.slogan || 'Promoción disponible en sucursal'}</p>
-          </div>
-        </div>
-        <a href="${urlWa1}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
-      </div>
-    `;
-
-    // Si la tabla tiene un segundo negocio consecutivo, lo mete al mismo bloque
-    if (datosComerciosGlobales[i + 1]) {
-      const c2 = datosComerciosGlobales[i + 1];
-      const urlWa2 = c2.clickPersonalizado || c2.clickGenerico || "https://wa.me";
-      const img2 = c2.slogan ? "./Imagenes/caballete.png" : "./Imagenes/caballete.png";
-      
-      grupoDiv.innerHTML += `
-        <div class="feature-card-link">
-          <div class="feature-card">
-            <div class="card-image">
-              <img src="${img2}" alt="${c2.nombre}">
-          </div>
-            <div class="card-content">
-              <h3>${c2.nombre}</h3>
-              <p>${c2.slogan || 'Promoción disponible en sucursal'}</p>
-            </div>
-          </div>
-          <a href="${urlWa2}" class="btn-wa-float" target="_blank">¡PEDIR!</a>
-        </div>
-      `;
-    }
-
-    track.appendChild(grupoDiv);
-  }
+  
+  mapaNegosistema = L.map("mapa_seccion");
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; Negosistema 2026"
+  }).addTo(mapaNegosistema);
+  
+  grupoMarcadoresComerciales = L.featureGroup().addTo(mapaNegosistema);
+  
+  configurarBuscadorPredictivoCamaleon(); // Activación de la escucha en tiempo real
+  ejecutarFlujoDatosComercial();
 }
