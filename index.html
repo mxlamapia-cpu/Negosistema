@@ -115,7 +115,7 @@
   <script src="./js/motor-mapas.js"></script>
 <script>
  document.addEventListener("DOMContentLoaded", function() {
-   // 1. Lógica existente de Historial intacta
+   // Lógica existente de Historial intacta
    const ultimaColonia = JSON.parse(localStorage.getItem('negosistema_ultima_visita'));
    if (ultimaColonia && ultimaColonia.nombre && ultimaColonia.url) {
      const bloque = document.getElementById('bloque-historial');
@@ -126,15 +126,9 @@
        enlace.textContent = `Entrar directo a: ${ultimaColonia.nombre}`;
      }
    }
-   
-   // 2. CORRECCIÓN INFALIBLE: Remueve el setTimeout sordo y se acopla al ciclo de Leaflet
-   if (typeof mapaNegosistema !== 'undefined' && mapaNegosistema !== null) {
-     mapaNegosistema.on('layeradd', function() {
-       mapaNegosistema.invalidateSize();
-     });
-   }
  });
 </script>
+
 
 </body>
 </html>
