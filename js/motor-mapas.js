@@ -441,7 +441,11 @@ function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusGlobal, entornoA
       animate: true,
       duration: 0.8
     });
-        mapaNegosistema.invalidateSize();
+         setTimeout(function() {
+    if (mapaNegosistema) {
+      mapaNegosistema.invalidateSize();
+    }
+  }, 200);
   }
 }
 // ==========================================================================
