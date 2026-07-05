@@ -395,7 +395,7 @@ function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusGlobal, entornoA
         icon: L.divIcon({
           className: "label-colonia-flotante",
           html: `<div>${nombreGeoRaw.toUpperCase()}</div>`,
-          iconSize:,
+          iconSize:[100, 40],
           iconAnchor: [50, 20]
         }),
         interactive: false
