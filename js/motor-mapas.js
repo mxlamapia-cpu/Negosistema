@@ -18,15 +18,7 @@ const CONFIG_NEGOSISTEMA = {
      geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/iztapal/iztapalapa.geojson",
      urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=383048417&single=true&output=csv",
      urlCsvSalidaMapa: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv"
-},
-    "coyoacan": {
-      nombre: "Coyoacán (Expansión)",
-      coordenadas: [19.3497, -99.1623],
-      zoom: 13,
-      geojson: "https://githubusercontent.com",
-      urlCsvEstatus: "https://google.com",
-      urlCsvSalidaMapa: "https://google.com"
-    }
+}
   }
 };
 // ==========================================================================
