@@ -425,21 +425,23 @@ function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusGlobal, entornoA
 
   }); // Cierre correcto del ciclo eachLayer de Leaflet
 
-  // Auto-ajuste de la cámara e inyección de márgenes de seguridad en píxeles
   if (capaBasePoligonos.getBounds().isValid()) {
     mapaNegosistema.fitBounds(capaBasePoligonos.getBounds(), {
       padding:[10, 10],
       maxZoom: entornoActualUrl === "cdmx" ? 11 : 14,
-      animate: true,
-      duration: 0.8
+      duration: 0.8,
+      animate: true
     });
-         setTimeout(function() {
+  } // <-- LA LLAVE DEL IF SE CIERRA AQUÍ PRIMERO
+
+  // El temporizador se ejecuta libremente afuera a los 250ms
+  setTimeout(function() {
     if (mapaNegosistema) {
       mapaNegosistema.invalidateSize();
     }
-  }, 200);
-  }
-}
+  }, 250);
+} // Cierre definitivo de la función
+
 // ==========================================================================
 // MOTOR-MAPAS.JS (2026) - PARTE 9: GENERADOR DE INTERRUPTORES TACTILES INFERIORES
 // ==========================================================================
