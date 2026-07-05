@@ -8,8 +8,8 @@ const CONFIG_NEGOSISTEMA = {
       nombre: "Ciudad de México (Macro)",
       coordenadas: [19.4326, -99.1332],
       zoom: 11,
-      geojson: "https://githubusercontent.com",
-      urlCsvEstatus: "https://google.com"
+      geojson: "https://raw.githubusercontent.com/mxlamapia-cpu/Negosistema/refs/heads/main/geo/alcaldias.geojson",
+      urlCsvEstatus: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQtpbVZGhb318tEVKgcGJUHQ34E84mc5bSsViofcXcGMLyTmPp39k4wwxcjwT08Zl4QjM2A9xtCDPaO/pub?gid=1369751544&single=true&output=csv"
     },                
     "iztapalapa": {
      nombre: "Iztapalapa (Piloto)",
