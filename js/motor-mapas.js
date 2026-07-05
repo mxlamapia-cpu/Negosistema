@@ -266,6 +266,20 @@ function evaluarEstatusSemaforoTricolor(textoEstatusRaw) {
 // ==========================================================================
 // MOTOR-MAPAS.JS (2026) - REFACTORIZACIÓN COMPLETA DE INDEX CON ÍNDICES REALES
 // ==========================================================================
+function sanitizarTextoEstandar(cadenaTextoRaw) {
+  if (!cadenaTextoRaw) return "";
+  
+  return cadenaTextoRaw
+    .toString()
+    .trim()
+    .toLowerCase()
+    // Descompone los caracteres con acento en su letra base + el acento separado
+    .normalize("NFD")
+    // Remueve todos los acentos, diéresis y signos de puntuación combinados
+    .replace(/[\u0300-\u036f]/g, "")
+    // Elimina espacios, guiones, paréntesis y cualquier caracter no alfanumérico
+    .replace(/[^a-z0-9]/g, "");
+}
 
 function procesarDatosEntornoIndex(datosGeoJson, matrizEstatus) {
   limpiarLienzoYContenedoresAvanzado("index");
@@ -501,6 +515,7 @@ function conmutarEstadoCapaEspecifica(idRamo, elementoBotonHtml) {
   }
 }
 // ==========================================================================
+// ==========================================================================
 // MOTOR-MAPAS.JS (2026) - PARTE 10: AGRUPADOR Y PINTOR DE PINES COMERCIALES
 // ==========================================================================
 
@@ -517,21 +532,16 @@ function actualizarPinesComercialesEnMapa() {
 
   grupoMarcadoresComerciales.clearLayers();
 
-  // El parser de índices fijos lee de izquierda a derecha la matriz de memoria
   baseDatosNegociosMemoria.forEach(filaNegocio => {
     if (!filaNegocio || filaNegocio.length < 19) return;
 
-    // --- FILTRADO DE PRIMERA LÍNEA (Índices Fijos) ---
-    // Columna C (Índice 2): Colonia del Negocio
-    // Columna D (Índice 3): Entorno Principal (productos / servicios)
-    // --- FILTRADO DE PRIMERA LÍNEA CORREGIDO (Índices Fijos) ---
-    const coloniaNegocio = filaNegocio[2].trim().toLowerCase().replace(/_/g, "");
+    // --- FILTRADO DE NEGOCIOS CON SANITIZACIÓN INMUNE A ACENTOS Y GUIONES ---
+    const coloniaNegocio = sanitizarTextoEstandar(filaNegocio[2]);
     const entornoNegocio = filaNegocio[3].trim().toLowerCase();
 
-    // Comparación limpia eliminando guiones de la URL y del Sheet
-    if (coloniaNegocio !== coloniaActivaUrl.replace(/_/g, "")) return;
+    // Comparamos usando la misma limpieza estricta para la URL y la celda de Google Sheets
+    if (coloniaNegocio !== sanitizarTextoEstandar(coloniaActivaUrl)) return;
     if (entornoNegocio !== entornoActivoUrl) return;
-
 
     // Columna E (Índice 4): Capa o Ramo Comercial Principal
     const ramoPrincipal = filaNegocio[4].trim().toLowerCase();
@@ -581,9 +591,11 @@ function actualizarPinesComercialesEnMapa() {
   // Reajuste automático del zoom del mapa para englobar solo los pines activos filtrados
   if (grupoMarcadoresComerciales.getLayers().length > 0) {
     const limitesPines = grupoMarcadoresComerciales.getBounds();
-    mapaNegosistema.fitBounds(limitesPines, { padding:"20px", maxZoom: 16 });
+    mapaNegosistema.fitBounds(limitesPines, { 
+      padding:[20, 20], 
+      maxZoom: 16 
+    });
   } else {
-    // Si no hay pines, centra el mapa en las coordenadas base configuradas para la alcaldía
     mapaNegosistema.setView([19.3455, -99.0130], 13);
   }
 }
@@ -613,6 +625,7 @@ function conmutarSubEntornoCamaleon() {
   urlActual.searchParams.set("entorno", nuevoEntorno);
   window.location.href = urlActual.toString();
 }
+
 // ==========================================================================
 // MOTOR-MAPAS.JS (2026) - PARTE 11: VALIDADOR DE VACÍOS E INYECTOR DE PULSOS
 // ==========================================================================
