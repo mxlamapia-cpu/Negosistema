@@ -416,35 +416,14 @@ function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusGlobal, entornoA
         }
       }
     });
-  });
+
+  }); // Cierre correcto del ciclo eachLayer de Leaflet
 
   // Auto-ajuste de la cámara e inyección de márgenes de seguridad en píxeles
   if (capaBasePoligonos.getBounds().isValid()) {
     mapaNegosistema.fitBounds(capaBasePoligonos.getBounds(), {
-      padding:,
+      padding:[10, 10],
       maxZoom: entornoActualUrl === "cdmx" ? 11 : 14,
-      animate: true,
-      duration: 0.8
-    });
-  }
-}
-
-
-    // Eventos interactivos táctiles y de clic para navegar entre niveles
-    capaPoligono.on("click", function() {
-      const alcaldiaActual = alcaldiaActivaUrl && CONFIG_NEGOSISTEMA[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "iztapalapa";
-      if (estatusTexto.toLowerCase() === "activo" || estatusTexto.toLowerCase() === "explorando") {
-        window.location.href = `./comercial.html?alcaldia=${alcaldiaActual}&colonia=${nombreColoniaGeo}&entorno=productos`;
-      }
-    });
-  });
-
-  // Ajuste milimétrico y auto-zoom suave del contenedor de la vista de Leaflet
-  const limitesVectoriales = capaBasePoligonos.getBounds();
-  if (limitesVectoriales.isValid()) {
-    mapaNegosistema.fitBounds(limitesVectoriales, {
-      padding:"10px",
-      maxZoom: 14,
       animate: true,
       duration: 0.8
     });
