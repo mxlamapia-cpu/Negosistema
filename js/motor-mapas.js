@@ -359,7 +359,7 @@ function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusColonias) {
 
     // Eventos interactivos táctiles y de clic para navegar entre niveles
     capaPoligono.on("click", function() {
-      const alcaldiaActual = alcaldiaActivaUrl && NEGOSISTEMA_CONFIG[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "iztapalapa";
+      const alcaldiaActual = alcaldiaActivaUrl && CONFIG_NEGOSISTEMA[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "iztapalapa";
       if (estatusTexto.toLowerCase() === "activo" || estatusTexto.toLowerCase() === "explorando") {
         window.location.href = `./comercial.html?alcaldia=${alcaldiaActual}&colonia=${nombreColoniaGeo}&entorno=productos`;
       }
