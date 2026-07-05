@@ -441,6 +441,7 @@ function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusGlobal, entornoA
       animate: true,
       duration: 0.8
     });
+        mapaNegosistema.invalidateSize();
   }
 }
 // ==========================================================================
@@ -595,8 +596,10 @@ function actualizarPinesComercialesEnMapa() {
       padding:[20, 20], 
       maxZoom: 16 
     });
+   mapaNegosistema.invalidateSize();
   } else {
     mapaNegosistema.setView([19.3455, -99.0130], 13);
+    mapaNegosistema.invalidateSize(); // Contingencia
   }
 }
 
