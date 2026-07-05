@@ -263,99 +263,172 @@ function evaluarEstatusSemaforoTricolor(textoEstatusRaw) {
 // MOTOR-MAPAS.JS (2026) - PARTE 7: CONSTRUCTOR DINÁMICO DE BOTONES (INDEX)
 // ==========================================================================
 
+// ==========================================================================
+// MOTOR-MAPAS.JS (2026) - REFACTORIZACIÓN COMPLETA DE INDEX CON ÍNDICES REALES
+// ==========================================================================
+
 function procesarDatosEntornoIndex(datosGeoJson, matrizEstatus) {
   limpiarLienzoYContenedoresAvanzado("index");
   
   const contenedorGridColonias = document.querySelector(".grid-eleccion-principal");
-  if (!contenedorGridColonias) return;
+  const alcaldiaActualUrlParam = alcaldiaActivaUrl && CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "cdmx";
 
-  // Mapa llave-valor para buscar rápido el estatus de cada colonia desde el CSV
-  // Supongamos que en el CSV de Estatus: Columna 0 = Nombre Colonia, Columna 1 = Estatus
-  const mapaEstatusColonias = {};
+  // Diccionario llave-valor para indexar el estatus de forma uniforme
+  const mapaEstatusGlobal = {};
+
   matrizEstatus.forEach(fila => {
-    if (fila[0] && fila[1]) {
-      mapaEstatusColonias[fila[0].trim().toLowerCase()] = fila[1].trim();
+    if (!fila || fila.length < 2) return;
+
+    // --- MODO A: Nivel Macro (URL Limpia - Leyendo Estatus Alcaldías del PDF) ---
+    if (alcaldiaActualUrlParam === "cdmx" && fila.length >= 10) {
+      const nombreAlcaldiaSheet = (fila[7] || "").toString().trim().toLowerCase(); // Índice 7: NOMGEO
+      const estatusAlcaldiaSheet = (fila[9] || "").toString().trim();              // Índice 9: Estatus alcaldia
+      
+      if (nombreAlcaldiaSheet) {
+        // Sanitización para quitar acentos de alcaldías (ej: coyoacán -> coyoacan)
+        const llaveAlcaldiaLimpia = nombreAlcaldiaSheet.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        mapaEstatusGlobal[llaveAlcaldiaLimpia] = estatusAlcaldiaSheet;
+      }
+    } 
+    // --- MODO B: Nivel Intermedio (URL con ?alcaldia=iztapalapa - Leyendo Estatus Colonias) ---
+    else if (alcaldiaActualUrlParam !== "cdmx") {
+      const nombreColoniaSheet = (fila[0] || "").toString().trim(); // Índice 0: nombre de la colonia
+      const estatusColoniaSheet = (fila[1] || "").toString().trim(); // Índice 1: Estatus de la colonia
+      
+      if (nombreColoniaSheet) {
+        // Reducción estricta: "2A AMPLIACION SANTIAGO ACAHUALTEPEC I" -> "2aampliacionsantiagoacahualtepeci"
+        const llaveColoniaLimpia = nombreColoniaSheet.toLowerCase().replace(/[^a-z0-9]/g, "");
+        mapaEstatusGlobal[llaveColoniaLimpia] = estatusColoniaSheet;
+      }
     }
   });
 
-  // Iteramos sobre las colonias registradas en el diccionario o extraídas del flujo piloto
-  // Para la fase piloto, creamos las tarjetas dinámicas de accesibilidad física
-  const alcaldiaActual = alcaldiaActivaUrl && CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "iztapalapa";
-  
-  // Muestra de simulación de filas de colonias piloto para autoconstrucción (Xalpa2, Santiago 1, 2)
-  const nombresColoniasPiloto = ["2ampli_santiago_1", "2ampli_santiago_2", "xalpa2"];
+  // --- CONSTRUCCIÓN DINÁMICA DE BOTONERAS DE ACCESIBILIDAD ---
+  if (alcaldiaActualUrlParam === "cdmx") {
+    // Si estamos en el mapa de toda la CDMX, listamos las alcaldías configuradas
+    Object.keys(CONFIG_NEGOSISTEMA.catalogoAlcaldias).forEach(idAlcaldiaKey => {
+      if (idAlcaldiaKey === "cdmx") return; // Omitir la configuración raíz
 
-  nombresColoniasPiloto.forEach(idColonia => {
-    const estatusTexto = mapaEstatusColonias[idColonia.toLowerCase()] || "";
-    const configuracionVisual = evaluarEstatusSemaforoTricolor(estatusTexto);
-    
-    // Si la colonia no tiene datos o está inactiva, se omite de la botonera de accesibilidad
-    if (!configuracionVisual.visible && estatusTexto.toLowerCase() !== "explorando" && estatusTexto.toLowerCase() !== "activo") {
-      return;
-    }
+      const datosConfig = CONFIG_NEGOSISTEMA.catalogoAlcaldias[idAlcaldiaKey];
+      const estatusTexto = mapaEstatusGlobal[idAlcaldiaKey] || "";
+      const semaforo = evaluarEstatusSemaforoTricolor(estatusTexto);
 
-    // Construcción del nodo físico de la tarjeta de la colonia
-    const tarjetaEnlace = document.createElement("a");
-    tarjetaEnlace.href = `./comercial.html?alcaldia=${alcaldiaActual}&colonia=${idColonia}&entorno=productos`;
-    tarjetaEnlace.className = "tarjeta-eleccion tarjeta-productos";
-    
-    // Inyección de borde de color izquierdo según semáforo tricolor si está explorando o activo
-    if (estatusTexto.toLowerCase() === "explorando") {
-      tarjetaEnlace.style.borderLeft = "5px solid #ff9800";
-    } else if (estatusTexto.toLowerCase() === "activo") {
-      tarjetaEnlace.style.borderLeft = "5px solid #27ae60";
-    }
+      if (!semaforo.visible && estatusTexto.toLowerCase() !== "explorando" && estatusTexto.toLowerCase() !== "activo") return;
+      if (!contenedorGridColonias) return;
 
-    tarjetaEnlace.innerHTML = `
-      <div class="icono-tarjeta">🏠</div>
-      <h2>${idColonia.replace(/_/g, " ").toUpperCase()}</h2>
-      <p>Accede al directorio comercial, tiendas, talleres y servicios de esta zona en estatus: <b>${estatusTexto || "Sin Datos"}</b>.</p>
-      <span class="btn-accion-tarjeta">Abrir Mapa →</span>
-    `;
+      const tarjetaAlcaldia = document.createElement("a");
+      tarjetaAlcaldia.href = `./index.html?alcaldia=${idAlcaldiaKey}`;
+      tarjetaAlcaldia.className = "tarjeta-eleccion tarjeta-productos";
+      tarjetaAlcaldia.style.borderLeft = `5px solid ${semaforo.codigoHex}`;
 
-    contenedorGridColonias.appendChild(tarjetaEnlace);
-  });
+      tarjetaAlcaldia.innerHTML = `
+        <div class="icono-tarjeta">📍</div>
+        <h2>${datosConfig.nombre}</h2>
+        <p>Estatus operativo de la demarcación: <b>${estatusTexto}</b></p>
+        <span class="btn-accion-tarjeta">Ver Colonias Piloto →</span>
+      `;
+      contenedorGridColonias.appendChild(tarjetaAlcaldia);
+    });
+  } 
+  else {
+    // Si ya estamos dentro de una alcaldía (ej: Iztapalapa), volcamos las colonias activas leídas
+    matrizEstatus.forEach(fila => {
+      if (!fila || fila.length < 2) return;
+      
+      const nombreColoniaSheet = (fila[0] || "").toString().trim();
+      const estatusColoniaSheet = (fila[1] || "").toString().trim();
+      
+      const llaveColoniaLimpia = nombreColoniaSheet.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const semaforo = evaluarEstatusSemaforoTricolor(estatusColoniaSheet);
 
-  // Pasa el testigo al constructor de polígonos cartográficos vectoriales
-  dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusColonias);
+      // Bloqueo preventivo: Omitir cabecera, celdas vacías, inactivas o en mantenimiento
+      if (nombreColoniaSheet.toLowerCase() === "nombre" || !semaforo.visible) return;
+      if (!contenedorGridColonias) return;
+
+      const tarjetaColonia = document.createElement("a");
+      tarjetaColonia.href = `./comercial.html?alcaldia=${alcaldiaActualUrlParam}&colonia=${llaveColoniaLimpia}&entorno=productos`;
+      tarjetaColonia.className = "tarjeta-eleccion tarjeta-productos";
+      tarjetaColonia.style.borderLeft = `5px solid ${semaforo.codigoHex}`;
+
+      tarjetaColonia.innerHTML = `
+        <div class="icono-tarjeta">🏠</div>
+        <h2>${nombreColoniaSheet}</h2>
+        <p>Estatus de carga en comercios: <b>${estatusColoniaSheet}</b></p>
+        <span class="btn-accion-tarjeta">Abrir Entorno Comercial →</span>
+      `;
+      contenedorGridColonias.appendChild(tarjetaColonia);
+    });
+  }
+
+  // Despliegue de los polígonos vectoriales en el lienzo de Leaflet
+  dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusGlobal, alcaldiaActualUrlParam);
 }
-// ==========================================================================
-// MOTOR-MAPAS.JS (2026) - PARTE 8: INICIALIZADOR CARTOGRÁFICO Y AUTO-ZOOM
-// ==========================================================================
 
-function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusColonias) {
+function dibujarPoligonosSemaforoIndex(datosGeoJson, mapaEstatusGlobal, entornoActualUrl) {
   if (!datosGeoJson || !mapaNegosistema || !capaBasePoligonos) return;
 
   capaBasePoligonos.addData(datosGeoJson);
 
   capaBasePoligonos.eachLayer((capaPoligono) => {
-    // Lectura de propiedad nativa del GeoJSON (ajustar según tu propiedad exacta)
-    const nombreColoniaGeo = (capaPoligono.feature.properties.nombre || "").trim().toLowerCase();
-    const estatusTexto = mapaEstatusColonias[nombreColoniaGeo] || "";
+    // Extracción del nombre nativo desde las propiedades vectoriales del GeoJSON
+    const nombreGeoRaw = (capaPoligono.feature.properties.NOMGEO || capaPoligono.feature.properties.nombre || "").toString().trim();
+    
+    // Estandarización de llave para cruce de datos inmune a espacios o caracteres
+    const llaveGeoLimpia = nombreGeoRaw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+    
+    const estatusTexto = mapaEstatusGlobal[llaveGeoLimpia] || "";
     const semaforo = evaluarEstatusSemaforoTricolor(estatusTexto);
 
-    // Configuración visual del polígono vectorial en Leaflet
+    // Renderizado visual del polígono en Leaflet
     capaPoligono.setStyle({
       fillColor: semaforo.codigoHex,
-      fillOpacity: estatusTexto ? 0.35 : 0.05,
+      fillOpacity: estatusTexto ? 0.40 : 0.05,
       color: semaforo.bordeHex,
       weight: estatusTexto ? 2 : 1,
       dashArray: estatusTexto.toLowerCase() === "explorando" ? "5, 5" : null
     });
 
-    // Inyección de la etiqueta de texto flotante (Label)
-    if (capaPoligono.getBounds().isValid()) {
+    // Inyección de etiquetas de texto flotantes (Labels) centraditas en el polígono
+    if (capaPoligono.getBounds().isValid() && estatusTexto) {
       const centroide = capaPoligono.getBounds().getCenter();
       L.marker(centroide, {
         icon: L.divIcon({
           className: "label-colonia-flotante",
-          html: `<div>${nombreColoniaGeo.replace(/_/g, " ").toUpperCase()}</div>`,
-          iconSize:[100, 40],
+          html: `<div>${nombreGeoRaw.toUpperCase()}</div>`,
+          iconSize:,
           iconAnchor: [50, 20]
         }),
         interactive: false
       }).addTo(capaBasePoligonos);
     }
+
+    // Eventos táctiles para brincar de nivel geográfico con un clic
+    capaPoligono.on("click", function() {
+      if (entornoActualUrl === "cdmx") {
+        // Si damos clic a una alcaldía activa, saltamos a su vista intermedia
+        if (estatusTexto.toLowerCase() === "activo" || estatusTexto.toLowerCase() === "explorando") {
+          window.location.href = `./index.html?alcaldia=${llaveGeoLimpia}`;
+        }
+      } else {
+        // Si damos clic a una colonia activa dentro de Iztapalapa, saltamos a comercial.html
+        if (estatusTexto.toLowerCase() === "activo" || estatusTexto.toLowerCase() === "explorando") {
+          window.location.href = `./comercial.html?alcaldia=${entornoActualUrl}&colonia=${llaveGeoLimpia}&entorno=productos`;
+        }
+      }
+    });
+  });
+
+  // Auto-ajuste de la cámara e inyección de márgenes de seguridad en píxeles
+  if (capaBasePoligonos.getBounds().isValid()) {
+    mapaNegosistema.fitBounds(capaBasePoligonos.getBounds(), {
+      padding:,
+      maxZoom: entornoActualUrl === "cdmx" ? 11 : 14,
+      animate: true,
+      duration: 0.8
+    });
+  }
+}
+
 
     // Eventos interactivos táctiles y de clic para navegar entre niveles
     capaPoligono.on("click", function() {
