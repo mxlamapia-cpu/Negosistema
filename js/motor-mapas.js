@@ -548,12 +548,21 @@ function actualizarPinesComercialesEnMapa() {
     // Verificación de interruptor de capa encendido/apagado
     if (capasVisiblesEstado[ramoPrincipal] === false) return;
 
-    // Columna P (Índice 15): Coordenada Latitud GPS
-    // Columna Q (Índice 16): Coordenada Longitud GPS
-    const latitudGps = parseFloat(filaNegocio[15]);
-    const longitudGps = parseFloat(filaNegocio[16]);
+      // --- EXTRACCIÓN DE COORDENADAS EN PAR (Latitud, Longitud en una sola celda) ---
+    // Lee la Columna P (Índice 15) donde el celular guarda el par "19.3428551, -99.0115496"
+    const celdaCoordenadasRaw = filaNegocio[15];
+    let latitudGps = NaN;
+    let longitudGps = NaN;
 
+    if (celdaCoordenadasRaw && celdaCoordenadasRaw.toString().includes(",")) {
+      const partesCoordenadas = celdaCoordenadasRaw.toString().split(",");
+      latitudGps = parseFloat(partesCoordenadas[0].trim());
+      longitudGps = parseFloat(partesCoordenadas[1].trim());
+    }
+
+    // Freno de seguridad: Si los datos están corruptos o vacíos, salta el negocio en silencio
     if (isNaN(latitudGps) || isNaN(longitudGps)) return;
+
 
     // Columna A (Índice 0): ID Único de Suscripción
     // Columna B (Índice 1): Nombre Comercial
