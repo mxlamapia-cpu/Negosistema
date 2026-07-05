@@ -127,71 +127,55 @@ function inicializarEntornoAnunciate() {
 // ==========================================================================
 
 function descargarCsvPromesa(urlCsvDestino) {
-  return new Promise((resolverPromesa, rechazarPromesa) => {
-    if (!urlCsvDestino || urlCsvDestino === "https://google.com" || urlCsvDestino.includes("google.com/spreadsheets/d/e/")) {
+  return new Promise((resolverPromesa) => {
+    if (!urlCsvDestino || urlCsvDestino === "https://google.com") {
       resolverPromesa([]);
       return;
     }
     Papa.parse(urlCsvDestino, {
       download: true,
-      header: false, // Forzado a false para gobernar estrictamente por índices fijos
+      header: false,
       skipEmptyLines: true,
-      complete: (resultadosCsv) => {
-        resolverPromesa(resultadosCsv.data);
-      },
-      error: (errorCsv) => {
-        console.error("Fallo de descarga en Negosistema:", errorCsv);
-        resolverPromesa([]); // Contingencia para no congelar Promise.all
-      }
+      complete: (resultadosCsv) => resolverPromesa(resultadosCsv.data),
+      error: () => resolverPromesa([])
     });
   });
 }
 
 function ejecutarFlujoDatosIndex() {
-  // Apunta estrictamente a CONFIG_NEGOSISTEMA.catalogoAlcaldias
-  const llaveAlcaldia = alcaldiaActivaUrl && CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaActivaUrl] 
-    ? alcaldiaActivaUrl 
-    : "cdmx";
-  
+  const llaveAlcaldia = alcaldiaActivaUrl && CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "cdmx";
   const configuracionDestino = CONFIG_NEGOSISTEMA.catalogoAlcaldias[llaveAlcaldia];
   
   Promise.all([
-    fetch(configuracionDestino.geojson).then(respuestaGeo => respuestaGeo.json()).catch(() => null),
+    fetch(configuracionDestino.geojson).then(res => res.json()).catch(() => null),
     descargarCsvPromesa(configuracionDestino.urlCsvEstatus)
   ]).then(([datosGeoJson, matrizEstatus]) => {
     procesarDatosEntornoIndex(datosGeoJson, matrizEstatus);
   });
 }
 
-
 function ejecutarFlujoDatosComercial() {
-  // Se busca la alcaldía contenedora de la colonia piloto actual
-  let llaveAlcaldiaEncontrada = "iztapalapa";
-  
-  // URL de contingencia o master compartida para ofertas cronológicas
-  const urlOfertasGlobal = "https://google.com";
-  const configuracionDestino = NEGOSISTEMA_CONFIG[llaveAlcaldiaEncontrada];
-
+  const configIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
+  // Conexión paralela a tus pestañas reales publicadas
   Promise.all([
-    descargarCsvPromesa(configuracionDestino.urlCsvSalidaMapa),
-    descargarCsvPromesa(urlOfertasGlobal)
+    descargarCsvPromesa(configIztapalapa.urlCsvSalidaMapa),
+    descargarCsvPromesa(configIztapalapa.urlCsvEstatus) // Usa el estatus interno como contingencia
   ]).then(([matrizComercios, matrizOfertas]) => {
-    baseDatosNegociosMemoria = matrizComercios.slice(1); // Remueve fila de encabezado
+    baseDatosNegociosMemoria = matrizComercios.slice(1);
     baseDatosOfertasMemoria = matrizOfertas.slice(1);
     procesarDatosEntornoComercial();
   });
 }
 
 function ejecutarFlujoDatosAnunciate() {
-  // Carga el set de datos ficticios sandbox directo de una URL demo estática
-  const urlCsvSandboxFicticio = "https://google.com";
-  
-  descargarCsvPromesa(urlCsvSandboxFicticio).then((matrizSandbox) => {
+  const configIztapalapa = CONFIG_NEGOSISTEMA.catalogoAlcaldias["iztapalapa"];
+  descargarCsvPromesa(configIztapalapa.urlCsvAnunciateSimulacion).then((matrizSandbox) => {
     baseDatosNegociosMemoria = matrizSandbox.slice(1);
     baseDatosOfertasMemoria = [];
     procesarDatosEntornoAnunciate();
   });
 }
+
 // ==========================================================================
 // MOTOR-MAPAS.JS (2026) - PARTE 5: FUNCIÓN DE LIMPIEZA DE CONTENEDORES
 // ==========================================================================
@@ -296,7 +280,7 @@ function procesarDatosEntornoIndex(datosGeoJson, matrizEstatus) {
 
   // Iteramos sobre las colonias registradas en el diccionario o extraídas del flujo piloto
   // Para la fase piloto, creamos las tarjetas dinámicas de accesibilidad física
-  const alcaldiaActual = alcaldiaActivaUrl && NEGOSISTEMA_CONFIG[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "iztapalapa";
+  const alcaldiaActual = alcaldiaActivaUrl && CONFIG_NEGOSISTEMA.catalogoAlcaldias[alcaldiaActivaUrl] ? alcaldiaActivaUrl : "iztapalapa";
   
   // Muestra de simulación de filas de colonias piloto para autoconstrucción (Xalpa2, Santiago 1, 2)
   const nombresColoniasPiloto = ["2ampli_santiago_1", "2ampli_santiago_2", "xalpa2"];
@@ -488,11 +472,14 @@ function actualizarPinesComercialesEnMapa() {
     // --- FILTRADO DE PRIMERA LÍNEA (Índices Fijos) ---
     // Columna C (Índice 2): Colonia del Negocio
     // Columna D (Índice 3): Entorno Principal (productos / servicios)
-    const coloniaNegocio = filaNegocio[2].trim().toLowerCase();
+    // --- FILTRADO DE PRIMERA LÍNEA CORREGIDO (Índices Fijos) ---
+    const coloniaNegocio = filaNegocio[2].trim().toLowerCase().replace(/_/g, "");
     const entornoNegocio = filaNegocio[3].trim().toLowerCase();
 
-    if (coloniaNegocio !== coloniaActivaUrl) return;
+    // Comparación limpia eliminando guiones de la URL y del Sheet
+    if (coloniaNegocio !== coloniaActivaUrl.replace(/_/g, "")) return;
     if (entornoNegocio !== entornoActivoUrl) return;
+
 
     // Columna E (Índice 4): Capa o Ramo Comercial Principal
     const ramoPrincipal = filaNegocio[4].trim().toLowerCase();
